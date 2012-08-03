@@ -1,0 +1,53 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://localhost:3000/api/v1/locales
+    body:
+      encoding: US-ASCII
+      string: locale%5Bname%5D=locale866&auth_token=secret123
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+      Content-Type:
+      - application/x-www-form-urlencoded
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Origin:
+      - ! '*'
+      Access-Control-Allow-Methods:
+      - POST, GET, OPTIONS
+      Access-Control-Max-Age:
+      - '1728000'
+      Content-Type:
+      - application/json; charset=utf-8
+      X-Ua-Compatible:
+      - IE=Edge
+      Etag:
+      - ! '"4797a669105d50f857288041d8063aac"'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Set-Cookie:
+      - _translate_session=BAh7B0kiGXdhcmRlbi51c2VyLnVzZXIua2V5BjoGRVRbCEkiCVVzZXIGOwBGWwZpBxMCRVdi5ISllhb29yUGxaVzA0RnJITS5lBjsAVEkiD3Nlc3Npb25faWQGOwBGSSIlNzQ5MmY5NTE0ZThhOWIxZTI0MmZiYTY1NjE1MGFlMzEGOwBkkiIiQyYSQU--c5ef8ad764a137f81c1f181c18a3f81aa4e055f7;
+        path=/; HttpOnly
+      X-Request-Id:
+      - 5a25b4180497281d16415a0e956e68e1
+      X-Runtime:
+      - '11.897200'
+      Content-Length:
+      - '39'
+      Connection:
+      - keep-alive
+      Server:
+      - thin 1.3.1 codename Triple Espresso
+    body:
+      encoding: US-ASCII
+      string: ! '{"is_default":false,"name":"locale866"}'
+    http_version: 
+  recorded_at: Mon, 25 Jun 2012 13:27:57 GMT
+recorded_with: VCR 2.2.1

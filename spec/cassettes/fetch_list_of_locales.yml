@@ -1,0 +1,51 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://localhost:3000/api/v1/locales?auth_token=secret123
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Origin:
+      - ! '*'
+      Access-Control-Allow-Methods:
+      - POST, GET, OPTIONS
+      Access-Control-Max-Age:
+      - '1728000'
+      Content-Type:
+      - application/json; charset=utf-8
+      X-Ua-Compatible:
+      - IE=Edge
+      Etag:
+      - ! '"a30442091c4a22d1b060820256c12250"'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Set-Cookie:
+      - _translate_session=BAh7B0kiD3Nlc3Npb25faWQGOgZFRkkiJThmMGRkY2RiMGU4MTJjNTcwMTIyNmMzNzNhNmI3YzIzBjsAVEkiGXdhcmRlbi51c2VyLnVzZXIua2V5BjsAVFsISSIJVXNlcgY7AEZbBmkGSSIiJDJhJDEwJFV2LkhKWWFvb3JQbFpXMDRGckhNLmUGOwBU--a4fb242716a6bf35315bbf50d478345873d9ead5;
+        path=/; HttpOnly
+      X-Request-Id:
+      - 54b68e4302709b895f08f0fe3044ca44
+      X-Runtime:
+      - '0.171976'
+      Content-Length:
+      - '1027'
+      Connection:
+      - keep-alive
+      Server:
+      - thin 1.3.1 codename Triple Espresso
+    body:
+      encoding: US-ASCII
+      string: ! '[{"is_default":true,"name":"en"},{"is_default":false,"name":"dev"},{"is_default":false,"name":"ar"},{"is_default":false,"name":"au"},{"is_default":false,"name":"br"},{"is_default":false,"name":"cl"},{"is_default":false,"name":"cn"},{"is_default":false,"name":"co"},{"is_default":false,"name":"cr"},{"is_default":false,"name":"cs"},{"is_default":false,"name":"de"},{"is_default":false,"name":"dk"},{"is_default":false,"name":"ar-JO"},{"is_default":false,"name":"es"},{"is_default":false,"name":"fi"},{"is_default":false,"name":"fr"},{"is_default":false,"name":"gb"},{"is_default":false,"name":"gr"},{"is_default":false,"name":"hk"},{"is_default":false,"name":"hu"},{"is_default":false,"name":"id"},{"is_default":false,"name":"il"},{"is_default":false,"name":"in"},{"is_default":false,"name":"it"},{"is_default":false,"name":"jp"},{"is_default":false,"name":"kr"},{"is_default":false,"name":"mx"},{"is_default":false,"name":"my"},{"is_default":false,"name":"nl"},{"is_default":false,"name":"no"},{"is_default":false,"name":"nw"}]'
+    http_version: 
+  recorded_at: Mon, 25 Jun 2012 13:27:44 GMT
+recorded_with: VCR 2.2.1

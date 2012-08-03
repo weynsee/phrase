@@ -1,0 +1,51 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://localhost:3000/api/v1/blacklisted_keys?auth_token=secret123
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Origin:
+      - ! '*'
+      Access-Control-Allow-Methods:
+      - POST, GET, OPTIONS
+      Access-Control-Max-Age:
+      - '1728000'
+      Content-Type:
+      - application/json; charset=utf-8
+      X-Ua-Compatible:
+      - IE=Edge
+      Etag:
+      - ! '"d751713988987e9331980363e24189ce"'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Set-Cookie:
+      - _translate_session=BAh7B0kiD3Nlc3Npb25faWQGOgZFRkkiJTQ3YTUxYzczMDU2MmQ4ZmZlYjEzM2M1ODVlNzQ2NTY3BjsAVEkiGXdhcmRlbi51c2VyLnVzZXIua2V5BjsAVFsISSIJVXNlcgY7AEZbBmkGSSIiJDJhJDEwJFV2LkhKWWFvb3JQbFpXMDRGckhNLmUGOwBU--c8eda9b2695d7259e10e65d8b2bafbb0b9bcf924;
+        path=/; HttpOnly
+      X-Request-Id:
+      - 01f760edae078480b2b3f1cc0fcd6350
+      X-Runtime:
+      - '0.034562'
+      Content-Length:
+      - '2'
+      Connection:
+      - keep-alive
+      Server:
+      - thin 1.3.1 codename Triple Espresso
+    body:
+      encoding: US-ASCII
+      string: ! '[]'
+    http_version: 
+  recorded_at: Mon, 25 Jun 2012 13:27:44 GMT
+recorded_with: VCR 2.2.1

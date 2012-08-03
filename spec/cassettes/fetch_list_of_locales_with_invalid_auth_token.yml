@@ -1,0 +1,40 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://localhost:3000/api/v1/locales?auth_token=invalidtoken
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 401
+      message: Unauthorized
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      X-Ua-Compatible:
+      - IE=Edge
+      Cache-Control:
+      - no-cache
+      X-Request-Id:
+      - 126870cb29613af5e9303fba96bda1e2
+      X-Runtime:
+      - '0.012535'
+      Content-Length:
+      - '41'
+      Connection:
+      - keep-alive
+      Server:
+      - thin 1.3.1 codename Triple Espresso
+    body:
+      encoding: US-ASCII
+      string: ! '{"error":"Invalid authentication token."}'
+    http_version: 
+  recorded_at: Mon, 25 Jun 2012 13:27:44 GMT
+recorded_with: VCR 2.2.1

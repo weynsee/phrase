@@ -1,0 +1,51 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://localhost:3000/api/v1/translation_keys/translate?auth_token=secret123&key=lorem
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Origin:
+      - ! '*'
+      Access-Control-Allow-Methods:
+      - POST, GET, OPTIONS
+      Access-Control-Max-Age:
+      - '1728000'
+      Content-Type:
+      - application/json; charset=utf-8
+      X-Ua-Compatible:
+      - IE=Edge
+      Etag:
+      - ! '"22dbcc5a19db4c5514185625b1bcb454"'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Set-Cookie:
+      - _translate_session=BAh7B0kiD3Nlc3Npb25faWQGOgZFRkkiJTZiNzhiNmFjODhhOTI1NWFhMzA4Nzc3OTZiNjA3ODBlBjsAVEkiGXdhcmRlbi51c2VyLnVzZXIua2V5BjsAVFsISSIJVXNlcgY7AEZbBmkGSSIiJDJhJDEwJFV2LkhKWWFvb3JQbFpXMDRGckhNLmUGOwBU--835b968c52ae27aaa6ab7ea1d29ea927c8033ec3;
+        path=/; HttpOnly
+      X-Request-Id:
+      - c2cb5549e81fd7fedc3ef77050c50f87
+      X-Runtime:
+      - '0.056708'
+      Content-Length:
+      - '44'
+      Connection:
+      - keep-alive
+      Server:
+      - thin 1.3.1 codename Triple Espresso
+    body:
+      encoding: US-ASCII
+      string: ! '{"success":true,"translate":{"ipsum1":{"subkey":"nothing","subsub":{"subsubsub":"yeah!"}}}}'
+    http_version: 
+  recorded_at: Mon, 25 Jun 2012 13:27:45 GMT
+recorded_with: VCR 2.2.1

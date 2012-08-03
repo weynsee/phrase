@@ -1,0 +1,43 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://localhost:3000/api/v1/translations/download?auth_token=secret123&locale=does_not_exist
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      Content-Type:
+      - text/html; charset=utf-8
+      X-Ua-Compatible:
+      - IE=Edge
+      Cache-Control:
+      - no-cache
+      Set-Cookie:
+      - _translate_session=BAh7B0kiD3Nlc3Npb25faWQGOgZFRkkiJTQ4MjMxOTkwNjVlNzRmM2QwMTQxMTJmYzEyNWM1NGIwBjsAVEkiGXdhcmRlbi51c2VyLnVzZXIua2V5BjsAVFsISSIJVXNlcgY7AEZbBmkGSSIiJDJhJDEwJFV2LkhKWWFvb3JQbFpXMDRGckhNLmUGOwBU--39db642b7932f3fc995f380200a7a9f62a79f2e6;
+        path=/; HttpOnly
+      X-Request-Id:
+      - 287f49ec4fd5549cba5e14aae093e717
+      X-Runtime:
+      - '0.022734'
+      Content-Length:
+      - '22'
+      Connection:
+      - keep-alive
+      Server:
+      - thin 1.3.1 codename Triple Espresso
+    body:
+      encoding: US-ASCII
+      string: ! 'Error: No locale given'
+    http_version: 
+  recorded_at: Mon, 25 Jun 2012 13:27:57 GMT
+recorded_with: VCR 2.2.1

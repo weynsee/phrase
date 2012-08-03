@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+require 'phrase/tool'
+Phrase::Tool.new(ARGV).run
