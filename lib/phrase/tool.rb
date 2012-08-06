@@ -56,12 +56,15 @@ protected
   def push
     check_config_available
     
+    tag_names = args.find { |arg| arg =~ /tags=/ }
+    tags = tag_names.to_s.match(/tags=.+/) ? tag_names.split("=", 2).last.split(",").map(&:strip) : []
+    
     files = choose_files_to_upload
     if files.empty?
       puts "Could not find any files to upload :("
       exit(43)
     end
-    upload_files(files)
+    upload_files(files, tags)
   end
 
   def pull
@@ -124,7 +127,7 @@ private
     end
   end
 
-  def upload_files(files)
+  def upload_files(files, tags=[])
     files.each do |file|
       proceed_with_upload = true
     
@@ -134,13 +137,14 @@ private
     
       if is_yaml_file(file)
         proceed_with_upload = false
-        $stderr.puts "Notice: Could not upload #{file} (extension not supported - see http://phraseapp.com/help for more information)"
+        $stderr.puts "Notice: Could not upload #{file} (extension not supported)"
       end
     
       if proceed_with_upload
         begin
-          puts "Uploading #{file}..."
-          api_client.upload(file, File.read(file))
+          tagged = " (tagged: #{tags.join(", ")})" if tags.size > 0
+          puts "Uploading #{file}#{tagged}..."
+          api_client.upload(file, File.read(file), tags)
           puts "OK"
         rescue Exception => e
           puts "Failed"

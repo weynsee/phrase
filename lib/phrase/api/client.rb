@@ -1,6 +1,7 @@
 # -*- encoding : utf-8 -*-
 
 require 'addressable/uri'
+require 'cgi'
 require 'net/http'
 require 'net/https'
 require 'phrase'
@@ -85,12 +86,14 @@ class Phrase::Api::Client
     end
   end
   
-  def upload(filename, file_content)  
+  def upload(filename, file_content, tags=[])
     begin
-      perform_api_request("/translation_keys/upload", :post, {
+      params = {
         "filename" => filename,
         "file_content" => file_content,
-      })
+        "tags[]" => tags
+      }
+      perform_api_request("/translation_keys/upload", :post, params)
     rescue Phrase::Api::Exceptions::ServerError => e
       raise "File #{filename} could not be uploaded"
     end
@@ -171,7 +174,7 @@ private
     params.merge!({
       'auth_token' => @auth_token
     })
-    request.set_form_data(params)
+    set_form_data(request, params)
     request
   end
   
@@ -180,7 +183,7 @@ private
     params.merge!({
       'auth_token' => @auth_token
     })
-    request.set_form_data(params)
+    set_form_data(request, params)
     request
   end
   
@@ -194,5 +197,18 @@ private
     client.verify_mode = OpenSSL::SSL::VERIFY_NONE
     client.ca_file = File.join(File.dirname(__FILE__), "..", "..", "cacert.pem")
     client
+  end
+  
+  # Support for arrays in POST data
+  # http://blog.assimov.net/blog/2010/06/01/postput-arrays-with-ruby-nethttp-set_form_data/
+  def set_form_data(request, params, separator='&')
+    request.body = params.map do |key, value| 
+      if value.instance_of?(Array)
+        value.map {|value_item| "#{CGI::escape(key.to_s)}=#{CGI::escape(value_item.to_s)}"}.join(separator)
+      else
+        "#{CGI::escape(key.to_s)}=#{CGI::escape(value.to_s)}"
+      end
+    end.join(separator)
+    request.content_type = 'application/x-www-form-urlencoded'
   end
 end

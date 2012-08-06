@@ -4,7 +4,7 @@ http_interactions:
     method: post
     uri: http://localhost:3000/api/v1/locales
     body:
-      encoding: US-ASCII
+      encoding: UTF-8
       string: locale%5Bname%5D=en&auth_token=secret123
     headers:
       Accept:
@@ -31,12 +31,12 @@ http_interactions:
       Cache-Control:
       - no-cache
       Set-Cookie:
-      - _translate_session=BAh7B0kiGXdhcmRlbi51c2VyLnVzZXIua2V5BjoGRVRbCEkiCVVzZXkiIiQyYSQxMCRVdi5ISllhb29yUGxaVzA0RnJITS5lBjsAVEkiD3Nlc3Npb25faWQGOwBGSSIlMTkwMjNkZGYwNTRkMmM3NjIzMDNhNTEzOWRhZTI3MWYGOIGOwBGWwZpBkwBU--0ab4cf30a6b46517016ae48271b32218174ac625;
+      - _translate_session=BAh7B0kiGXdhcmRlbi51c2VyLnVzZXIua2V5BjoGRVRbCEkiCVVzZXIGOwBGWwZpBkkiIiQyYSQxMCRWeFJNbTIzSUZKVm8zcU1vS3NvamF1BjsAVEkiD3Nlc3Npb25faWQGOwBGSSIlYWYzNjAxMDNjODA2YTE5MGY1Mzk1ZmIwMGQyNTFmZWIGOwBU--e97fd3bb40cff98e141fb3391bda7ccdf7de4f47;
         path=/; HttpOnly
       X-Request-Id:
-      - f253f0c5e074b7fa098c410f44362afa
+      - 544657b70a1e84655ee938d69f396aea
       X-Runtime:
-      - '0.116272'
+      - '0.016390'
       Content-Length:
       - '61'
       Connection:
@@ -47,5 +47,5 @@ http_interactions:
       encoding: US-ASCII
       string: ! '{"error":true,"messages":{"name":["has already been taken"]}}'
     http_version: 
-  recorded_at: Mon, 25 Jun 2012 13:27:45 GMT
+  recorded_at: Mon, 06 Aug 2012 13:50:17 GMT
 recorded_with: VCR 2.2.1

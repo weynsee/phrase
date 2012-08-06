@@ -31,12 +31,12 @@ http_interactions:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Set-Cookie:
-      - _translate_session=BAh7B0kiD3Nlc3Npb25faWQGOgZFRkkiJWY1YzZhMzQ1Y2RkYmIxMGMzMDJhMDcwZTA5MmIxYzRkBjsAVEkiGXdhcmRlbi51c2VyLnVzZXIua2V5BjsAVFsISSIJVXNlcgY7AEZbBmkGSSIiJDJhJDEwJFV2LkhKWWFvb3JQbFpXMDRGckhNLmUGOwBU--3181f451e05f86c65c7a939f226b0c5341005aa4;
+      - _translate_session=BAh7B0kiD3Nlc3Npb25faWQGOgZFRkkiJWE4YzBlYjJmMTdkNDljYTdiNWI2ZTgzMzk0NzMwYjA5BjsAVEkiGXdhcmRlbi51c2VyLnVzZXIua2V5BjsAVFsISSIJVXNlcgY7AEZbBmkGSSIiJDJhJDEwJFZ4Uk1tMjNJRkpWbzNxTW9Lc29qYXUGOwBU--e3c2d485c8f67360823991493cefd772ae9f56d1;
         path=/; HttpOnly
       X-Request-Id:
-      - 5a4c095393190bec190d3b250becf0cf
+      - 1e90bd425b9aeccd904d24b91449edec
       X-Runtime:
-      - '0.042429'
+      - '0.019613'
       Content-Length:
       - '2'
       Connection:
@@ -47,5 +47,5 @@ http_interactions:
       encoding: US-ASCII
       string: ! '[]'
     http_version: 
-  recorded_at: Mon, 25 Jun 2012 13:27:44 GMT
+  recorded_at: Mon, 06 Aug 2012 13:50:17 GMT
 recorded_with: VCR 2.2.1

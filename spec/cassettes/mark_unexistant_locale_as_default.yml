@@ -4,7 +4,7 @@ http_interactions:
     method: put
     uri: http://localhost:3000/api/v1/locales/fooooo/make_default
     body:
-      encoding: US-ASCII
+      encoding: UTF-8
       string: auth_token=secret123
     headers:
       Accept:
@@ -21,11 +21,11 @@ http_interactions:
       Content-Type:
       - text/html; charset=utf-8
       Content-Length:
-      - '14798'
+      - '14948'
       X-Request-Id:
-      - c7990ecc2cbf4232b5b9ee3addecf71b
+      - 260d706fa29912687f6375186392c112
       X-Runtime:
-      - '0.040629'
+      - '0.037421'
       Connection:
       - keep-alive
       Server:
@@ -45,13 +45,13 @@ http_interactions:
         return false;\">Application Trace</a> |\n    <a href=\"#\" onclick=\"document.getElementById('Application-Trace').style.display='none';document.getElementById('Full-Trace').style.display='none';document.getElementById('Framework-Trace').style.display='block';;
         return false;\">Framework Trace</a> |\n    <a href=\"#\" onclick=\"document.getElementById('Application-Trace').style.display='none';document.getElementById('Framework-Trace').style.display='none';document.getElementById('Full-Trace').style.display='block';;
         return false;\">Full Trace</a> \n\n    <div id=\"Application-Trace\" style=\"display:
-        block;\">\n      <pre><code>app/controllers/api/v1/locales_controller.rb:30:in
+        block;\">\n      <pre><code>app/services/locale_service.rb:37:in `make_locale_default_by_locale_name'\napp/controllers/api/v1/locales_controller.rb:18:in
         `make_default'</code></pre>\n    </div>\n    <div id=\"Framework-Trace\" style=\"display:
         none;\">\n      <pre><code>actionpack (3.2.6) lib/action_controller/metal/implicit_render.rb:4:in
         `send_action'\nactionpack (3.2.6) lib/abstract_controller/base.rb:167:in `process_action'\nactionpack
         (3.2.6) lib/action_controller/metal/rendering.rb:10:in `process_action'\nactionpack
         (3.2.6) lib/abstract_controller/callbacks.rb:18:in `block in process_action'\nactivesupport
-        (3.2.6) lib/active_support/callbacks.rb:458:in `_run__1694355613393391442__process_action__92626263293234314__callbacks'\nactivesupport
+        (3.2.6) lib/active_support/callbacks.rb:458:in `_run__692924787880522812__process_action__2076746698734694324__callbacks'\nactivesupport
         (3.2.6) lib/active_support/callbacks.rb:405:in `__run_callback'\nactivesupport
         (3.2.6) lib/active_support/callbacks.rb:385:in `_run_process_action_callbacks'\nactivesupport
         (3.2.6) lib/active_support/callbacks.rb:81:in `run_callbacks'\nactionpack
@@ -71,8 +71,8 @@ http_interactions:
         in action'\nactionpack (3.2.6) lib/action_dispatch/routing/route_set.rb:73:in
         `call'\nactionpack (3.2.6) lib/action_dispatch/routing/route_set.rb:73:in
         `dispatch'\nactionpack (3.2.6) lib/action_dispatch/routing/route_set.rb:36:in
-        `call'\njourney (1.0.3) lib/journey/router.rb:68:in `block in call'\njourney
-        (1.0.3) lib/journey/router.rb:56:in `each'\njourney (1.0.3) lib/journey/router.rb:56:in
+        `call'\njourney (1.0.4) lib/journey/router.rb:68:in `block in call'\njourney
+        (1.0.4) lib/journey/router.rb:56:in `each'\njourney (1.0.4) lib/journey/router.rb:56:in
         `call'\nactionpack (3.2.6) lib/action_dispatch/routing/route_set.rb:600:in
         `call'\nairbrake (3.0.9) lib/airbrake/rack.rb:27:in `call'\nsass (3.1.18)
         lib/sass/plugin/rack.rb:54:in `call'\nheroku-nav (0.1.24) lib/heroku/nav.rb:17:in
@@ -89,7 +89,7 @@ http_interactions:
         (3.2.6) lib/active_record/connection_adapters/abstract/connection_pool.rb:473:in
         `call'\nactionpack (3.2.6) lib/action_dispatch/middleware/callbacks.rb:28:in
         `block in call'\nactivesupport (3.2.6) lib/active_support/callbacks.rb:405:in
-        `_run__2655685473119411045__call__2152845412795681499__callbacks'\nactivesupport
+        `_run__1682349076908702527__call__1050856788382802068__callbacks'\nactivesupport
         (3.2.6) lib/active_support/callbacks.rb:405:in `__run_callback'\nactivesupport
         (3.2.6) lib/active_support/callbacks.rb:385:in `_run_call_callbacks'\nactivesupport
         (3.2.6) lib/active_support/callbacks.rb:81:in `run_callbacks'\nactionpack
@@ -117,12 +117,13 @@ http_interactions:
         `start'\nrailties (3.2.6) lib/rails/commands.rb:55:in `block in &lt;top (required)&gt;'\nrailties
         (3.2.6) lib/rails/commands.rb:50:in `tap'\nrailties (3.2.6) lib/rails/commands.rb:50:in
         `&lt;top (required)&gt;'\nscript/rails:6:in `require'\nscript/rails:6:in `&lt;main&gt;'</code></pre>\n
-        \   </div>\n    <div id=\"Full-Trace\" style=\"display: none;\">\n      <pre><code>app/controllers/api/v1/locales_controller.rb:30:in
+        \   </div>\n    <div id=\"Full-Trace\" style=\"display: none;\">\n      <pre><code>app/services/locale_service.rb:37:in
+        `make_locale_default_by_locale_name'\napp/controllers/api/v1/locales_controller.rb:18:in
         `make_default'\nactionpack (3.2.6) lib/action_controller/metal/implicit_render.rb:4:in
         `send_action'\nactionpack (3.2.6) lib/abstract_controller/base.rb:167:in `process_action'\nactionpack
         (3.2.6) lib/action_controller/metal/rendering.rb:10:in `process_action'\nactionpack
         (3.2.6) lib/abstract_controller/callbacks.rb:18:in `block in process_action'\nactivesupport
-        (3.2.6) lib/active_support/callbacks.rb:458:in `_run__1694355613393391442__process_action__92626263293234314__callbacks'\nactivesupport
+        (3.2.6) lib/active_support/callbacks.rb:458:in `_run__692924787880522812__process_action__2076746698734694324__callbacks'\nactivesupport
         (3.2.6) lib/active_support/callbacks.rb:405:in `__run_callback'\nactivesupport
         (3.2.6) lib/active_support/callbacks.rb:385:in `_run_process_action_callbacks'\nactivesupport
         (3.2.6) lib/active_support/callbacks.rb:81:in `run_callbacks'\nactionpack
@@ -142,8 +143,8 @@ http_interactions:
         in action'\nactionpack (3.2.6) lib/action_dispatch/routing/route_set.rb:73:in
         `call'\nactionpack (3.2.6) lib/action_dispatch/routing/route_set.rb:73:in
         `dispatch'\nactionpack (3.2.6) lib/action_dispatch/routing/route_set.rb:36:in
-        `call'\njourney (1.0.3) lib/journey/router.rb:68:in `block in call'\njourney
-        (1.0.3) lib/journey/router.rb:56:in `each'\njourney (1.0.3) lib/journey/router.rb:56:in
+        `call'\njourney (1.0.4) lib/journey/router.rb:68:in `block in call'\njourney
+        (1.0.4) lib/journey/router.rb:56:in `each'\njourney (1.0.4) lib/journey/router.rb:56:in
         `call'\nactionpack (3.2.6) lib/action_dispatch/routing/route_set.rb:600:in
         `call'\nairbrake (3.0.9) lib/airbrake/rack.rb:27:in `call'\nsass (3.1.18)
         lib/sass/plugin/rack.rb:54:in `call'\nheroku-nav (0.1.24) lib/heroku/nav.rb:17:in
@@ -160,7 +161,7 @@ http_interactions:
         (3.2.6) lib/active_record/connection_adapters/abstract/connection_pool.rb:473:in
         `call'\nactionpack (3.2.6) lib/action_dispatch/middleware/callbacks.rb:28:in
         `block in call'\nactivesupport (3.2.6) lib/active_support/callbacks.rb:405:in
-        `_run__2655685473119411045__call__2152845412795681499__callbacks'\nactivesupport
+        `_run__1682349076908702527__call__1050856788382802068__callbacks'\nactivesupport
         (3.2.6) lib/active_support/callbacks.rb:405:in `__run_callback'\nactivesupport
         (3.2.6) lib/active_support/callbacks.rb:385:in `_run_call_callbacks'\nactivesupport
         (3.2.6) lib/active_support/callbacks.rb:81:in `run_callbacks'\nactionpack
@@ -192,12 +193,12 @@ http_interactions:
         <pre>{&quot;auth_token&quot;=&gt;&quot;secret123&quot;,\n &quot;format&quot;=&gt;&quot;json&quot;,\n
         &quot;id&quot;=&gt;&quot;fooooo&quot;}</pre></p>\n\n<p><a href=\"#\" onclick=\"document.getElementById('session_dump').style.display='block';
         return false;\">Show session dump</a></p>\n<div id=\"session_dump\" style=\"display:none\"><pre>warden.user.user.key:
-        [&quot;User&quot;, [1], &quot;$2a$10$Uv.HJYaoorPlZW04FrHM.e&quot;]</pre></div>\n\n<p><a
+        [&quot;User&quot;, [1], &quot;$2a$10$VxRMm23IFJVo3qMoKsojau&quot;]</pre></div>\n\n<p><a
         href=\"#\" onclick=\"document.getElementById('env_dump').style.display='block';
         return false;\">Show env dump</a></p>\n<div id=\"env_dump\" style=\"display:none\"><pre>GATEWAY_INTERFACE:
         &quot;CGI/1.2&quot;\nHTTP_ACCEPT: &quot;*/*&quot;\nREMOTE_ADDR: &quot;127.0.0.1&quot;\nSERVER_NAME:
         &quot;localhost&quot;\nSERVER_PROTOCOL: &quot;HTTP/1.1&quot;</pre></div>\n\n\n<h2
         style=\"margin-top: 30px\">Response</h2>\n<p><b>Headers</b>: <pre>None</pre></p>\n\n\n\n</body>\n</html>\n"
     http_version: 
-  recorded_at: Mon, 25 Jun 2012 13:27:57 GMT
+  recorded_at: Mon, 06 Aug 2012 13:50:27 GMT
 recorded_with: VCR 2.2.1

@@ -192,10 +192,20 @@ describe Phrase::Api::Client do
   end
   
   describe "#upload" do
-    it "should return true" do
-      VCR.use_cassette('upload locale') do
-        subject.upload("en.yml", "en:\n  foo: bar").should be_true
-      end
+    context "no tag given" do
+      it "should return true" do
+        VCR.use_cassette('upload locale without tags') do
+          subject.upload("en.yml", "en:\n  foo: bar").should be_true
+        end
+      end  
+    end
+    
+    context "tags given" do
+      it "should return true" do
+        VCR.use_cassette('upload locale with tags') do
+          subject.upload("en.yml", "en:\n  foo: bar", ["foo", "bar"]).should be_true
+        end
+      end      
     end
   end
   

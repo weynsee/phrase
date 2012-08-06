@@ -27,18 +27,18 @@ http_interactions:
       X-Ua-Compatible:
       - IE=Edge
       Etag:
-      - ! '"22dbcc5a19db4c5514185625b1bcb454"'
+      - ! '"413e23294432d1feca7381d6cd132f50"'
       Cache-Control:
       - max-age=0, private, must-revalidate
       Set-Cookie:
-      - _translate_session=BAh7B0kiD3Nlc3Npb25faWQGOgZFRkkiJTZiNzhiNmFjODhhOTI1NWFhMzA4Nzc3OTZiNjA3ODBlBjsAVEkiGXdhcmRlbi51c2VyLnVzZXIua2V5BjsAVFsISSIJVXNlcgY7AEZbBmkGSSIiJDJhJDEwJFV2LkhKWWFvb3JQbFpXMDRGckhNLmUGOwBU--835b968c52ae27aaa6ab7ea1d29ea927c8033ec3;
+      - _translate_session=BAh7B0kiD3Nlc3Npb25faWQGOgZFRkkiJTAyZTU1NjI5ZDRiMmI4Nzg1YjVhZDIwMWMyMTdmMDFiBjsAVEkiGXdhcmRlbi51c2VyLnVzZXIua2V5BjsAVFsISSIJVXNlcgY7AEZbBmkGSSIiJDJhJDEwJFZ4Uk1tMjNJRkpWbzNxTW9Lc29qYXUGOwBU--aabd93ef79ce70a7e07501e80c401afeddd8d34f;
         path=/; HttpOnly
       X-Request-Id:
-      - c2cb5549e81fd7fedc3ef77050c50f87
+      - 20dedfc854f57ece108393691650b428
       X-Runtime:
-      - '0.056708'
+      - '0.030965'
       Content-Length:
-      - '44'
+      - '69'
       Connection:
       - keep-alive
       Server:
@@ -47,5 +47,5 @@ http_interactions:
       encoding: US-ASCII
       string: ! '{"success":true,"translate":{"ipsum1":{"subkey":"nothing","subsub":{"subsubsub":"yeah!"}}}}'
     http_version: 
-  recorded_at: Mon, 25 Jun 2012 13:27:45 GMT
+  recorded_at: Mon, 06 Aug 2012 13:48:49 GMT
 recorded_with: VCR 2.2.1

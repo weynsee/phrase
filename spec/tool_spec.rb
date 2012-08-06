@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'phrase/tool'
 
 describe Phrase::Tool do
-  include Spec::Helpers
+  include RSpec::Helpers
   
   let(:api_client) { stub }
   
@@ -200,6 +200,18 @@ describe Phrase::Tool do
           phrase "push spec/fixtures/yml/nice.en.yml"
           out.should include "Uploading spec/fixtures/yml/nice.en.yml"
         end
+        
+        context "single tag is given" do
+          it "should use the tag in the upload call" do
+            api_client.should_receive(:upload).with(kind_of(String), kind_of(String), ["foobar"])
+            phrase "push spec/fixtures/yml/nice.en.yml --tags=foobar"
+          end
+          
+          it "should mention the tag in the output" do
+            phrase "push spec/fixtures/yml/nice.en.yml --tags=foo,bar"
+            out.should include "(tagged: foo, bar)"
+          end          
+        end
       end
       
       context "file does not end in yml" do        
@@ -335,6 +347,10 @@ describe Phrase::Tool do
         subject.send(:fetch_translations_for_locale, "fr")
       end
     end
+  end
+  
+  describe "#upload_files" do
+    it "is pending"
   end
   
   describe "#store_translations_file" do

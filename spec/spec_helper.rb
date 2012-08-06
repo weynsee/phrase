@@ -40,7 +40,7 @@ class IO
   end
 end
 
-module Spec
+module RSpec
   module Helpers
     def reset!
       @in_p, @out_p, @err_p = nil, nil, nil
@@ -78,7 +78,7 @@ module Spec
     end
 
     def lib
-      File.expand_path('../../../phrasegem/lib', __FILE__)
+      File.expand_path('../../../phrase/lib', __FILE__)
     end
 
     def bundle(cmd, options = {})
@@ -108,7 +108,7 @@ module Spec
       args = options.map do |k,v|
         v == true ? " --#{k}" : " --#{k} #{v}" if v
       end.join
-      gemfile = File.expand_path('../../../phrasegem/bin/phrase', __FILE__)
+      gemfile = File.expand_path('../../../phrase/bin/phrase', __FILE__)
       cmd = "#{env}#{Gem.ruby} -I#{lib} #{gemfile} #{cmd}#{args}"
 
       if exitstatus

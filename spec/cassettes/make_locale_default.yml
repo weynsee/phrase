@@ -4,7 +4,7 @@ http_interactions:
     method: put
     uri: http://localhost:3000/api/v1/locales/fr/make_default
     body:
-      encoding: US-ASCII
+      encoding: UTF-8
       string: auth_token=secret123
     headers:
       Accept:
@@ -29,25 +29,25 @@ http_interactions:
       X-Ua-Compatible:
       - IE=Edge
       Etag:
-      - ! '"c154ad39c382b3bceb393bc5e5990e61"'
+      - ! '"44588b8386b5943dc2d64eb715b6c508"'
       Cache-Control:
       - max-age=0, private, must-revalidate
       Set-Cookie:
-      - _translate_session=BAh7B0kiGXdhcmRlbi51c2VyLnVzZXIua2V5BjoGRVRbCEkiCVVzZXIGOwBGWwZpBkkiIiQyYSQxMCRVdi5ISllhb29yUGxaVzA0RnJITS5lBjsAVEkiD3Nlc3Npb25faWQGOwBGSSIlZWM2MDg3M2EzOTdhNjEwNzY5NWFjMGE2OGY2NTJmODEGOwBU--9d22d5bd54f6b208e5ac4f9dbece130cbf204909;
+      - _translate_session=BAh7B0kiGXdhcmRlbi51c2VyLnVzZXIua2V5BjoGRVRbCEkiCVVzZXIGOwBGWwZpBkkiIiQyYSQxMCRWeFJNbTIzSUZKVm8zcU1vS3NvamF1BjsAVEkiD3Nlc3Npb25faWQGOwBGSSIlMTQ1YjU3ZmMwZDcxZTgyYmI1Y2JhNmRkYmUyMjFkYWQGOwBU--3e52e0045138ac2003dc749d6d8465fd376add90;
         path=/; HttpOnly
       X-Request-Id:
-      - 8d88fcf8c326c466654bb6d9a25a93b6
+      - 42d77b36a4674d1aa41c26ba6cc9b1d2
       X-Runtime:
-      - '0.054886'
+      - '0.021496'
       Content-Length:
-      - '31'
+      - '39'
       Connection:
       - keep-alive
       Server:
       - thin 1.3.1 codename Triple Espresso
     body:
       encoding: US-ASCII
-      string: ! '{"is_default":true,"name":"fr"}'
+      string: ! '{"id":16,"is_default":true,"name":"fr"}'
     http_version: 
-  recorded_at: Mon, 25 Jun 2012 13:27:57 GMT
+  recorded_at: Mon, 06 Aug 2012 13:50:27 GMT
 recorded_with: VCR 2.2.1
