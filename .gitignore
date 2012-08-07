@@ -1,4 +1,4 @@
 *.gem
 .phrase
 .DS_Store
-phrase/
+/phrase/

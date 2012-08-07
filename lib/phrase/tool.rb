@@ -5,6 +5,7 @@ require 'net/http'
 require 'net/https'
 require 'fileutils'
 require 'phrase/tool_config'
+require 'phrase/tag_validator'
 
 class Phrase::Tool
   
@@ -30,7 +31,8 @@ class Phrase::Tool
     end
   end
 
-protected  
+protected
+
   def init
     secret_param = args.find{ |arg| arg =~ /secret=/ }
     unless secret_param.to_s.match(/secret=.+/)
@@ -59,11 +61,17 @@ protected
     tag_names = args.find { |arg| arg =~ /tags=/ }
     tags = tag_names.to_s.match(/tags=.+/) ? tag_names.split("=", 2).last.split(",").map(&:strip) : []
     
+    unless tags.empty? or valid_tags_are_given?(tags)
+      $stderr.puts "Invalid tags: Only letters, numbers, underscore and dash are allowed"
+      exit(43)
+    end
+    
     files = choose_files_to_upload
     if files.empty?
       puts "Could not find any files to upload :("
       exit(43)
     end
+    
     upload_files(files, tags)
   end
 
@@ -232,6 +240,13 @@ private
       $stderr.puts "No config present. You need to initialize phrase first."
       exit(43)
     end
+  end
+  
+  def valid_tags_are_given?(tags)
+    tags.each do |tag|
+      return false unless TagValidator.valid?(tag)
+    end
+    true
   end
   
   def self.rails_default_locale_folder

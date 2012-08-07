@@ -201,7 +201,7 @@ describe Phrase::Tool do
           out.should include "Uploading spec/fixtures/yml/nice.en.yml"
         end
         
-        context "single tag is given" do
+        context "tag(s) given" do
           it "should use the tag in the upload call" do
             api_client.should_receive(:upload).with(kind_of(String), kind_of(String), ["foobar"])
             phrase "push spec/fixtures/yml/nice.en.yml --tags=foobar"
@@ -210,7 +210,17 @@ describe Phrase::Tool do
           it "should mention the tag in the output" do
             phrase "push spec/fixtures/yml/nice.en.yml --tags=foo,bar"
             out.should include "(tagged: foo, bar)"
-          end          
+          end
+          
+          context "tag name is invalid" do            
+            it "should not perform the upload" do
+              begin
+                phrase "push spec/fixtures/yml/nice.en.yml --tags=tes$"
+              rescue SystemExit => ex
+                err.should include "Invalid tags"
+              end
+            end
+          end
         end
       end
       
@@ -492,6 +502,18 @@ describe Phrase::Tool do
       tool = Phrase::Tool.new([])
       tool.config = stub(:secret => "foo")
       tool.send(:api_client).auth_token.should == "foo"
+    end
+  end
+  
+  describe "#valid_tags_are_given?(tags)" do
+    it "returns true if all tags are valid" do
+      tool = Phrase::Tool.new([])
+      tool.send(:valid_tags_are_given?, ["foo", "bar", "baz"]).should be_true      
+    end
+    
+    it "returns false if at least one tag is invalid" do
+      tool = Phrase::Tool.new([])
+      tool.send(:valid_tags_are_given?, ["foo", "bar", "b$z"]).should be_false
     end
   end
 end
