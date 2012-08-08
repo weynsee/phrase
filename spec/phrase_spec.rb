@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'phrase'
 
 describe Phrase do
   describe "#self.enabled?" do

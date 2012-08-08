@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'phrase/tool'
 
 describe Phrase::Tool do
   include RSpec::Helpers
@@ -20,7 +19,6 @@ describe Phrase::Tool do
   describe "default command" do
     it "prints usage instructions" do
       phrase ""
-      err.should include "Welcome to phrase"
       err.should include "phrase init"
       err.should include "phrase push"
     end

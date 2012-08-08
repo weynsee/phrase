@@ -1,25 +1,27 @@
 # -*- encoding : utf-8 -*-
 
-require 'optparse'
-require 'net/http'
-require 'net/https'
 require 'fileutils'
-require 'phrase/tool_config'
-require 'phrase/tag_validator'
+require 'rubygems'
+require 'phrase'
 
 class Phrase::Tool
+  autoload :Config, 'phrase/tool/config'
+  autoload :Options, 'phrase/tool/options'
+  autoload :TagValidator, 'phrase/tool/tag_validator'
   
-  attr_accessor :config
+  attr_accessor :config, :options
   
   def initialize(argv)
     @args = argv
   end
 
   def run
-    @config = Phrase::ToolConfig.new
-    command = args.first
+    subcommand = @args.first
+    
+    @config = Phrase::Tool::Config.new
+    @options = Phrase::Tool::Options.new(@args, subcommand)
 
-    case command
+    case subcommand
       when /init/
         init
       when /push/
@@ -27,42 +29,37 @@ class Phrase::Tool
       when /pull/
         pull
       else
-        print_usage
+        if @options.get(:version)
+          print_version
+        else
+          print_usage
+        end
     end
   end
 
 protected
 
   def init
-    secret_param = args.find{ |arg| arg =~ /secret=/ }
-    unless secret_param.to_s.match(/secret=.+/)
+    secret = @options.get(:secret)
+    unless secret.present?
       $stderr.puts "Need a secret to init, but found none."
       $stderr.puts "Please provide the --secret=YOUR_SECRET parameter."
       exit(41)
     end
-
-    secret = secret_param.split("=", 2).last
+    
     @config.secret = secret
     puts "Wrote secret to config file .phrase"
     
-    default_locale_param = args.find{ |arg| arg =~ /default-locale=/ }
-    if default_locale_param.to_s.match(/default-locale=.+/)
-      locale_name = default_locale_param.split("=", 2).last
-    else 
-      locale_name = "en"
-    end
-    create_locale(locale_name)
-    make_locale_default(locale_name)
+    default_locale_name = @options.get(:default_locale)    
+    create_locale(default_locale_name)
+    make_locale_default(default_locale_name)
   end
 
   def push
     check_config_available
-    
-    tag_names = args.find { |arg| arg =~ /tags=/ }
-    tags = tag_names.to_s.match(/tags=.+/) ? tag_names.split("=", 2).last.split(",").map(&:strip) : []
-    
+    tags = @options.get(:tags)
     unless tags.empty? or valid_tags_are_given?(tags)
-      $stderr.puts "Invalid tags: Only letters, numbers, underscore and dash are allowed"
+      $stderr.puts "Invalid tags: Only letters, numbers, underscores and dashes are allowed"
       exit(43)
     end
     
@@ -96,15 +93,21 @@ protected
   
   def print_usage
     $stderr.puts <<USAGE
-Welcome to phrase!
+usage: phrase <command> [<args>]
 
-  phrase           Prints usage
+  phrase init --secret=<YOUR SECRET> --default-locale=<DEFAULT LOCALE>
 
-  phrase init --secret=<YOUR SECRET> --default-locale=<YOUR DEFAULT LOCALE>
-
-  phrase push FILE
-  phrase push DIRECTORY
+  phrase push FILE [--tags=<tags>]
+  phrase push DIRECTORY [--tags=<tags>]
+  
+  phrase pull [LOCALE]
+  
+  phrase --version
 USAGE
+  end
+  
+  def print_version
+    puts "phrase version #{Phrase::VERSION}"
   end
   
 private
@@ -220,11 +223,6 @@ private
 
   def args
     @args
-  end
-
-  def puts_debug_info
-    puts "ARGS: #{args.join(",")}"
-    puts "Dir.pwd: #{Dir.pwd}"
   end
   
   def is_yaml_file(filepath)

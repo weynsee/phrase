@@ -5,6 +5,9 @@ require 'rspec'
 require 'vcr'
 require 'webmock/rspec'
 
+require 'phrase'
+require 'phrase/tool'
+
 RSpec.configure do |config|
   config.filter_run :focus => true
   config.run_all_when_everything_filtered = true

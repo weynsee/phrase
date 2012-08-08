@@ -1,9 +1,8 @@
 # -*- encoding : utf-8 -*-
 
-require 'phrase'
 require 'json'
 
-class Phrase::ToolConfig
+class Phrase::Tool::Config
   def initialize
     if File.exist?(".phrase")
       begin

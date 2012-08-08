@@ -2,9 +2,11 @@
 lib = File.expand_path('../lib/', __FILE__)
 $:.unshift lib unless $:.include?(lib)
 
+require 'phrase/version'
+
 Gem::Specification.new do |s|
   s.name = "phrase"
-  s.version = "0.2.0"
+  s.version = Phrase::VERSION
   s.platform = Gem::Platform::RUBY
   s.authors = ["Dynport GmbH"]
   s.email = ["info@phraseapp.com"]
