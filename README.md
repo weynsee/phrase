@@ -1,15 +1,7 @@
 # phrase
 
-### Installation and usage
+Powerful in-place translation management for your web applications.
 
-    gem install phrase
-
-    phrase           Prints usage
-
-    phrase init --secret=<YOUR SECRET>
-    phrase push [FILE_NAME]
-    phrase pull LOCALE
-
-### More Information
+## More Information
 
 https://phraseapp.com

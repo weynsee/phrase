@@ -17,8 +17,14 @@ Gem::Specification.new do |s|
   s.rubyforge_project = "phrase"
   git_files = `git ls-files | grep -v spec/`.split("\n") rescue ''
   s.files = git_files
+  s.test_files = s.files.grep(%r{^(spec)/})
   s.executables = %w(phrase)
   s.require_paths = ["lib"]  
   s.add_dependency('activesupport', '~> 3.0')
   s.add_dependency('addressable', '~> 2.2.8')
+  s.add_dependency('json')
+  s.add_development_dependency('rspec')
+  s.add_development_dependency('i18n')
+  s.add_development_dependency('webmock')
+  s.add_development_dependency('vcr')
 end

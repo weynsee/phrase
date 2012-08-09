@@ -43,6 +43,7 @@ module Phrase
   
   autoload :ViewHelpers, 'phrase/view_helpers'
   
+  require 'phrase/version'
   require 'phrase/engine'
   require 'phrase/backend'
 end
