@@ -314,6 +314,17 @@ describe Phrase::Tool do
         end
       end
       
+      context "an invalid format is specified" do
+        it "should not fetch translations" do
+          begin
+            phrase "pull ru --format=doc"
+          rescue SystemExit => ex
+            err.should include "Invalid format"
+            File.exists?("phrase/locales/phrase.ru.doc").should be_false
+          end
+        end
+      end
+      
       context "a format is specified" do
         it "should fetch translations for the locale in the specified format and store it" do
           phrase "pull ru --format=po"

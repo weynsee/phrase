@@ -90,6 +90,10 @@ protected
     end
     
     format = @options.get(:format) || DEFAULT_DOWNLOAD_FORMAT
+    unless ALLOWED_DOWNLOAD_FORMATS.include?(format)
+      print_error "Invalid format: #{format}"
+      exit(43)
+    end
     
     locales.each do |locale_name|
       print "Downloading phrase.#{locale_name}.#{format}..."
