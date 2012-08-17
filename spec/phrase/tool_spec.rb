@@ -189,14 +189,28 @@ describe Phrase::Tool do
       end
       
       context "file exists" do
-        it "uploads the file" do
-          api_client.should_receive(:upload)
-          phrase "push spec/fixtures/yml/nice.en.yml"
+        context "file is yml" do
+          it "uploads the file" do
+            api_client.should_receive(:upload)
+            phrase "push spec/fixtures/yml/nice.en.yml"
+            out.should include "Uploading spec/fixtures/yml/nice.en.yml"
+          end
         end
         
-        it "should display the success message" do
-          phrase "push spec/fixtures/yml/nice.en.yml"
-          out.should include "Uploading spec/fixtures/yml/nice.en.yml"
+        context "file is gettext .pot" do
+          it "uploads the file" do
+            api_client.should_receive(:upload)
+            phrase "push spec/fixtures/gettext/nice.en.pot"
+            out.should include "Uploading spec/fixtures/gettext/nice.en.pot"
+          end
+        end
+        
+        context "file is gettext .po" do
+          it "uploads the file" do
+            api_client.should_receive(:upload)
+            phrase "push spec/fixtures/gettext/nice.en.po"
+            out.should include "Uploading spec/fixtures/gettext/nice.en.po"
+          end          
         end
         
         context "tag(s) given" do
@@ -222,14 +236,14 @@ describe Phrase::Tool do
         end
       end
       
-      context "file does not end in yml" do        
+      context "file extension is not supported" do        
         it "does not upload the file" do
-          phrase "push spec/fixtures/edge/wrongext.yml.txt"
+          phrase "push spec/fixtures/edge/wrongext.doc"
           api_client.should_not_receive(:upload)
         end
         
         it "should display an error message" do
-          phrase "push spec/fixtures/edge/wrongext.yml.txt"
+          phrase "push spec/fixtures/edge/wrongext.doc"
           err.should match "Notice: Could not upload"
         end
       end
@@ -357,8 +371,57 @@ describe Phrase::Tool do
     end
   end
   
-  describe "#upload_files" do
-    it "is pending"
+  describe "#upload_files(files, tags=[])" do
+    let(:tool) { Phrase::Tool.new([]) }
+    let(:tags) { stub }
+    
+    before(:each) do
+      tool.stub(:upload_file)
+    end
+    
+    it "uploads each file" do
+      tool.should_receive(:upload_file).with("foo.txt", tags)
+      tool.should_receive(:upload_file).with("bar.txt", tags)
+      tool.send(:upload_files, ["foo.txt", "bar.txt"], tags)
+    end
+  end
+  
+  describe "#upload_file(file, tags=[])" do
+    let(:tool) { Phrase::Tool.new([]) }
+    let(:api_client) { stub(upload: true) }
+    let(:file) { "foo.txt" }
+    let(:tags) { [] }
+    
+    before(:each) do
+      tool.stub(:api_client).and_return(api_client)
+    end
+    
+    context "file is a directory" do
+      let(:file) { "spec/fixtures" }
+      
+      it "should skip upload" do
+        api_client.should_not_receive(:upload)
+        tool.send(:upload_file, file, tags)
+      end
+    end
+    
+    context "file is invalid" do
+      let(:file) { "spec/fixtures/edge/wrongext.doc" }
+      
+      it "should skip upload" do
+        api_client.should_not_receive(:upload)
+        tool.send(:upload_file, file, tags)
+      end
+    end
+    
+    context "file is valid" do
+      let(:file) { "spec/fixtures/yml/nice.en.yml" }
+      
+      it "should upload the file" do
+        api_client.should_receive(:upload).with(file, kind_of(String), tags)
+        tool.send(:upload_file, file, tags)
+      end
+    end
   end
   
   describe "#store_translations_file" do
@@ -512,6 +575,47 @@ describe Phrase::Tool do
     it "returns false if at least one tag is invalid" do
       tool = Phrase::Tool.new([])
       tool.send(:valid_tags_are_given?, ["foo", "bar", "b$z"]).should be_false
+    end
+  end
+  
+  describe "#file_valid?(filename)" do
+    let(:tool) { Phrase::Tool.new([]) }
+    let(:filename) { "foo.txt" }
+    
+    subject { tool.send(:file_valid?, filename) }
+    
+    context "file is doc file" do
+      let(:filename) { "spec/fixtures/edge/wrongext.doc" }
+      
+      it { should be_false }
+    end
+    
+    context "file is yaml file" do
+      let(:filename) { "spec/fixtures/yml/nice.en.yml" }
+      
+      it { should be_true }
+    end
+    
+    context "file is pot file" do
+      let(:filename) { "spec/fixtures/gettext/nice.en.pot" }
+      
+      it { should be_true }
+    end
+    
+    context "file is po file" do
+      let(:filename) { "spec/fixtures/gettext/nice.en.po" }
+      
+      it { should be_true }
+    end
+  end
+  
+  describe "#print_error" do
+    let(:tool) { Phrase::Tool.new([]) }
+    let(:message) { "Hello Error!" }
+    
+    it "should print a message to stderr" do
+      $stderr.should_receive(:puts).with(message)
+      tool.send(:print_error, message)
     end
   end
 end

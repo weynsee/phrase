@@ -9,6 +9,8 @@ class Phrase::Tool
   autoload :Options, 'phrase/tool/options'
   autoload :TagValidator, 'phrase/tool/tag_validator'
   
+  ALLOWED_FILE_TYPES = %w(yml pot po)
+  
   attr_accessor :config, :options
   
   def initialize(argv)
@@ -42,8 +44,8 @@ protected
   def init
     secret = @options.get(:secret)
     unless secret.present?
-      $stderr.puts "Need a secret to init, but found none."
-      $stderr.puts "Please provide the --secret=YOUR_SECRET parameter."
+      print_error "Need a secret to init, but found none."
+      print_error "Please provide the --secret=YOUR_SECRET parameter."
       exit(41)
     end
     
@@ -59,7 +61,7 @@ protected
     check_config_available
     tags = @options.get(:tags)
     unless tags.empty? or valid_tags_are_given?(tags)
-      $stderr.puts "Invalid tags: Only letters, numbers, underscores and dashes are allowed"
+      print_error "Invalid tags: Only letters, numbers, underscores and dashes are allowed"
       exit(43)
     end
     
@@ -119,15 +121,15 @@ private
         file_name = self.class.rails_default_locale_folder
         puts "No file or directory specified, using #{self.class.rails_default_locale_folder}"
       else 
-        $stderr.puts "Need either a file or directory:"
-        $stderr.puts "phrase push FILE"
-        $stderr.puts "phrase push DIRECTORY"
+        print_error "Need either a file or directory:"
+        print_error "phrase push FILE"
+        print_error "phrase push DIRECTORY"
         exit(46)
       end
     end
 
     unless File.exist?(file_name)
-      $stderr.puts "The file #{file_name} could not be found."
+      print_error "The file #{file_name} could not be found."
       exit(42)
     end
 
@@ -140,27 +142,31 @@ private
 
   def upload_files(files, tags=[])
     files.each do |file|
-      proceed_with_upload = true
+      upload_file(file, tags)
+    end
+  end
+  
+  def upload_file(file, tags=[])
+    valid = true
     
-      if File.directory?(file)
-        proceed_with_upload = false
-      end
+    if File.directory?(file)
+      valid = false
+    end
     
-      if is_yaml_file(file)
-        proceed_with_upload = false
-        $stderr.puts "Notice: Could not upload #{file} (extension not supported)"
-      end
+    unless file_valid?(file)
+      valid = false
+      print_error "Notice: Could not upload #{file} (type not supported)"
+    end
     
-      if proceed_with_upload
-        begin
-          tagged = " (tagged: #{tags.join(", ")})" if tags.size > 0
-          puts "Uploading #{file}#{tagged}..."
-          api_client.upload(file, File.read(file), tags)
-          puts "OK"
-        rescue Exception => e
-          puts "Failed"
-          print_server_error(e.message, file)
-        end
+    if valid
+      begin
+        tagged = " (tagged: #{tags.join(", ")})" if tags.size > 0
+        puts "Uploading #{file}#{tagged}..."
+        api_client.upload(file, File.read(file), tags)
+        puts "OK"
+      rescue Exception => e
+        puts "Failed"
+        print_server_error(e.message, file)
       end
     end
   end
@@ -218,15 +224,20 @@ private
   end
 
   def print_server_error(message, filename=nil)
-    $stderr.puts "#{message} (#{filename})"
+    print_error "#{message} (#{filename})"
+  end
+  
+  def print_error(message)
+    $stderr.puts message
   end
 
   def args
     @args
   end
   
-  def is_yaml_file(filepath)
-    !File.directory?(filepath) && filepath.split('.').last != 'yml'
+  def file_valid?(filepath)
+    extension = filepath.split('.').last
+    ALLOWED_FILE_TYPES.include?(extension)
   end
   
   def create_locales_folder!
@@ -235,7 +246,7 @@ private
   
   def check_config_available
     if !@config.secret || @config.secret.empty?
-      $stderr.puts "No config present. You need to initialize phrase first."
+      print_error "No config present. You need to initialize phrase first."
       exit(43)
     end
   end
