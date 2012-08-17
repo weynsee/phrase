@@ -75,11 +75,12 @@ class Phrase::Api::Client
     true
   end
   
-  def download_translations_for_locale(name)
+  def download_translations_for_locale(name, format=Phrase::Tool::DEFAULT_DOWNLOAD_FORMAT)
     raise "You must specify a name" if name.nil? or name.blank?
+    raise "You must specify a format" if format.nil? or format.blank?
     
     begin
-      content = perform_api_request("/translations/download", :get, {'locale' => name})
+      content = perform_api_request("/translations/download.#{format}", :get, {'locale' => name})
       return content
     rescue Phrase::Api::Exceptions::ServerError => e
       raise "Translations #{name} could not be downloaded"

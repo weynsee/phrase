@@ -31,6 +31,14 @@ describe Phrase::Tool::Options do
     end
     
     context "pull command" do
+      let(:command) { "pull" }
+      let(:args) { ["--format=po"] }
+      
+      describe "format" do
+        subject { Phrase::Tool::Options.new(args, command).get(:format) }
+        
+        it { should eql "po" }
+      end
     end
     
     context "no command" do

@@ -19,6 +19,7 @@ class Phrase::Tool::Options
         tags: []
       },
       pull: {
+        format: "yml"
       }
     }
     options.parse!(args)
@@ -48,6 +49,12 @@ private
         OptionParser.new do |opts|
           opts.on("--tags=foo,bar", Array, "List of tags for phrase push (separated by comma)") do |tags|
             @data[command_name][:tags] = tags
+          end
+        end
+      when :pull
+        OptionParser.new do |opts|
+          opts.on("--format=yml", String, "Allowed formats: #{Phrase::Tool::ALLOWED_DOWNLOAD_FORMATS.join(", ")}") do |format|
+            @data[command_name][:format] = format
           end
         end
       else

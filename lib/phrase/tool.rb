@@ -10,6 +10,8 @@ class Phrase::Tool
   autoload :TagValidator, 'phrase/tool/tag_validator'
   
   ALLOWED_FILE_TYPES = %w(yml pot po)
+  ALLOWED_DOWNLOAD_FORMATS = %w(yml po)
+  DEFAULT_DOWNLOAD_FORMAT = "yml"
   
   attr_accessor :config, :options
   
@@ -87,9 +89,11 @@ protected
       locales = fetch_locales
     end
     
+    format = @options.get(:format) || DEFAULT_DOWNLOAD_FORMAT
+    
     locales.each do |locale_name|
-      print "Downloading phrase.#{locale_name}.yml..."
-      fetch_translations_for_locale(locale_name)
+      print "Downloading phrase.#{locale_name}.#{format}..."
+      fetch_translations_for_locale(locale_name, format)
     end
   end
   
@@ -171,19 +175,19 @@ private
     end
   end
 
-  def fetch_translations_for_locale(name)
+  def fetch_translations_for_locale(name, format=DEFAULT_DOWNLOAD_FORMAT)
     begin
-      content = api_client.download_translations_for_locale(name)
+      content = api_client.download_translations_for_locale(name, format)
       puts "OK"
-      store_translations_file(name, content)
+      store_translations_file(name, content, format)
     rescue Exception => e
-      puts "Failed"
+      print_error "Failed"
       print_server_error(e.message)
     end
   end
   
-  def store_translations_file(name, content)
-    File.open("phrase/locales/phrase.#{name}.yml", "w") do |file|
+  def store_translations_file(name, content, format=DEFAULT_DOWNLOAD_FORMAT)
+    File.open("phrase/locales/phrase.#{name}.#{format}", "w") do |file|
       file.write(content)
     end
   end

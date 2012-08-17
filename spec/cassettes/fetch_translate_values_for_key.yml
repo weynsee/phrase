@@ -27,25 +27,25 @@ http_interactions:
       X-Ua-Compatible:
       - IE=Edge
       Etag:
-      - ! '"413e23294432d1feca7381d6cd132f50"'
+      - ! '"b47eebad454d01da8818a0e2829f5efb"'
       Cache-Control:
       - max-age=0, private, must-revalidate
       Set-Cookie:
-      - _translate_session=BAh7B0kiD3Nlc3Npb25faWQGOgZFRkkiJTAyZTU1NjI5ZDRiMmI4Nzg1YjVhZDIwMWMyMTdmMDFiBjsAVEkiGXdhcmRlbi51c2VyLnVzZXIua2V5BjsAVFsISSIJVXNlcgY7AEZbBmkGSSIiJDJhJDEwJFZ4Uk1tMjNJRkpWbzNxTW9Lc29qYXUGOwBU--aabd93ef79ce70a7e07501e80c401afeddd8d34f;
+      - _translate_session=BAh7B0kiD3Nlc3Npb25faWQGOgZFRkkiJWFiMTcxNTg4MmQ4MGJmMGQ2MzVhZWJiNGNkNTg3ZTE4BjsAVEkiGXdhcmRlbi51c2VyLnVzZXIua2V5BjsAVFsISSIJVXNlcgY7AEZbBmkGSSIiJDJhJDEwJGI4bWw0Nm5PdWx4QU5mL2FjLk1NMU8GOwBU--35269708a92e5db2e812323f426918ee2fe9ebea;
         path=/; HttpOnly
       X-Request-Id:
-      - 20dedfc854f57ece108393691650b428
+      - e36c1ad6af1c512ddccd299a53d8b847
       X-Runtime:
-      - '0.030965'
+      - '0.026327'
       Content-Length:
-      - '69'
+      - '44'
       Connection:
       - keep-alive
       Server:
       - thin 1.3.1 codename Triple Espresso
     body:
       encoding: US-ASCII
-      string: ! '{"success":true,"translate":{"ipsum1":{"subkey":"nothing","subsub":{"subsubsub":"yeah!"}}}}'
+      string: ! '{"success":true,"translate":{"ipsum":"foo"}}'
     http_version: 
-  recorded_at: Mon, 06 Aug 2012 13:48:49 GMT
+  recorded_at: Fri, 17 Aug 2012 09:24:30 GMT
 recorded_with: VCR 2.2.1

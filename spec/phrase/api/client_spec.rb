@@ -83,7 +83,7 @@ describe Phrase::Api::Client do
       VCR.use_cassette('fetch translate values for key') do
         result = subject.translate("lorem")
         result.should be_a(Hash)
-        result.should == {:ipsum1=>{:subkey=>"nothing", :subsub=>{:subsubsub=>"yeah!"}}}
+        result.should == {ipsum: "foo"}
       end
     end
   end
@@ -158,6 +158,12 @@ describe Phrase::Api::Client do
       lambda {
         subject.download_translations_for_locale("")
       }.should raise_error "You must specify a name"
+    end
+    
+    it "should raise an exception if the format is blank" do
+      lambda {
+        subject.download_translations_for_locale("de", "")
+      }.should raise_error "You must specify a format"
     end
     
     context "locale does not exists" do

@@ -272,10 +272,11 @@ describe Phrase::Tool do
     before(:each) do
       Phrase::Api::Client.stub(:new).and_return(api_client)
       ::FileUtils.rm_rf("phrase/locales/")
-      api_client.stub(:download_translations_for_locale).with("pl").and_return("content for pl")
-      api_client.stub(:download_translations_for_locale).with("ru").and_return("content for ru")
-      api_client.stub(:download_translations_for_locale).with("de").and_return("content for de")
-      api_client.stub(:download_translations_for_locale).with("cn").and_raise("Error")
+      
+      api_client.stub(:download_translations_for_locale).with("pl", kind_of(String)).and_return("content for pl")
+      api_client.stub(:download_translations_for_locale).with("ru", kind_of(String)).and_return("content for ru")
+      api_client.stub(:download_translations_for_locale).with("de", kind_of(String)).and_return("content for de")
+      api_client.stub(:download_translations_for_locale).with("cn", kind_of(String)).and_raise("Error")
     end
     
     it "complains when no config present" do
@@ -306,9 +307,18 @@ describe Phrase::Tool do
         phrase "init --secret=my_secret"
       end
       
-      it "should fetch translations for the locale and store it" do
-        phrase "pull ru"
-        File.read("phrase/locales/phrase.ru.yml").should == "content for ru"
+      context "no format is specified" do
+        it "should fetch translations for the locale in yml format and store it" do
+          phrase "pull ru"
+          File.read("phrase/locales/phrase.ru.yml").should == "content for ru"
+        end
+      end
+      
+      context "a format is specified" do
+        it "should fetch translations for the locale in the specified format and store it" do
+          phrase "pull ru --format=po"
+          File.read("phrase/locales/phrase.ru.po").should == "content for ru"
+        end
       end
     end
     
@@ -337,7 +347,7 @@ describe Phrase::Tool do
     end
     
     it "fetches translations for a locale" do
-      api_client.should_receive(:download_translations_for_locale).with("fr")
+      api_client.should_receive(:download_translations_for_locale).with("fr", kind_of(String))
       subject.send(:fetch_translations_for_locale, "fr")
     end
     
@@ -348,7 +358,7 @@ describe Phrase::Tool do
       end
       
       it "should save the content to a file" do
-        subject.should_receive(:store_translations_file).with("fr", "foo:\n  bar: content")
+        subject.should_receive(:store_translations_file).with("fr", "foo:\n  bar: content", kind_of(String))
         subject.send(:fetch_translations_for_locale, "fr")
       end
     end
@@ -360,7 +370,7 @@ describe Phrase::Tool do
       end
       
       it "should display failure message" do
-        subject.should_receive(:puts).with("Failed")
+        subject.should_receive(:print_error).with("Failed")
         subject.send(:fetch_translations_for_locale, "fr")
       end
       
@@ -426,17 +436,22 @@ describe Phrase::Tool do
   
   describe "#store_translations_file" do
     before(:each) do
-      File.delete("phrase/locales/phrase.foo.yml") if File.exists?("phrase/locales/phrase.foo.yml")
+      %w(yml txt).each { |format| File.delete("phrase/locales/phrase.foo.#{format}") if File.exists?("phrase/locales/phrase.foo.#{format}") }
     end
     
     after(:each) do
-      File.delete("phrase/locales/phrase.foo.yml") if File.exists?("phrase/locales/phrase.foo.yml")
+      %w(yml txt).each { |format| File.delete("phrase/locales/phrase.foo.#{format}") if File.exists?("phrase/locales/phrase.foo.#{format}") }
     end
     
     context "file does not exist" do
       it "should store content to a file" do
         subject.send(:store_translations_file, "foo", "mycontent")
         File.read("phrase/locales/phrase.foo.yml").should == "mycontent"
+      end
+      
+      it "should use the file extension given" do
+        subject.send(:store_translations_file, "foo", "mycontent", "txt")
+        File.read("phrase/locales/phrase.foo.txt").should == "mycontent"
       end
     end
     
