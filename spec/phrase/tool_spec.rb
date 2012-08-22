@@ -3,15 +3,19 @@ require 'spec_helper'
 describe Phrase::Tool do
   include RSpec::Helpers
   
+  let(:argv) { stub }
   let(:api_client) { stub }
-  
-  subject {
-    tool = Phrase::Tool.new(stub)
-    tool.stub(:puts)
+  let(:tool) do
+    tool = Phrase::Tool.new(argv)
+    tool.stub(:print_error)
+    tool.stub(:print_message)
     tool
-  }
+  end
+  
+  subject { tool }
   
   before(:each) do
+    subject.stub(:puts)
     subject.stub(:api_client).and_return(api_client)
     File.delete(".phrase") if File.exists?(".phrase")
   end
@@ -265,6 +269,20 @@ describe Phrase::Tool do
         err.should match %r=(Notice: Could not upload .*spec/fixtures/mixed/wrong.yml.rb)=
         out.should match %r=(Uploading .*spec/fixtures/mixed/nice.yml)=im
       end
+      
+      context "without -R/--recursive" do
+        it "should only push the files in the given directory (without subfolders)" do
+          phrase "push spec/fixtures/mixed"
+          out.should_not match %r=(subitem.yml)=im
+        end
+      end
+      
+      context "with -R/--recursive" do
+        it "should push all files recursively" do
+          phrase "push -R spec/fixtures/mixed"
+          out.should match %r=(subitem.yml)=im
+        end
+      end
     end
   end
   
@@ -364,7 +382,7 @@ describe Phrase::Tool do
     
     context "translations can be downloaded" do
       it "should display a success message" do
-        subject.should_receive(:puts).with("OK")
+        subject.should_receive(:print_message).with("OK")
         subject.send(:fetch_translations_for_locale, "fr")
       end
       
@@ -392,6 +410,10 @@ describe Phrase::Tool do
     end
   end
   
+  describe "#choose_files_to_upload" do
+    
+  end
+  
   describe "#upload_files(files, tags=[])" do
     let(:tool) { Phrase::Tool.new([]) }
     let(:tags) { stub }
@@ -408,13 +430,12 @@ describe Phrase::Tool do
   end
   
   describe "#upload_file(file, tags=[])" do
-    let(:tool) { Phrase::Tool.new([]) }
     let(:api_client) { stub(upload: true) }
     let(:file) { "foo.txt" }
     let(:tags) { [] }
     
     before(:each) do
-      tool.stub(:api_client).and_return(api_client)
+      subject.stub(:api_client).and_return(api_client)
     end
     
     context "file is a directory" do
@@ -422,7 +443,7 @@ describe Phrase::Tool do
       
       it "should skip upload" do
         api_client.should_not_receive(:upload)
-        tool.send(:upload_file, file, tags)
+        subject.send(:upload_file, file, tags)
       end
     end
     
@@ -431,7 +452,7 @@ describe Phrase::Tool do
       
       it "should skip upload" do
         api_client.should_not_receive(:upload)
-        tool.send(:upload_file, file, tags)
+        subject.send(:upload_file, file, tags)
       end
     end
     
@@ -440,7 +461,7 @@ describe Phrase::Tool do
       
       it "should upload the file" do
         api_client.should_receive(:upload).with(file, kind_of(String), tags)
-        tool.send(:upload_file, file, tags)
+        subject.send(:upload_file, file, tags)
       end
     end
   end
@@ -511,7 +532,7 @@ describe Phrase::Tool do
       end
       
       it "should display an error message" do
-        subject.should_receive(:puts).with("Failed")
+        subject.should_receive(:print_message).with("Failed")
         subject.send(:fetch_locales)
       end
     end
@@ -527,7 +548,7 @@ describe Phrase::Tool do
     
     context "when locale can be created" do
       it "should display a success message" do
-        subject.should_receive(:puts).with("Created locale \"fr\"")
+        subject.should_receive(:print_message).with("Created locale \"fr\"")
         subject.send(:create_locale, "fr")
       end
     end
@@ -539,7 +560,7 @@ describe Phrase::Tool do
       end
       
       it "should display an error message" do
-        subject.should_receive(:puts).with("Notice: Locale \"fr\" could not be created (maybe it already exists)")
+        subject.should_receive(:print_message).with("Notice: Locale \"fr\" could not be created (maybe it already exists)")
         subject.send(:create_locale, "fr")
       end
     end
@@ -555,7 +576,7 @@ describe Phrase::Tool do
     
     context "locale can be marked as default" do
       it "should display the success message" do
-        subject.should_receive(:puts).with("Locale \"fr\" is now the default locale")
+        subject.should_receive(:print_message).with("Locale \"fr\" is now the default locale")
         subject.send(:make_locale_default, "fr")
       end
     end
@@ -567,7 +588,7 @@ describe Phrase::Tool do
       end
       
       it "should display an error message" do
-        subject.should_receive(:puts).with("Notice: Locale \"fr\" could not be made the default locale")
+        subject.should_receive(:print_message).with("Notice: Locale \"fr\" could not be made the default locale")
         subject.send(:make_locale_default, "fr")
       end
       
@@ -593,19 +614,22 @@ describe Phrase::Tool do
   end
   
   describe "#valid_tags_are_given?(tags)" do
-    it "returns true if all tags are valid" do
-      tool = Phrase::Tool.new([])
-      tool.send(:valid_tags_are_given?, ["foo", "bar", "baz"]).should be_true      
+    subject { tool.send(:valid_tags_are_given?, tags) }
+    
+    context "all tags are valid" do
+      let(:tags) { ["foo", "bar", "baz"] }
+      
+      it { should be_true }
     end
     
-    it "returns false if at least one tag is invalid" do
-      tool = Phrase::Tool.new([])
-      tool.send(:valid_tags_are_given?, ["foo", "bar", "b$z"]).should be_false
+    context "at least one tag is invalid" do
+      let(:tags) { ["foo", "bar", "b$z"] }
+      
+      it { should be_false }
     end
   end
   
   describe "#file_valid?(filename)" do
-    let(:tool) { Phrase::Tool.new([]) }
     let(:filename) { "foo.txt" }
     
     subject { tool.send(:file_valid?, filename) }
@@ -635,13 +659,29 @@ describe Phrase::Tool do
     end
   end
   
+  describe "#print_message" do
+    before(:each) do
+      tool.unstub(:print_message)
+    end
+    
+    let(:message) { "Hello Error!" }
+    
+    it "should print a message to stdout" do
+      subject.should_receive(:puts).with(message)
+      subject.send(:print_message, message)
+    end
+  end
+  
   describe "#print_error" do
-    let(:tool) { Phrase::Tool.new([]) }
+    before(:each) do
+      tool.unstub(:print_error)
+    end
+    
     let(:message) { "Hello Error!" }
     
     it "should print a message to stderr" do
       $stderr.should_receive(:puts).with(message)
-      tool.send(:print_error, message)
+      subject.send(:print_error, message)
     end
   end
 end

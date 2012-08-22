@@ -21,12 +21,18 @@ describe Phrase::Tool::Options do
     
     context "push command" do
       let(:command) { "push" }
-      let(:args) { ["--tags=lorem,ipsum"] }
+      let(:args) { ["--tags=lorem,ipsum", "--recursive"] }
       
       describe "tags" do
         subject { Phrase::Tool::Options.new(args, command).get(:tags) }
         
         it { should eql(["lorem", "ipsum"]) }
+      end
+      
+      describe "recursive" do
+        subject { Phrase::Tool::Options.new(args, command).get(:recursive) }
+        
+        it { should be_true }
       end
     end
     

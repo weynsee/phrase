@@ -52,7 +52,7 @@ protected
     end
     
     @config.secret = secret
-    puts "Wrote secret to config file .phrase"
+    print_message "Wrote secret to config file .phrase"
     
     default_locale_name = @options.get(:default_locale)    
     create_locale(default_locale_name)
@@ -69,7 +69,7 @@ protected
     
     files = choose_files_to_upload
     if files.empty?
-      puts "Could not find any files to upload :("
+      print_message "Could not find any files to upload :("
       exit(43)
     end
     
@@ -117,17 +117,18 @@ USAGE
   end
   
   def print_version
-    puts "phrase version #{Phrase::VERSION}"
+    print_message "phrase version #{Phrase::VERSION}"
   end
   
 private
   def choose_files_to_upload
     file_name = args[1]
-  
+    recursive = @options.get(:recursive)
+    
     unless file_name
       if self.class.rails_default_locale_folder_is_available
         file_name = self.class.rails_default_locale_folder
-        puts "No file or directory specified, using #{self.class.rails_default_locale_folder}"
+        print_message "No file or directory specified, using #{self.class.rails_default_locale_folder}"
       else 
         print_error "Need either a file or directory:"
         print_error "phrase push FILE"
@@ -142,7 +143,8 @@ private
     end
 
     if File.directory?(file_name)
-      files = Dir.glob("#{File.expand_path(file_name)}/**")
+      pattern = recursive ? "#{File.expand_path(file_name)}/**/*" : "#{File.expand_path(file_name)}/**"
+      files = Dir.glob(pattern)
     else
       files = [file_name]
     end
@@ -169,11 +171,11 @@ private
     if valid
       begin
         tagged = " (tagged: #{tags.join(", ")})" if tags.size > 0
-        puts "Uploading #{file}#{tagged}..."
+        print_message "Uploading #{file}#{tagged}..."
         api_client.upload(file, File.read(file), tags)
-        puts "OK"
+        print_message "OK"
       rescue Exception => e
-        puts "Failed"
+        print_message "Failed"
         print_server_error(e.message, file)
       end
     end
@@ -182,7 +184,7 @@ private
   def fetch_translations_for_locale(name, format=DEFAULT_DOWNLOAD_FORMAT)
     begin
       content = api_client.download_translations_for_locale(name, format)
-      puts "OK"
+      print_message "OK"
       store_translations_file(name, content, format)
     rescue Exception => e
       print_error "Failed"
@@ -199,10 +201,10 @@ private
   def fetch_locales
     begin
       locales = api_client.fetch_locales
-      puts "Fetched all locales"
+      print_message "Fetched all locales"
       return locales
     rescue Exception => e
-      puts "Failed"
+      print_message "Failed"
       print_server_error(e.message)
       exit(47)
     end
@@ -211,18 +213,18 @@ private
   def create_locale(name)
     begin
       api_client.create_locale(name)
-      puts "Created locale \"#{name}\""
+      print_message "Created locale \"#{name}\""
     rescue Exception => e
-      puts "Notice: Locale \"#{name}\" could not be created (maybe it already exists)"
+      print_message "Notice: Locale \"#{name}\" could not be created (maybe it already exists)"
     end
   end
   
   def make_locale_default(name)
     begin
       api_client.make_locale_default(name)
-      puts "Locale \"#{name}\" is now the default locale"
+      print_message "Locale \"#{name}\" is now the default locale"
     rescue Exception => e
-      puts "Notice: Locale \"#{name}\" could not be made the default locale"
+      print_message "Notice: Locale \"#{name}\" could not be made the default locale"
       print_server_error(e.message)
     end
   end
@@ -233,6 +235,10 @@ private
 
   def print_server_error(message, filename=nil)
     print_error "#{message} (#{filename})"
+  end
+  
+  def print_message(message)
+    puts message
   end
   
   def print_error(message)

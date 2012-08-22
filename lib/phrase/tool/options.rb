@@ -16,7 +16,8 @@ class Phrase::Tool::Options
         default_locale: "en"
       },
       push: {
-        tags: []
+        tags: [],
+        recursive: false
       },
       pull: {
         format: "yml"
@@ -49,6 +50,10 @@ private
         OptionParser.new do |opts|
           opts.on("--tags=foo,bar", Array, "List of tags for phrase push (separated by comma)") do |tags|
             @data[command_name][:tags] = tags
+          end
+          
+          opts.on("-R", "--recursive", "Push files in subfolders as well (recursively)") do |recursive|
+            @data[command_name][:recursive] = true
           end
         end
       when :pull
