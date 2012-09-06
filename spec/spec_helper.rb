@@ -3,6 +3,7 @@ require 'fileutils'
 require 'rubygems'
 require 'rspec'
 require 'vcr'
+require 'timecop'
 require 'webmock/rspec'
 
 require 'phrase'
@@ -11,6 +12,10 @@ require 'phrase/tool'
 RSpec.configure do |config|
   config.filter_run :focus => true
   config.run_all_when_everything_filtered = true
+  
+  config.before(:each) do
+    Timecop.return
+  end
 end
 
 VCR.configure do |config|

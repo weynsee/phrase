@@ -1,6 +1,8 @@
 # -*- encoding : utf-8 -*-
 
 require 'phrase/api'
+require 'phrase/cache'
+require 'phrase/hash_flattener'
 
 class Phrase::Delegate < String
   attr_accessor :key, :display_key, :options, :api_client, :fallback_keys
@@ -8,6 +10,7 @@ class Phrase::Delegate < String
   def initialize(key, options={})
     @display_key = @key = key
     @options = options
+    
     @fallback_keys = []
     
     extract_fallback_keys
@@ -38,7 +41,10 @@ class Phrase::Delegate < String
 private
   def identify_key_to_display
     key_names = [@key] | @fallback_keys
-    available_key_names = find_keys_from_service(key_names).map { |key| key["name"] }
+    
+    log(key_names)
+    
+    available_key_names = find_keys_within_phrase(key_names)
     @display_key = @key
     key_names.each do |item|
       if available_key_names.include?(item)
@@ -48,8 +54,39 @@ private
     end
   end
   
-  def find_keys_from_service(key_names)
-    api_client.find_keys_by_name(key_names)
+  def find_keys_within_phrase(key_names)
+    key_names_to_check_against_api = key_names - pre_fetched(key_names)
+    pre_cached(key_names) | key_names_returned_from_api_for(key_names_to_check_against_api)
+  end
+  
+  def pre_cached(key_names)
+    warm_translation_key_names_cache unless cache.cached?(:translation_key_names)
+    pre_cached_key_names = key_names.select { |key_name| key_name_precached?(key_name) }
+    pre_cached_key_names
+  end
+  
+  def pre_fetched(key_names)
+    key_names.select { |key_name| covered_by_initial_caching?(key_name) }
+  end
+  
+  def key_name_precached?(key_name)
+    covered_by_initial_caching?(key_name) && key_name_is_in_cache?(key_name)
+  end
+  
+  def key_names_returned_from_api_for(key_names)
+    if key_names.size > 0
+      api_client.find_keys_by_name(key_names).map { |key| key["name"] }
+    else
+      []
+    end
+  end
+  
+  def key_name_is_in_cache?(key_name)
+    cache.get(:translation_key_names).include?(key_name)
+  end
+  
+  def covered_by_initial_caching?(key_name)
+    key_name.start_with?(*Phrase.cache_key_segments_initial)
   end
   
   def extract_fallback_keys
@@ -61,16 +98,22 @@ private
         fallback_items << @options[:default]
       end
     end
+    
     fallback_items.each do |item|
       process_fallback_item(item)
     end
   end
   
+  def scoped(item)
+    @options.has_key?(:scope) ? "#{@options[:scope]}.#{item}" : item
+  end
+  
   def process_fallback_item(item)
     if item.kind_of?(Symbol)
-      @fallback_keys << item.to_s
-      if @key == "helpers.label.#{item.to_s}" # http://apidock.com/rails/v3.1.0/ActionView/Helpers/FormHelper/label
-        @fallback_keys << "activerecord.attributes.#{item.to_s}"
+      entry = scoped(item.to_s)
+      @fallback_keys << entry
+      if @key == "helpers.label.#{entry}" # http://apidock.com/rails/v3.1.0/ActionView/Helpers/FormHelper/label
+        @fallback_keys << "activerecord.attributes.#{entry}"
       end
     end
   end
@@ -98,5 +141,35 @@ private
     else
       $stderr.puts message
     end
+  end
+  
+  def cache
+    Thread.current[:phrase_cache] ||= build_cache
+  end
+  
+  def build_cache
+    cache = Phrase::Cache.new
+  end
+  
+  def warm_translation_key_names_cache
+    cache.set(:translation_key_names, prefetched_key_names)
+  end
+  
+  def prefetched_key_names
+    prefetched = []
+    Phrase.cache_key_segments_initial.each do |segment|
+      result = api_client.translate(segment)
+      prefetched << segment if result["translate"].is_a?(String)
+      prefetched = prefetched | key_names_from_nested(segment, result["translate"])
+    end
+    prefetched
+  end
+  
+  def key_names_from_nested(segment, data)
+    key_names = []
+    Phrase::HashFlattener.flatten(data, nil) do |key, value|
+      key_names << "#{segment}.#{key}" unless value.is_a?(Hash)
+    end unless (data.is_a?(String) || data.nil?)
+    key_names
   end
 end

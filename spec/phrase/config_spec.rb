@@ -207,4 +207,56 @@ describe Phrase::Config do
       Phrase::Config.class_variable_get(:@@js_use_ssl).should == "maybe"
     end
   end
+  
+  describe "#cache_key_segments_initial" do
+    before(:each) do
+      Phrase::Config.class_variable_set(:@@cache_key_segments_initial, nil)
+    end
+    
+    context "has been set" do
+      it "should return the cache_key_segments_initial" do
+        subject.cache_key_segments_initial = ["foo", "bar"]
+        subject.cache_key_segments_initial.should == ["foo", "bar"]
+      end
+    end
+    
+    context "instance variable is not set" do
+      it "should return an array" do
+        subject.cache_key_segments_initial.should be_an(Array)
+      end
+    end
+  end
+  
+  describe "#cache_key_segments=" do
+    it "should set the cache_key_segments_initial" do
+      subject.cache_key_segments_initial = ["foo"]
+      Phrase::Config.class_variable_get(:@@cache_key_segments_initial).should == ["foo"]
+    end
+  end
+  
+  describe "#cache_lifetime" do
+    before(:each) do
+      Phrase::Config.class_variable_set(:@@cache_lifetime, nil)
+    end
+    
+    context "has been set" do
+      it "should return the cache_lifetime" do
+        subject.cache_lifetime = 99
+        subject.cache_lifetime.should == 99
+      end
+    end
+    
+    context "instance variable is not set" do
+      it "should return 5 minutes" do
+        subject.cache_lifetime.should eql 300
+      end
+    end
+  end
+  
+  describe "#cache_lifetime=" do
+    it "should set the cache_lifetime" do
+      subject.cache_lifetime = 77
+      Phrase::Config.class_variable_get(:@@cache_lifetime).should == 77
+    end
+  end
 end

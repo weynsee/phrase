@@ -67,4 +67,20 @@ class Phrase::Config
   def js_use_ssl=(js_use_ssl)
     @@js_use_ssl = js_use_ssl
   end
+  
+  def cache_key_segments_initial
+    @@cache_key_segments_initial ||= ["simple_form"]
+  end
+  
+  def cache_key_segments_initial=(cache_key_segments_initial=[])
+    @@cache_key_segments_initial = cache_key_segments_initial
+  end
+  
+  def cache_lifetime
+    @@cache_lifetime ||= 300
+  end
+  
+  def cache_lifetime=(cache_lifetime)
+    @@cache_lifetime = cache_lifetime
+  end
 end

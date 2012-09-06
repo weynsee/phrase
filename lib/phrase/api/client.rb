@@ -23,7 +23,7 @@ class Phrase::Api::Client
   def fetch_locales
     result = perform_api_request("/locales", :get)
     locales = []
-    JSON.parse(result).map do |locale| 
+    parsed(result).map do |locale| 
       locales << locale['name']
     end
     locales
@@ -32,7 +32,7 @@ class Phrase::Api::Client
   def fetch_blacklisted_keys
     result = perform_api_request("/blacklisted_keys", :get)
     blacklisted_keys = []
-    JSON.parse(result).map do |blacklisted_key| 
+    parsed(result).map do |blacklisted_key| 
       blacklisted_keys << blacklisted_key['name']
     end
     blacklisted_keys
@@ -40,15 +40,14 @@ class Phrase::Api::Client
   
   def translate(key)
     raise "You must specify a key" if key.nil? or key.blank?
-    keys = {}    
-    result = JSON.parse(perform_api_request("/translation_keys/translate", :get, {:key => key}))
+    keys = {}
+    result = parsed(perform_api_request("/translation_keys/translate", :get, {:key => key}))
     keys = extract_structured_object(result["translate"]) if result["translate"]
     keys
   end
   
   def find_keys_by_name(key_names=[])
-    result = JSON.parse(perform_api_request("/translation_keys", :get, {:key_names => key_names}))
-    result
+    parsed(perform_api_request("/translation_keys", :get, {:key_names => key_names}))
   end
   
   def create_locale(name)
@@ -128,11 +127,11 @@ private
   def api_error_message(response)
     message = ""
     begin
-      error = JSON.parse(response.body)["error"]
+      error = parsed(response.body)["error"]
       if error.class == String
         message = error
       else
-        message = JSON.parse(response.body)["message"]
+        message = parsed(response.body)["message"]
       end
     rescue JSON::ParserError
     end
@@ -211,5 +210,9 @@ private
       end
     end.join(separator)
     request.content_type = 'application/x-www-form-urlencoded'
+  end
+  
+  def parsed(raw_data)
+    JSON.parse(raw_data)
   end
 end

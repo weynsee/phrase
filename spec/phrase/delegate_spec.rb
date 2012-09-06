@@ -20,37 +20,31 @@ describe Phrase::Delegate do
     end
   end
   
-  describe "#extract_fallback_keys" do
-    context "when default is an array" do
-      before(:each) do
-        subject.instance_variable_set(:@options, {:default => [:foo, :bar]})
-      end
-      
-      it "should add the keys to the fallbacks" do
-        subject.send(:extract_fallback_keys)
-        subject.fallback_keys.should == ["foo", "bar"]
+  describe "missing methods" do
+    before(:each) do
+      subject.stub(:translation_or_subkeys).and_return({foo: "bar"})
+    end
+    
+    it "should respond to #each |key, value|" do
+      subject.each do |key, value|
+        key.should == :foo
+        value.should == "bar"
       end
     end
     
-    context "when default is a symbol" do
-      before(:each) do
-        subject.instance_variable_set(:@options, {:default => :foo})
-      end
-      
-      it "should add the key to the fallbacks" do
-        subject.send(:extract_fallback_keys)
-        subject.fallback_keys.should == ["foo"]
+    it "should respond to #each |key|" do
+      subject.each do |n|
+        n.should == [:foo, "bar"]
       end
     end
     
-    context "when no default is empty" do
-      before(:each) do
-        subject.instance_variable_set(:@options, {})
-      end
-      
-      it "should not extract a thing" do
-        subject.send(:extract_fallback_keys)
-        subject.fallback_keys.should be_empty
+    it "should respond to #keys" do
+      subject.keys.should == [:foo]
+    end
+    
+    it "should respond to #map" do
+      subject.map do |item|
+        item.should == [:foo, "bar"]
       end
     end
   end
@@ -61,11 +55,11 @@ describe Phrase::Delegate do
     before(:each) do
       subject.key = "foo.main"
       subject.fallback_keys = ["foo.fallback1", "foo.fallback2"]
-      subject.stub(:find_keys_from_service).and_return(keys)
+      subject.stub(:find_keys_within_phrase).and_return(keys)
     end
     
     context "standard key can be found via phrase service" do
-      let(:keys) { [{"name" => "foo.main"}] }
+      let(:keys) { ["foo.main"] }
       
       it "should set the standard key as display key" do
         subject.send(:identify_key_to_display)
@@ -74,7 +68,7 @@ describe Phrase::Delegate do
     end
     
     context "standard key cannot be found but first fallback is available" do
-      let(:keys) { [{"name" => "foo.fallback1"}, {"name" => "foo.fallback2"}] }
+      let(:keys) { ["foo.fallback1", "foo.fallback2"] }
       
       it "should use the first fallback key as display key" do
         subject.send(:identify_key_to_display)
@@ -83,7 +77,7 @@ describe Phrase::Delegate do
     end
     
     context "standard key cannot be found but second fallback is available" do
-      let(:keys) { [{"name" => "foo.fallback2"}] }
+      let(:keys) { ["foo.fallback2"] }
       
       it "should use the first fallback key as display key" do
         subject.send(:identify_key_to_display)
@@ -95,6 +89,143 @@ describe Phrase::Delegate do
       it "should set the standard key as display key" do
         subject.send(:identify_key_to_display)
         subject.display_key.should == "foo.main"
+      end
+    end
+  end
+  
+  describe "#find_keys_within_phrase(key_names)" do
+    let(:key_names) { ["foo", "bar", "baz"] }
+    let(:keys_from_api) { [] }
+    let(:pre_cached) { [] }
+    let(:pre_fetched) { [] }
+    let(:delegate) { Phrase::Delegate.new(key) }
+    
+    subject { delegate.send(:find_keys_within_phrase, key_names) }
+    
+    before(:each) do
+      delegate.stub(key_names_returned_from_api_for: keys_from_api)
+      delegate.stub(pre_cached: pre_cached)
+      delegate.stub(pre_fetched: pre_fetched)
+    end
+    
+    it { should be_an(Array) }
+
+    context "some keys are prefetched" do
+      let(:pre_fetched) { ["foo", "bar"] }
+      let(:pre_cached) { ["foo"] }
+      
+      context "api returns additional results" do        
+        let(:keys_from_api) { ["baz"] }
+
+        it { should == ["foo", "baz"]}
+      end
+      
+      context "api returns no results" do
+        let(:keys_from_api) { [] }
+        
+        it { should == ["foo"]}
+      end
+    end
+    
+    context "no keys are prefetched" do
+      let(:pre_fetched) { [] }
+      let(:pre_cached) { [] }
+      
+      context "api returns results" do        
+        let(:keys_from_api) { ["baz"] }
+
+        it { should == ["baz"]}
+      end
+      
+      context "api returns no results" do
+        let(:keys_from_api) { [] }
+        
+        it { should == []}
+      end
+    end
+  end
+  
+  describe "#covered_by_initital_caching?(key_name)" do
+    let(:key_name_to_fetch) { "simple.form" }
+    
+    subject { Phrase::Delegate.new(key).send(:covered_by_initial_caching?, key_name_to_fetch) }
+    
+    context "key starts with expression found in Phrase.cache_key_segments_initial" do
+      before(:each) do
+        Phrase.cache_key_segments_initial = ["simple", "bar"]
+      end
+      
+      it { should be_true }
+      
+      context "is an exact match" do
+        let(:key_name_to_fetch) { "simple" }
+        
+        it { should be_true }
+      end
+    end
+    
+    context "key does not start with expression found in Phrase.cache_key_segments_initial" do
+      before(:each) do
+        Phrase.cache_key_segments_initial = ["nope"]
+      end
+      
+      it { should be_false }
+    end
+  end
+  
+  describe "#extract_fallback_keys" do
+    let(:options) { {} }
+    
+    before(:each) do
+      subject.instance_variable_set(:@options, options)      
+      subject.send(:extract_fallback_keys)
+    end
+    
+    context "when default is an array" do
+      let(:options) { {:default => [:foo, :bar]} }
+      
+      it "should add the keys to the fallbacks" do
+        subject.fallback_keys.should == ["foo", "bar"]
+      end
+      
+      context "scope is given" do
+        let(:options) { {default: [:foo, :bar], scope: "scopeee"} }
+        
+        it "all keys should be scoped" do
+          subject.fallback_keys.should == ["scopeee.foo", "scopeee.bar"]
+        end
+      end
+    end
+    
+    context "when default is a symbol" do
+      let(:options) { {:default => :foo} }
+      
+      it "should add the key to the fallbacks" do
+        subject.fallback_keys.should == ["foo"]
+      end
+      
+      context "scope is given" do
+        let(:options) { {default: :foo, scope: "scopeee"} }
+        
+        it "all keys should be scoped" do
+          subject.fallback_keys.should == ["scopeee.foo"]
+        end
+      end
+    end
+    
+    context "when no default is empty" do
+      let(:options) { {} }
+      
+      it "should not extract a thing" do
+        subject.fallback_keys.should be_empty
+      end
+      
+      context "scope is given" do
+        let(:options) { {scope: "scopeee"} }
+        
+        it "all keys should be scoped" do
+          subject.fallback_keys.should == []
+        end
       end
     end
   end
@@ -163,32 +294,55 @@ describe Phrase::Delegate do
     end
   end
   
-  describe "missing methods" do
+  describe "#warm_translation_key_names_cache" do
+    let(:delegate) { Phrase::Delegate.new(key) }
+    subject { delegate.send(:cache).get(:translation_key_names) }
+    
     before(:each) do
-      subject.stub(:translation_or_subkeys).and_return({foo: "bar"})
+      delegate.stub(:prefetched_key_names).and_return(["hello", "world"])
+      delegate.send(:warm_translation_key_names_cache)
     end
     
-    it "should respond to #each |key, value|" do
-      subject.each do |key, value|
-        key.should == :foo
-        value.should == "bar"
-      end
+    it { should be_an(Array) }
+    it { should include "hello" }
+    it { should include "world" }
+  end
+  
+  describe "#prefetched_key_names" do
+    let(:delegate) { Phrase::Delegate.new(key) }
+    let(:initial_segments) { ["foo"] }
+    let(:translate_result) { {"translate" => {}} }
+    let(:api_client) { stub(translate: translate_result) }
+    
+    subject { delegate.send(:prefetched_key_names) }
+    
+    before(:each) do
+      Phrase.cache_key_segments_initial = initial_segments
+      delegate.stub(:api_client).and_return(api_client)
     end
     
-    it "should respond to #each |key|" do
-      subject.each do |n|
-        n.should == [:foo, "bar"]
-      end
+    it { should be_an(Array) }
+    
+    context "api returned a string" do
+      let(:translate_result) { {"translate" => "lorem"} }
+      
+      it { should == ["foo"] }
     end
     
-    it "should respond to #keys" do
-      subject.keys.should == [:foo]
+    context "api returned a hash" do
+      let(:translate_result) { {"translate" => {"bar" => "lorem"}} }
+      
+      it { should == ["foo.bar"] }
     end
     
-    it "should respond to #map" do
-      subject.map do |item|
-        item.should == [:foo, "bar"]
-      end
+    context "api returned a nested hash" do
+      let(:translate_result) { {"translate" => {"bar" => {"baz" => "ipsum", "def" => "lorem"}}} }
+      
+      it { should == ["foo.bar.baz", "foo.bar.def"] }
     end
+  end
+  
+  describe "#key_names_from_nested(segment, data)" do
+    it "returns flattened keys"
   end
 end
