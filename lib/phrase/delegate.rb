@@ -3,6 +3,7 @@
 require 'phrase/api'
 require 'phrase/cache'
 require 'phrase/hash_flattener'
+require 'set'
 
 class Phrase::Delegate < String
   attr_accessor :key, :display_key, :options, :api_client, :fallback_keys
@@ -41,9 +42,6 @@ class Phrase::Delegate < String
 private
   def identify_key_to_display
     key_names = [@key] | @fallback_keys
-    
-    log(key_names)
-    
     available_key_names = find_keys_within_phrase(key_names)
     @display_key = @key
     key_names.each do |item|
@@ -70,7 +68,9 @@ private
   end
   
   def key_name_precached?(key_name)
-    covered_by_initial_caching?(key_name) && key_name_is_in_cache?(key_name)
+    covered = covered_by_initial_caching?(key_name)
+    in_cache = key_name_is_in_cache?(key_name)    
+    covered && in_cache 
   end
   
   def key_names_returned_from_api_for(key_names)
@@ -156,19 +156,19 @@ private
   end
   
   def prefetched_key_names
-    prefetched = []
-    Phrase.cache_key_segments_initial.each do |segment|
+    prefetched = Set.new
+    Phrase.cache_key_segments_initial.each do |segment|      
       result = api_client.translate(segment)
-      prefetched << segment if result["translate"].is_a?(String)
-      prefetched = prefetched | key_names_from_nested(segment, result["translate"])
+      prefetched.add(segment) if result.is_a?(String)
+      prefetched = prefetched.merge(key_names_from_nested(segment, result))
     end
     prefetched
   end
   
   def key_names_from_nested(segment, data)
-    key_names = []
+    key_names = Set.new
     Phrase::HashFlattener.flatten(data, nil) do |key, value|
-      key_names << "#{segment}.#{key}" unless value.is_a?(Hash)
+      key_names.add("#{segment}.#{key}") unless value.is_a?(Hash)
     end unless (data.is_a?(String) || data.nil?)
     key_names
   end

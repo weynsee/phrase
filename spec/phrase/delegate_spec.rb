@@ -321,24 +321,23 @@ describe Phrase::Delegate do
       delegate.stub(:api_client).and_return(api_client)
     end
     
-    it { should be_an(Array) }
-    
     context "api returned a string" do
-      let(:translate_result) { {"translate" => "lorem"} }
+      let(:translate_result) { "lorem" }
       
-      it { should == ["foo"] }
+      it { should include("foo") }
     end
     
     context "api returned a hash" do
-      let(:translate_result) { {"translate" => {"bar" => "lorem"}} }
+      let(:translate_result) { {"bar" => "lorem"} }
       
-      it { should == ["foo.bar"] }
+      it { should include("foo.bar") }
     end
     
     context "api returned a nested hash" do
-      let(:translate_result) { {"translate" => {"bar" => {"baz" => "ipsum", "def" => "lorem"}}} }
+      let(:translate_result) { {"bar" => {"baz" => "ipsum", "def" => "lorem"}} }
       
-      it { should == ["foo.bar.baz", "foo.bar.def"] }
+      it { should include("foo.bar.baz") }
+      it { should include("foo.bar.def") }
     end
   end
   

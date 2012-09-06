@@ -16,9 +16,9 @@ class Phrase::Cache
   end
   
   def get(cache_key)
-    if cached?(cache_key)
+    begin
       @store.fetch(cache_key)[:payload]
-    else
+    rescue
       nil
     end
   end
