@@ -108,7 +108,7 @@ describe Phrase::Api::Client do
     context "locale does not exist yet" do
       it "should return true" do
         VCR.use_cassette('create new locale') do
-          random_locale = "locale#{rand(1...1000)}"
+          random_locale = "locale#{rand(1000)}"
           subject.create_locale(random_locale).should be_true
         end
       end
