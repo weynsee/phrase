@@ -20,7 +20,8 @@ class Phrase::Tool::Options
         recursive: false
       },
       pull: {
-        format: "yml"
+        format: "yml",
+        target: "./phrase/locales/"
       }
     }
     options.parse!(args)
@@ -60,6 +61,10 @@ private
         OptionParser.new do |opts|
           opts.on("--format=yml", String, "Allowed formats: #{Phrase::Tool::ALLOWED_DOWNLOAD_FORMATS.join(", ")}") do |format|
             @data[command_name][:format] = format
+          end
+          
+          opts.on("--target=./phrase/locales", String, "Target folder to store locale files") do |target|
+            @data[command_name][:target] = target
           end
         end
       else

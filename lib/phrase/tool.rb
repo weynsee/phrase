@@ -12,6 +12,7 @@ class Phrase::Tool
   ALLOWED_FILE_TYPES = %w(yml pot po)
   ALLOWED_DOWNLOAD_FORMATS = %w(yml po)
   DEFAULT_DOWNLOAD_FORMAT = "yml"
+  DEFAULT_TARGET_FOLDER = "phrase/locales/"
   
   attr_accessor :config, :options
   
@@ -90,6 +91,8 @@ protected
     end
     
     format = @options.get(:format) || DEFAULT_DOWNLOAD_FORMAT
+    target = @options.get(:target) || DEFAULT_TARGET_FOLDER
+    
     unless ALLOWED_DOWNLOAD_FORMATS.include?(format)
       print_error "Invalid format: #{format}"
       exit(43)
@@ -97,7 +100,7 @@ protected
     
     locales.each do |locale_name|
       print "Downloading phrase.#{locale_name}.#{format}..."
-      fetch_translations_for_locale(locale_name, format)
+      fetch_translations_for_locale(locale_name, format, target)
     end
   end
   
@@ -181,20 +184,28 @@ private
     end
   end
 
-  def fetch_translations_for_locale(name, format=DEFAULT_DOWNLOAD_FORMAT)
+  def fetch_translations_for_locale(name, format=DEFAULT_DOWNLOAD_FORMAT, target=DEFAULT_TARGET_FOLDER)
     begin
       content = api_client.download_translations_for_locale(name, format)
       print_message "OK"
-      store_translations_file(name, content, format)
+      store_translations_file(name, content, format, target)
     rescue Exception => e
       print_error "Failed"
       print_server_error(e.message)
     end
   end
   
-  def store_translations_file(name, content, format=DEFAULT_DOWNLOAD_FORMAT)
-    File.open("phrase/locales/phrase.#{name}.#{format}", "w") do |file|
-      file.write(content)
+  def store_translations_file(name, content, format=DEFAULT_DOWNLOAD_FORMAT, target=DEFAULT_TARGET_FOLDER)
+    directory = target 
+    directory << "/" unless directory.end_with?("/") 
+    
+    if File.directory?(directory)
+      File.open("#{directory}phrase.#{name}.#{format}", "w") do |file|
+        file.write(content)
+      end
+    else
+      print_error("Cannot write file to target folder (#{directory})")
+      exit(101)
     end
   end
   

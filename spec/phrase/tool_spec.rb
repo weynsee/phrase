@@ -349,6 +349,35 @@ describe Phrase::Tool do
           File.read("phrase/locales/phrase.ru.po").should == "content for ru"
         end
       end
+      
+      context "a target folder is specified" do
+        before(:each) do
+          ::FileUtils.rm_rf("phrase/phrase.ru.yml")
+        end
+        
+        after(:each) do
+          ::FileUtils.rm_rf("phrase/phrase.ru.yml")
+        end
+        
+        it "should fetch translations and store it in the given directory" do
+          phrase "pull ru --target=phrase/"
+          File.read("phrase/phrase.ru.yml").should == "content for ru"
+        end
+        
+        context "target folder does not exist" do
+          before(:each) do
+            phrase "pull ru --target=inexistant/folder"
+          end
+          
+          it "should not save the content" do
+            File.exists?("inexistant/folder/phrase.ru.yml").should be_false
+          end
+          
+          it "should display an error" do
+            err.should include "Cannot write file to target folder (inexistant/folder/)"
+          end
+        end
+      end
     end
     
     context "no locale is given" do
@@ -364,6 +393,39 @@ describe Phrase::Tool do
         phrase "pull"
         File.read("phrase/locales/phrase.de.yml").should == "content for de"
         File.read("phrase/locales/phrase.pl.yml").should == "content for pl"
+      end
+      
+      context "a target folder is specified" do
+        before(:each) do
+          ::FileUtils.rm_rf("phrase/phrase.de.yml")
+          ::FileUtils.rm_rf("phrase/phrase.pl.yml")
+        end
+        
+        after(:each) do
+          ::FileUtils.rm_rf("phrase/phrase.de.yml")
+          ::FileUtils.rm_rf("phrase/phrase.pl.yml")
+        end
+        
+        it "should fetch translations and store it in the given directory" do
+          phrase "pull --target=phrase/"
+          File.read("phrase/phrase.de.yml").should == "content for de"
+          File.read("phrase/phrase.pl.yml").should == "content for pl"
+        end
+        
+        context "target folder does not exist" do
+          before(:each) do
+            phrase "pull --target=inexistant/folder"
+          end
+          
+          it "should not save the content" do
+            File.exists?("inexistant/folder/phrase.de.yml").should be_false
+            File.exists?("inexistant/folder/phrase.pl.yml").should be_false
+          end
+          
+          it "should display an error" do
+            err.should include "Cannot write file to target folder (inexistant/folder/)"
+          end
+        end
       end
     end
   end
@@ -387,7 +449,7 @@ describe Phrase::Tool do
       end
       
       it "should save the content to a file" do
-        subject.should_receive(:store_translations_file).with("fr", "foo:\n  bar: content", kind_of(String))
+        subject.should_receive(:store_translations_file).with("fr", "foo:\n  bar: content", kind_of(String), kind_of(String))
         subject.send(:fetch_translations_for_locale, "fr")
       end
     end

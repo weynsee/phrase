@@ -38,12 +38,18 @@ describe Phrase::Tool::Options do
     
     context "pull command" do
       let(:command) { "pull" }
-      let(:args) { ["--format=po"] }
+      let(:args) { ["--format=po", "--target=/foo/bar"] }
       
       describe "format" do
         subject { Phrase::Tool::Options.new(args, command).get(:format) }
         
         it { should eql "po" }
+      end
+      
+      describe "target" do
+        subject { Phrase::Tool::Options.new(args, command).get(:target) }
+        
+        it { should eql "/foo/bar" }
       end
     end
     
