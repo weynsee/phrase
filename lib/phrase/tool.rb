@@ -113,7 +113,7 @@ usage: phrase <command> [<args>]
   phrase push FILE [--tags=<tags>]
   phrase push DIRECTORY [--tags=<tags>]
   
-  phrase pull [LOCALE] [--target=<target-folder>]
+  phrase pull [LOCALE] [--target=<target-folder>] [--format=<format>]
   
   phrase --version
 USAGE
