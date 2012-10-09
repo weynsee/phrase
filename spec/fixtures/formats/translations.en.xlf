@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2">
+  <file original="global" source-language="en" target-language="en">
+    <body>
+      <trans-unit id="my.key.name">
+        <source xml:lang="en">Lorem Ipsum</source>
+        <target xml:lang="en">Lorem Ipsum</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

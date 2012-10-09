@@ -193,28 +193,70 @@ describe Phrase::Tool do
       end
       
       context "file exists" do
-        context "file is yml" do
-          it "uploads the file" do
+        describe "file formats" do
+          before(:each) do          
             api_client.should_receive(:upload)
-            phrase "push spec/fixtures/yml/nice.en.yml"
-            out.should include "Uploading spec/fixtures/yml/nice.en.yml"
           end
-        end
-        
-        context "file is gettext .pot" do
-          it "uploads the file" do
-            api_client.should_receive(:upload)
-            phrase "push spec/fixtures/gettext/nice.en.pot"
-            out.should include "Uploading spec/fixtures/gettext/nice.en.pot"
+          
+          it "can upload .yml" do
+            phrase "push spec/fixtures/formats/translations.en.yml"
+            out.should include "Uploading spec/fixtures/formats/translations.en.yml"
           end
-        end
-        
-        context "file is gettext .po" do
-          it "uploads the file" do
-            api_client.should_receive(:upload)
-            phrase "push spec/fixtures/gettext/nice.en.po"
-            out.should include "Uploading spec/fixtures/gettext/nice.en.po"
-          end          
+
+          it "can upload .po" do
+            phrase "push spec/fixtures/formats/translations.en.po"
+            out.should include "Uploading spec/fixtures/formats/translations.en.po"
+          end     
+          
+          it "can upload .resx" do
+            phrase "push spec/fixtures/formats/translations.en.resx"
+            out.should include "Uploading spec/fixtures/formats/translations.en.resx"
+          end
+          
+          it "can upload .xml" do
+            phrase "push spec/fixtures/formats/translations.en.xml"
+            out.should include "Uploading spec/fixtures/formats/translations.en.xml"
+          end
+          
+          it "can upload .strings" do
+            phrase "push spec/fixtures/formats/translations.en.strings"
+            out.should include "Uploading spec/fixtures/formats/translations.en.strings"
+          end
+
+          it "can upload .json" do
+            phrase "push spec/fixtures/formats/translations.en.json"
+            out.should include "Uploading spec/fixtures/formats/translations.en.json"
+          end
+          
+          it "can upload .ts" do
+            phrase "push spec/fixtures/formats/translations.en.ts"
+            out.should include "Uploading spec/fixtures/formats/translations.en.ts"
+          end
+          
+          it "can upload .qph" do
+            phrase "push spec/fixtures/formats/translations.en.qph"
+            out.should include "Uploading spec/fixtures/formats/translations.en.qph"
+          end
+          
+          it "can upload .ini" do
+            phrase "push spec/fixtures/formats/translations.en.ini"
+            out.should include "Uploading spec/fixtures/formats/translations.en.ini"
+          end
+          
+          it "can upload .plist" do
+            phrase "push spec/fixtures/formats/translations.en.plist"
+            out.should include "Uploading spec/fixtures/formats/translations.en.plist"
+          end
+          
+          it "can upload .properties" do
+            phrase "push spec/fixtures/formats/translations.en.properties"
+            out.should include "Uploading spec/fixtures/formats/translations.en.properties"
+          end
+          
+          it "can upload .xlf" do
+            phrase "push spec/fixtures/formats/translations.en.xlf"
+            out.should include "Uploading spec/fixtures/formats/translations.en.xlf"
+          end
         end
         
         context "tag(s) given" do
@@ -325,28 +367,85 @@ describe Phrase::Tool do
         phrase "init --secret=my_secret"
       end
       
-      context "no format is specified" do
-        it "should fetch translations for the locale in yml format and store it" do
-          phrase "pull ru"
-          File.read("phrase/locales/phrase.ru.yml").should == "content for ru"
-        end
-      end
-      
-      context "an invalid format is specified" do
-        it "should not fetch translations" do
-          begin
-            phrase "pull ru --format=doc"
-          rescue SystemExit => ex
-            err.should include "Invalid format"
-            File.exists?("phrase/locales/phrase.ru.doc").should be_false
+      describe "format handling" do
+        context "no format is specified" do
+          it "should fetch translations for the locale in yml format and store it" do
+            phrase "pull ru"
+            File.read("phrase/locales/phrase.ru.yml").should == "content for ru"
           end
         end
-      end
-      
-      context "a format is specified" do
-        it "should fetch translations for the locale in the specified format and store it" do
-          phrase "pull ru --format=po"
-          File.read("phrase/locales/phrase.ru.po").should == "content for ru"
+
+        context "an invalid format is specified" do
+          it "should not fetch translations" do
+            begin
+              phrase "pull ru --format=doc"
+            rescue SystemExit => ex
+              err.should include "Invalid format"
+              File.exists?("phrase/locales/phrase.ru.doc").should be_false
+            end
+          end
+        end
+
+        context "a valid format is specified" do
+          it "should store in po format" do
+            phrase "pull ru --format=po"
+            File.read("phrase/locales/phrase.ru.po").should == "content for ru"
+          end
+          
+          it "should store in yml format" do
+            phrase "pull ru --format=yml"
+            File.read("phrase/locales/phrase.ru.yml").should == "content for ru"
+          end
+          
+          it "should store in xml format" do
+            phrase "pull ru --format=xml"
+            File.read("phrase/locales/phrase.ru.xml").should == "content for ru"
+          end
+          
+          it "should store in strings format" do
+            phrase "pull ru --format=strings"
+            File.read("phrase/locales/phrase.ru.strings").should == "content for ru"
+          end
+          
+          it "should store in xlf format" do
+            phrase "pull ru --format=xlf"
+            File.read("phrase/locales/phrase.ru.xlf").should == "content for ru"
+          end
+          
+          it "should store in qph format" do
+            phrase "pull ru --format=qph"
+            File.read("phrase/locales/phrase.ru.qph").should == "content for ru"
+          end
+          
+          it "should store in ts format" do
+            phrase "pull ru --format=ts"
+            File.read("phrase/locales/phrase.ru.ts").should == "content for ru"
+          end
+          
+          it "should store in json format" do
+            phrase "pull ru --format=json"
+            File.read("phrase/locales/phrase.ru.json").should == "content for ru"
+          end
+          
+          it "should store in resx format" do
+            phrase "pull ru --format=resx"
+            File.read("phrase/locales/phrase.ru.resx").should == "content for ru"
+          end
+          
+          it "should store in ini format" do
+            phrase "pull ru --format=ini"
+            File.read("phrase/locales/phrase.ru.ini").should == "content for ru"
+          end
+          
+          it "should store in properties format" do
+            phrase "pull ru --format=properties"
+            File.read("phrase/locales/phrase.ru.properties").should == "content for ru"
+          end
+          
+          it "should store in plist format" do
+            phrase "pull ru --format=plist"
+            File.read("phrase/locales/phrase.ru.plist").should == "content for ru"
+          end
         end
       end
       

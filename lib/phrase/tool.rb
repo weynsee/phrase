@@ -9,8 +9,8 @@ class Phrase::Tool
   autoload :Options, 'phrase/tool/options'
   autoload :TagValidator, 'phrase/tool/tag_validator'
   
-  ALLOWED_FILE_TYPES = %w(yml pot po)
-  ALLOWED_DOWNLOAD_FORMATS = %w(yml po)
+  ALLOWED_FILE_TYPES = %w(yml pot po xml strings json resx ts qph ini plist properties xlf)
+  ALLOWED_DOWNLOAD_FORMATS = %w(yml po xml strings json resx ts qph ini plist properties xlf)
   DEFAULT_DOWNLOAD_FORMAT = "yml"
   DEFAULT_TARGET_FOLDER = "phrase/locales/"
   
