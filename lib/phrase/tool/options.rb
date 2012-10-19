@@ -17,7 +17,8 @@ class Phrase::Tool::Options
       },
       push: {
         tags: [],
-        recursive: false
+        recursive: false,
+        locale: nil
       },
       pull: {
         format: "yml",
@@ -55,6 +56,10 @@ private
           
           opts.on("-R", "--recursive", "Push files in subfolders as well (recursively)") do |recursive|
             @data[command_name][:recursive] = true
+          end
+          
+          opts.on("--locale=en", String, "Locale of the translations your file contain (required for formats that do not include the name of the locale in the file content)") do |locale|
+            @data[command_name][:locale] = locale
           end
         end
       when :pull

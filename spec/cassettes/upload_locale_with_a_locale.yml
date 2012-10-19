@@ -1,0 +1,53 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://localhost:3000/api/v1/translation_keys/upload
+    body:
+      encoding: UTF-8
+      string: filename=en.yml&file_content=en%3A%0A++foo%3A+bar&&locale_name=en&auth_token=secret123
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+      Content-Type:
+      - application/x-www-form-urlencoded
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Origin:
+      - ! '*'
+      Access-Control-Allow-Methods:
+      - POST, GET, OPTIONS
+      Access-Control-Max-Age:
+      - '1728000'
+      Content-Type:
+      - application/json; charset=utf-8
+      X-Ua-Compatible:
+      - IE=Edge
+      Etag:
+      - ! '"7363e85fe9edee6f053a4b319588c086"'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Set-Cookie:
+      - _translate_session=BAh7BkkiD3Nlc3Npb25faWQGOgZFRkkiJWI4OWFhYjdmZTk1NzA4YTA1YWYzYmY4NWM3M2JmMDIwBjsAVA%3D%3D--3c5e9cd3f75bbaa40c0100e51379b178e784f7ed;
+        path=/; HttpOnly
+      X-Request-Id:
+      - 365932954e98d5c705bf26545d66e52b
+      X-Runtime:
+      - '2.712548'
+      Content-Length:
+      - '16'
+      Connection:
+      - keep-alive
+      Server:
+      - thin 1.3.1 codename Triple Espresso
+    body:
+      encoding: US-ASCII
+      string: ! '{"success":true}'
+    http_version: 
+  recorded_at: Tue, 09 Oct 2012 12:58:18 GMT
+recorded_with: VCR 2.2.1

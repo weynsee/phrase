@@ -261,7 +261,7 @@ describe Phrase::Tool do
         
         context "tag(s) given" do
           it "should use the tag in the upload call" do
-            api_client.should_receive(:upload).with(kind_of(String), kind_of(String), ["foobar"])
+            api_client.should_receive(:upload).with(kind_of(String), kind_of(String), ["foobar"], nil)
             phrase "push spec/fixtures/yml/nice.en.yml --tags=foobar"
           end
           
@@ -575,25 +575,27 @@ describe Phrase::Tool do
     
   end
   
-  describe "#upload_files(files, tags=[])" do
+  describe "#upload_files(files, tags=[], locale=nil)" do
     let(:tool) { Phrase::Tool.new([]) }
     let(:tags) { stub }
+    let(:locale) { "en" }
     
     before(:each) do
       tool.stub(:upload_file)
     end
     
     it "uploads each file" do
-      tool.should_receive(:upload_file).with("foo.txt", tags)
-      tool.should_receive(:upload_file).with("bar.txt", tags)
-      tool.send(:upload_files, ["foo.txt", "bar.txt"], tags)
+      tool.should_receive(:upload_file).with("foo.txt", tags, locale)
+      tool.should_receive(:upload_file).with("bar.txt", tags, locale)
+      tool.send(:upload_files, ["foo.txt", "bar.txt"], tags, locale)
     end
   end
   
-  describe "#upload_file(file, tags=[])" do
+  describe "#upload_file(file, tags=[], locale=nil)" do
     let(:api_client) { stub(upload: true) }
     let(:file) { "foo.txt" }
     let(:tags) { [] }
+    let(:locale) { nil }
     
     before(:each) do
       subject.stub(:api_client).and_return(api_client)
@@ -604,7 +606,7 @@ describe Phrase::Tool do
       
       it "should skip upload" do
         api_client.should_not_receive(:upload)
-        subject.send(:upload_file, file, tags)
+        subject.send(:upload_file, file, tags, locale)
       end
     end
     
@@ -613,7 +615,7 @@ describe Phrase::Tool do
       
       it "should skip upload" do
         api_client.should_not_receive(:upload)
-        subject.send(:upload_file, file, tags)
+        subject.send(:upload_file, file, tags, locale)
       end
     end
     
@@ -621,8 +623,8 @@ describe Phrase::Tool do
       let(:file) { "spec/fixtures/yml/nice.en.yml" }
       
       it "should upload the file" do
-        api_client.should_receive(:upload).with(file, kind_of(String), tags)
-        subject.send(:upload_file, file, tags)
+        api_client.should_receive(:upload).with(file, kind_of(String), tags, locale)
+        subject.send(:upload_file, file, tags, locale)
       end
     end
   end

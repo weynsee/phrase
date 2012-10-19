@@ -211,7 +211,23 @@ describe Phrase::Api::Client do
         VCR.use_cassette('upload locale with tags') do
           subject.upload("en.yml", "en:\n  foo: bar", ["foo", "bar"]).should be_true
         end
-      end      
+      end
+    end
+    
+    context "a locale given" do
+      it "should return true" do
+        VCR.use_cassette('upload locale with a locale') do
+          subject.upload("en.yml", "en:\n  foo: bar", [], "en").should be_true
+        end
+      end        
+    end
+    
+    context "no locale given" do
+      it "should return true" do
+        VCR.use_cassette('upload locale without locale') do
+          subject.upload("en.yml", "en:\n  foo: bar", [], nil).should be_true
+        end
+      end  
     end
   end
   

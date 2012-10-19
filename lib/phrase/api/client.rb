@@ -86,13 +86,14 @@ class Phrase::Api::Client
     end
   end
   
-  def upload(filename, file_content, tags=[])
+  def upload(filename, file_content, tags=[], locale=nil)
     begin
       params = {
         "filename" => filename,
         "file_content" => file_content,
         "tags[]" => tags
       }
+      params["locale_name"] = locale unless locale.nil?
       perform_api_request("/translation_keys/upload", :post, params)
     rescue Phrase::Api::Exceptions::ServerError => e
       raise "File #{filename} could not be uploaded"

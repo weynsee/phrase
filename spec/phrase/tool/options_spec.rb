@@ -21,12 +21,18 @@ describe Phrase::Tool::Options do
     
     context "push command" do
       let(:command) { "push" }
-      let(:args) { ["--tags=lorem,ipsum", "--recursive"] }
+      let(:args) { ["--tags=lorem,ipsum", "--recursive", "--locale=fr"] }
       
       describe "tags" do
         subject { Phrase::Tool::Options.new(args, command).get(:tags) }
         
         it { should eql(["lorem", "ipsum"]) }
+      end
+      
+      describe "locale" do
+        subject { Phrase::Tool::Options.new(args, command).get(:locale) }
+        
+        it { should == "fr" }
       end
       
       describe "recursive" do

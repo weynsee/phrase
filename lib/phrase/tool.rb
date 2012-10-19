@@ -11,6 +11,7 @@ class Phrase::Tool
   
   ALLOWED_FILE_TYPES = %w(yml pot po xml strings json resx ts qph ini plist properties xlf)
   ALLOWED_DOWNLOAD_FORMATS = %w(yml po xml strings json resx ts qph ini plist properties xlf)
+  FORMATS_CONTAINING_LOCALE = %q(po yml qph ts xlf)
   DEFAULT_DOWNLOAD_FORMAT = "yml"
   DEFAULT_TARGET_FOLDER = "phrase/locales/"
   
@@ -63,6 +64,8 @@ protected
   def push
     check_config_available
     tags = @options.get(:tags)
+    locale = @options.get(:locale)
+    
     unless tags.empty? or valid_tags_are_given?(tags)
       print_error "Invalid tags: Only letters, numbers, underscores and dashes are allowed"
       exit(43)
@@ -74,7 +77,7 @@ protected
       exit(43)
     end
     
-    upload_files(files, tags)
+    upload_files(files, tags, locale)
   end
 
   def pull
@@ -110,8 +113,8 @@ usage: phrase <command> [<args>]
 
   phrase init --secret=<YOUR SECRET> --default-locale=<DEFAULT LOCALE>
 
-  phrase push FILE [--tags=<tags>]
-  phrase push DIRECTORY [--tags=<tags>]
+  phrase push FILE [--tags=<tags>] [--locale=<locale>]
+  phrase push DIRECTORY [--tags=<tags>] [--locale=<locale>]
   
   phrase pull [LOCALE] [--target=<target-folder>] [--format=<format>]
   
@@ -153,13 +156,13 @@ private
     end
   end
 
-  def upload_files(files, tags=[])
+  def upload_files(files, tags=[], locale=nil)
     files.each do |file|
-      upload_file(file, tags)
+      upload_file(file, tags, locale)
     end
   end
   
-  def upload_file(file, tags=[])
+  def upload_file(file, tags=[], locale=nil)
     valid = true
     
     if File.directory?(file)
@@ -175,7 +178,7 @@ private
       begin
         tagged = " (tagged: #{tags.join(", ")})" if tags.size > 0
         print_message "Uploading #{file}#{tagged}..."
-        api_client.upload(file, File.read(file), tags)
+        api_client.upload(file, File.read(file), tags, locale)
         print_message "OK"
       rescue Exception => e
         print_message "Failed"
