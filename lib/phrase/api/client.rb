@@ -74,7 +74,7 @@ class Phrase::Api::Client
     true
   end
   
-  def download_translations_for_locale(name, format=Phrase::Tool::DEFAULT_DOWNLOAD_FORMAT)
+  def download_translations_for_locale(name, format)
     raise "You must specify a name" if name.nil? or name.blank?
     raise "You must specify a format" if format.nil? or format.blank?
     

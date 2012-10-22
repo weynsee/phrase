@@ -64,7 +64,7 @@ private
         end
       when :pull
         OptionParser.new do |opts|
-          opts.on("--format=yml", String, "Allowed formats: #{Phrase::Tool::ALLOWED_DOWNLOAD_FORMATS.join(", ")}") do |format|
+          opts.on("--format=yml", String, "See documentation for list of allowed locales") do |format|
             @data[command_name][:format] = format
           end
           

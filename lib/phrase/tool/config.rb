@@ -3,7 +3,7 @@
 require 'json'
 
 class Phrase::Tool::Config
-  def initialize
+  def load
     if File.exist?(".phrase")
       begin
         contents = File.read(".phrase")
@@ -12,6 +12,7 @@ class Phrase::Tool::Config
         $stderr.puts "Could not parse config file: #{err}"
       end
     end
+    self
   end
   
   def secret

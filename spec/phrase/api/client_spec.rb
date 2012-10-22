@@ -156,7 +156,7 @@ describe Phrase::Api::Client do
   describe "#download_translations_for_locale" do
     it "should raise an exception if the name is blank" do
       lambda {
-        subject.download_translations_for_locale("")
+        subject.download_translations_for_locale("", "yml")
       }.should raise_error "You must specify a name"
     end
     
@@ -170,7 +170,7 @@ describe Phrase::Api::Client do
       it "should raise an error" do
         VCR.use_cassette('download translations for unexistant locale') do
           lambda {
-            subject.download_translations_for_locale("does_not_exist")
+            subject.download_translations_for_locale("does_not_exist", "yml")
           }.should raise_error "Translations does_not_exist could not be downloaded"
         end
       end
@@ -191,7 +191,7 @@ describe Phrase::Api::Client do
       
       it "should return true" do
         VCR.use_cassette('download translations') do
-          subject.download_translations_for_locale("en").should include "en:"
+          subject.download_translations_for_locale("en", "yml").should include "en:"
         end
       end
     end

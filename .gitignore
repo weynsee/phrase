@@ -19,3 +19,4 @@ tmp
 .rvmrc
 .DS_Store
 /phrase
+.rspec
