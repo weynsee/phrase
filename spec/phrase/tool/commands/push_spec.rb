@@ -18,10 +18,14 @@ describe Phrase::Tool::Commands::Push do
     options.stub(:get).with(:tags).and_return(tags)
     options.stub(:get).with(:recursive).and_return(recursive)
     Phrase::Tool::Commands::Push.any_instance.stub(:config).and_return(config)
+    Phrase::Tool::Commands::Push.any_instance.stub(:print_message)
+    Phrase::Tool::Commands::Push.any_instance.stub(:print_error)
   end
   
   describe "#execute!" do
-    
+    it "is pending" do
+      
+    end
   end
   
   describe "#choose_files_to_upload" do

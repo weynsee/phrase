@@ -8,6 +8,9 @@ describe Phrase::Tool::Commands::Init do
   subject { Phrase::Tool::Commands::Init.new(options) }
   
   before(:each) do
+    Phrase::Tool::Commands::Init.any_instance.stub(:print_error)
+    Phrase::Tool::Commands::Init.any_instance.stub(:print_server_error)
+    Phrase::Tool::Commands::Init.any_instance.stub(:print_message)
     subject.stub(:print_message)
     subject.stub(:print_error)
     subject.stub(:exit_command)
@@ -18,6 +21,8 @@ describe Phrase::Tool::Commands::Init do
       options.stub(:get).with(:secret).and_return(secret)
       options.stub(:get).with(:default_locale).and_return(default_locale)
       subject.stub(:api_client).and_return(api_client)
+      subject.stub(:create_locale)
+      subject.stub(:make_locale_default)
     end
     
     context "secret was given" do

@@ -12,6 +12,8 @@ describe Phrase::Tool::Commands::Pull do
     options.stub(:get).with(:format).and_return(format)
     options.stub(:get).with(:target).and_return(target)
     Phrase::Tool::Commands::Pull.any_instance.stub(:config).and_return(config)
+    Phrase::Tool::Commands::Pull.any_instance.stub(:print_message)
+    Phrase::Tool::Commands::Pull.any_instance.stub(:print_error)
   end
   
   subject { Phrase::Tool::Commands::Pull.new(options, args) }
