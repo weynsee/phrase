@@ -7,6 +7,14 @@ describe Phrase::Config do
     Phrase::Config.new
   }
   
+  after(:each) do
+    Phrase::Config.class_variable_set(:@@auth_token, nil)
+    Phrase::Config.class_variable_set(:@@enabled, false)
+    Phrase::Config.class_variable_set(:@@backend, Phrase::Backend::PhraseService.new)
+    Phrase::Config.class_variable_set(:@@prefix, "{{__")
+    Phrase::Config.class_variable_set(:@@suffix, "__}}")
+  end
+  
   describe "#client_version" do
     it "should return the phrase client version" do
       subject.client_version.should == "0.1"

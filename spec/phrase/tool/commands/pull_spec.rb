@@ -119,6 +119,7 @@ describe Phrase::Tool::Commands::Pull do
 
     context "file exists" do
       before(:each) do
+        FileUtils.mkpath("phrase/locales/")
         File.open("phrase/locales/phrase.foo.yml", "w") do |file|
           file.write("hello")
         end
