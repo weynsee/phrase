@@ -84,8 +84,6 @@ protected
   def pull
     check_config_available
     
-    create_locales_folder!
-    
     locale = args[1]
     locales = []
     if locale && locale.strip != ''
@@ -269,10 +267,6 @@ private
   def file_valid?(filepath)
     extension = filepath.split('.').last
     ALLOWED_FILE_TYPES.include?(extension)
-  end
-  
-  def create_locales_folder!
-    ::FileUtils.mkdir_p("phrase/locales")
   end
   
   def check_config_available

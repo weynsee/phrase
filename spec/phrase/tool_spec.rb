@@ -347,12 +347,6 @@ describe Phrase::Tool do
       end
     end
     
-    it "should create the locales folder" do
-      phrase "init --secret=my_secret"
-      phrase "pull fr"
-      File.directory?("phrase/locales/").should be_true
-    end
-    
     context "locale is invalid" do
       it "should render an error" do
         phrase "init --secret=my_secret"
