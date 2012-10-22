@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    phrase (0.2.4)
+    phrase (0.2.5)
       activesupport (~> 3.0)
       addressable (~> 2.2.8)
       json

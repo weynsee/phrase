@@ -386,7 +386,7 @@ describe Phrase::Tool do
           end
         end
 
-        context "a valid format is specified" do
+        context "valid format is specified" do
           it "should store in po format" do
             phrase "pull ru --format=po"
             File.read("phrase/locales/phrase.ru.po").should == "content for ru"
@@ -451,11 +451,11 @@ describe Phrase::Tool do
       
       context "a target folder is specified" do
         before(:each) do
-          ::FileUtils.rm_rf("phrase/phrase.ru.yml")
+          ::FileUtils.rm_rf("inexistant/folder/")
         end
         
         after(:each) do
-          ::FileUtils.rm_rf("phrase/phrase.ru.yml")
+          ::FileUtils.rm_rf("inexistant/folder/")
         end
         
         it "should fetch translations and store it in the given directory" do
@@ -468,12 +468,8 @@ describe Phrase::Tool do
             phrase "pull ru --target=inexistant/folder"
           end
           
-          it "should not save the content" do
-            File.exists?("inexistant/folder/phrase.ru.yml").should be_false
-          end
-          
-          it "should display an error" do
-            err.should include "Cannot write file to target folder (inexistant/folder/)"
+          it "should create the folder and save the content" do
+            File.exists?("inexistant/folder/phrase.ru.yml").should be_true
           end
         end
       end
@@ -513,16 +509,17 @@ describe Phrase::Tool do
         
         context "target folder does not exist" do
           before(:each) do
+            ::FileUtils.rm_rf("inexistant/folder")
             phrase "pull --target=inexistant/folder"
           end
           
-          it "should not save the content" do
-            File.exists?("inexistant/folder/phrase.de.yml").should be_false
-            File.exists?("inexistant/folder/phrase.pl.yml").should be_false
+          after(:each) do
+            ::FileUtils.rm_rf("inexistant/folder")
           end
           
-          it "should display an error" do
-            err.should include "Cannot write file to target folder (inexistant/folder/)"
+          it "should not save the content" do
+            File.exists?("inexistant/folder/phrase.de.yml").should be_true
+            File.exists?("inexistant/folder/phrase.pl.yml").should be_true
           end
         end
       end

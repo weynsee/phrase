@@ -8,6 +8,7 @@ class Phrase::Tool
   autoload :Config, 'phrase/tool/config'
   autoload :Options, 'phrase/tool/options'
   autoload :TagValidator, 'phrase/tool/tag_validator'
+  autoload :Formats, 'phrase/tool/formats'
   
   ALLOWED_FILE_TYPES = %w(yml pot po xml strings json resx ts qph ini plist properties xlf)
   ALLOWED_DOWNLOAD_FORMATS = %w(yml po xml strings json resx ts qph ini plist properties xlf)
@@ -199,14 +200,16 @@ private
   end
   
   def store_translations_file(name, content, format=DEFAULT_DOWNLOAD_FORMAT, target=DEFAULT_TARGET_FOLDER)
-    directory = target 
-    directory << "/" unless directory.end_with?("/") 
+    directory = target
+    directory << "/" unless directory.end_with?("/")
     
-    if File.directory?(directory)
+    begin
+      FileUtils.mkpath(directory)
+      filename = ""
       File.open("#{directory}phrase.#{name}.#{format}", "w") do |file|
         file.write(content)
       end
-    else
+    rescue
       print_error("Cannot write file to target folder (#{directory})")
       exit(101)
     end
