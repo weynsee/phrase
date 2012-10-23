@@ -391,12 +391,12 @@ describe Phrase::Tool do
 
               it "should store in xml format" do
                 phrase "pull ru --format=xml"
-                File.read("phrase/locales/phrase.ru.xml").should == "content for ru"
+                File.read("phrase/locales/values-ru/strings.xml").should == "content for ru"
               end
 
               it "should store in strings format" do
                 phrase "pull ru --format=strings"
-                File.read("phrase/locales/phrase.ru.strings").should == "content for ru"
+                File.read("phrase/locales/ru.lproj/Localizable.strings").should == "content for ru"
               end
 
               it "should store in xlf format" do

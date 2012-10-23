@@ -1,19 +1,19 @@
 require 'spec_helper'
 
-describe Phrase::Tool::Formats::Yaml do
+describe Phrase::Tool::Formats::Ini do
   let(:the_current_directory) { "./" }
   let(:the_prefix) { "phrase" }
   let(:the_locale) { "fooish" }
-  let(:the_extension) { ".yml" }
+  let(:the_extension) { ".ini" }
   
   describe "#self.directory_for_locale" do
     it "should return the path to the current dir" do
-      Phrase::Tool::Formats::Yaml.directory_for_locale(the_locale).should eql(the_current_directory)
+      Phrase::Tool::Formats::Ini.directory_for_locale(the_locale).should eql(the_current_directory)
     end
   end
   
   describe "#self.filename_for_locale" do
-    subject { Phrase::Tool::Formats::Yaml.filename_for_locale(the_locale) }
+    subject { Phrase::Tool::Formats::Ini.filename_for_locale(the_locale) }
     
     it { should include the_prefix }
     it { should include the_locale }

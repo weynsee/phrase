@@ -38,18 +38,17 @@ private
   end
   
   def store_content_in_locale_file(locale_name, content)
-    directory = @target
-    directory << "/" unless directory.end_with?("/")
-    
     begin
-      FileUtils.mkpath(directory)
-      filename = ""
-      File.open("#{directory}phrase.#{locale_name}.#{@format}", "w") do |file|
+      directory = Phrase::Tool::Formats.directory_for_locale_in_format(locale_name, @format)
+      filename = Phrase::Tool::Formats.filename_for_locale_in_format(locale_name, @format)
+      path = File.join(base_directory, directory)
+      FileUtils.mkpath(path)
+      File.open(File.join(path, filename), "w") do |file|
         file.write(content)
       end
     rescue
       print_error("Cannot write file to target folder (#{directory})")
-      exit(101)
+      exit_command
     end
   end
   
@@ -67,5 +66,9 @@ private
   
   def format_valid?(format)
     ALLOWED_DOWNLOAD_FORMATS.include?(format)
+  end
+  
+  def base_directory
+    directory = @target
   end
 end

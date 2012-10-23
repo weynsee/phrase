@@ -2,9 +2,10 @@ require 'spec_helper'
 
 describe Phrase::Tool::Formats do
   
-  describe "#self.store_path_for_locale_in_format(locale_name, format_name)" do
+  describe "#self.file
+  name_for_locale_in_format(locale_name, format_name)" do
     let(:locale_name) { "fooish" }
-    subject { Phrase::Tool::Formats.store_path_for_locale_in_format(locale_name, format_name) }
+    subject { Phrase::Tool::Formats.filename_for_locale_in_format(locale_name, format_name) }
     
     context "format is yaml" do
       let(:format_name) { "yml" }
@@ -18,12 +19,12 @@ describe Phrase::Tool::Formats do
     
     context "format is xml" do
       let(:format_name) { "xml" }
-      it { should eql("phrase.fooish.xml") }
+      it { should eql("strings.xml") }
     end
     
     context "format is strings" do
       let(:format_name) { "strings" }
-      it { should eql("phrase.fooish.strings") }
+      it { should eql("Localizable.strings") }
     end
     
     context "format is xlf" do
