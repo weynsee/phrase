@@ -66,11 +66,11 @@ private
     
     if File.directory?(file)
       valid = false
-    end
-    
-    unless file_valid?(file)
-      valid = false
-      print_error "Notice: Could not upload #{file} (type not supported)"
+    else
+      unless file_valid?(file)
+        valid = false
+        print_error "Notice: Could not upload #{file} (type not supported)"
+      end  
     end
     
     if valid
@@ -80,8 +80,8 @@ private
         api_client.upload(file, File.read(file), @tags, @locale)
         print_message "OK".green
       rescue Exception => e
-        print_message "Failed"
-        print_server_error(e.message, file)
+        print_error "Failed"
+        print_server_error(e.message)
       end
     end
   end
