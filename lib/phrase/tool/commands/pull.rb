@@ -18,28 +18,27 @@ class Phrase::Tool::Commands::Pull < Phrase::Tool::Commands::Base
   
   def execute!
     (print_error("Invalid format: #{@format}") and exit_command) unless format_valid?(@format)
-    locales = (@locale and @locale.strip != '') ? [@locale] : fetch_locales
-    locales.each do |locale_name|      
-      print_message "Downloading #{locale_name}..."
-      fetch_translations_for_locale(locale_name, @format)
+    locales_to_download.compact.each do |locale|
+      print_message "Downloading #{locale.name}..."
+      fetch_translations_for_locale(locale, @format)
     end
   end
   
 private
   
-  def fetch_translations_for_locale(locale_name, format)
+  def fetch_translations_for_locale(locale, format)
     begin
-      content = api_client.download_translations_for_locale(locale_name, format)
-      store_content_in_locale_file(locale_name, content)
+      content = api_client.download_translations_for_locale(locale.name, format)
+      store_content_in_locale_file(locale, content)
     rescue Exception => e
       print_error "Failed"
       print_server_error(e.message)
     end
   end
   
-  def store_content_in_locale_file(locale_name, content)
-    directory = Phrase::Tool::Formats.directory_for_locale_in_format(locale_name, @format)
-    filename = Phrase::Tool::Formats.filename_for_locale_in_format(locale_name, @format)
+  def store_content_in_locale_file(locale, content)
+    directory = Phrase::Tool::Formats.directory_for_locale_in_format(locale.name, @format)
+    filename = Phrase::Tool::Formats.filename_for_locale_in_format(locale.name, @format)
     path = File.join(base_directory, directory)
     target = File.join(path, filename)
     begin
@@ -55,9 +54,11 @@ private
   end
   
   def fetch_locales
+    locales = []
     begin
-      locales = api_client.fetch_locales
-      print_message "Fetched all locales"
+      api_client.fetch_locales.each do |locale|
+        locales << Phrase::Tool::Locale.new(id: locale[:id], name: locale[:name], code: locale[:code], is_default: locale[:is_default])
+      end
       locales
     rescue Exception => e  
       print_error "Could not fetch locales from server"
@@ -72,5 +73,31 @@ private
   
   def base_directory
     directory = @target
+  end
+  
+  # TODO: test
+  def locales_to_download
+    if user_specified_a_locale?
+      [specified_locale]
+    else
+      all_locales
+    end
+  end
+  
+  # TODO: test
+  def specified_locale
+    locale = all_locales.select { |locale| locale.name == @locale }.first
+    (print_error("Locale #{@locale} does not exist") and exit_command) if locale.nil?
+    locale
+  end
+  
+  # TODO: test
+  def all_locales
+    @all_locales_from_server ||= fetch_locales
+  end
+  
+  # TODO: test
+  def user_specified_a_locale?
+    @locale and @locale.strip != ''
   end
 end

@@ -22,11 +22,9 @@ class Phrase::Api::Client
   
   def fetch_locales
     result = perform_api_request("/locales", :get)
-    locales = []
     parsed(result).map do |locale| 
-      locales << locale['name']
+      {id: locale['id'], name: locale['name'], code: locale['code'], is_default: locale['is_default']}
     end
-    locales
   end
   
   def fetch_blacklisted_keys

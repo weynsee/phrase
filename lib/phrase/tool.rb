@@ -10,6 +10,7 @@ class Phrase::Tool
   autoload :Formats, 'phrase/tool/formats'
   autoload :Commands, 'phrase/tool/commands'
   autoload :TagValidator, 'phrase/tool/tag_validator'
+  autoload :Locale, 'phrase/tool/locale'
   
   def initialize(argv)
     @args = argv

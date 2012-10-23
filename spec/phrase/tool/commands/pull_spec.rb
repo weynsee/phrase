@@ -8,6 +8,9 @@ describe Phrase::Tool::Commands::Pull do
   let(:api_client) { stub }
   let(:config) { stub(secret: "secr3t") }
   
+  let(:polish_locale) { Phrase::Tool::Locale.new(name: "pl") }
+  let(:russian_locale) { Phrase::Tool::Locale.new(name: "ru") }
+  
   before(:each) do
     Phrase::Tool::Commands::Pull.any_instance.stub(:config).and_return(config)
     Phrase::Tool::Commands::Pull.any_instance.stub(:print_message)
@@ -28,16 +31,26 @@ describe Phrase::Tool::Commands::Pull do
   
   describe "#execute!" do
     before(:each) do
-      subject.stub(:fetch_locales).and_return(["ru", "pl"])
+      subject.stub(:fetch_locales).and_return([russian_locale, polish_locale])
     end
     
     context "when a locale was given" do
-      let(:args) { ["", "fr"] }
+      let(:args) { ["", "ru"] }
       
       it "should fetch the given locale" do
-        subject.should_receive(:print_message).with(/downloading fr.../i)
-        subject.should_receive(:fetch_translations_for_locale).with("fr", "yml")
+        subject.should_receive(:print_message).with(/downloading ru.../i)
+        subject.should_receive(:fetch_translations_for_locale).with(kind_of(Phrase::Tool::Locale), "yml")
         subject.execute!
+      end
+      
+      context "when the locale does not exist" do
+        let(:args) { ["", "invalidlocale"] }
+        
+        it "should display an error" do
+          subject.should_receive(:print_error).with(/locale invalidlocale does not exist/i)
+          subject.should_not_receive(:fetch_translations_for_locale)
+          subject.execute!
+        end
       end
     end
     
@@ -47,8 +60,8 @@ describe Phrase::Tool::Commands::Pull do
       it "should fetch all locales" do
         subject.should_receive(:print_message).with(/downloading ru.../i)
         subject.should_receive(:print_message).with(/downloading pl.../i)
-        subject.should_receive(:fetch_translations_for_locale).with("ru", "yml")
-        subject.should_receive(:fetch_translations_for_locale).with("pl", "yml")
+        subject.should_receive(:fetch_translations_for_locale).with(russian_locale, "yml")
+        subject.should_receive(:fetch_translations_for_locale).with(polish_locale, "yml")
         subject.execute!
       end
     end
@@ -66,14 +79,14 @@ describe Phrase::Tool::Commands::Pull do
     end
     
     it "fetches translations for a locale" do
-      api_client.should_receive(:download_translations_for_locale).with("fr", "yml")
-      subject.send(:fetch_translations_for_locale, "fr", "yml")
+      api_client.should_receive(:download_translations_for_locale).with("pl", "yml")
+      subject.send(:fetch_translations_for_locale, polish_locale, "yml")
     end
     
     context "translations can be downloaded" do      
       it "should save the content to a file" do
-        subject.should_receive(:store_content_in_locale_file).with("fr", "foo:\n  bar: content")
-        subject.send(:fetch_translations_for_locale, "fr", "yml")
+        subject.should_receive(:store_content_in_locale_file).with(polish_locale, "foo:\n  bar: content")
+        subject.send(:fetch_translations_for_locale, polish_locale, "yml")
       end
     end
     
@@ -85,15 +98,14 @@ describe Phrase::Tool::Commands::Pull do
       
       it "should display failure message" do
         subject.should_receive(:print_error).with("Failed")
-        subject.send(:fetch_translations_for_locale, "fr", "yml")
+        subject.send(:fetch_translations_for_locale, polish_locale, "yml")
       end
       
       it "should render the server error" do
         subject.should_receive(:print_server_error)
-        subject.send(:fetch_translations_for_locale, "fr", "yml")
+        subject.send(:fetch_translations_for_locale, polish_locale, "yml")
       end
     end
-
   end
   
   describe "#store_content_in_locale_file(locale_name, content)" do
@@ -107,22 +119,22 @@ describe Phrase::Tool::Commands::Pull do
 
     context "file does not exist" do
       it "should store content to a file" do
-        subject.send(:store_content_in_locale_file, "foo", "mycontent")
-        File.read("phrase/locales/phrase.foo.yml").should == "mycontent"
+        subject.send(:store_content_in_locale_file, polish_locale, "mycontent")
+        File.read("phrase/locales/phrase.pl.yml").should == "mycontent"
       end
     end
 
     context "file exists" do
       before(:each) do
         FileUtils.mkpath("phrase/locales/")
-        File.open("phrase/locales/phrase.foo.yml", "w") do |file|
+        File.open("phrase/locales/phrase.pl.yml", "w") do |file|
           file.write("hello")
         end
       end
 
       it "should override the file" do
-        subject.send(:store_content_in_locale_file, "foo", "mycontent")
-        File.read("phrase/locales/phrase.foo.yml").should == "mycontent"
+        subject.send(:store_content_in_locale_file, polish_locale, "mycontent")
+        File.read("phrase/locales/phrase.pl.yml").should == "mycontent"
       end
     end
   end
@@ -135,15 +147,17 @@ describe Phrase::Tool::Commands::Pull do
       subject.stub(:api_client).and_return(api_client)
     end
     
+    let(:de_locale) { Phrase::Tool::Locale.new(id: 43, name: "de", code: "de-DE", is_default: true) }
+    let(:en_locale) { Phrase::Tool::Locale.new(id: 44, name: "en", code: nil, is_default: false) }
+    
     context "locales could be fetched" do
-      let(:locales) { stub }
-      
       before(:each) do
-        api_client.stub(:fetch_locales).and_return(locales)
+        api_client.stub(:fetch_locales).and_return([{id: 43, name: "de", code: "de-DE", is_default: true}, {id: 44, name: "en", code: nil, is_default: false}])
       end
       
       it "should return the locales" do
-        subject.send(:fetch_locales).should == locales
+        subject.send(:fetch_locales).should include de_locale
+        subject.send(:fetch_locales).should include en_locale
       end
     end
     

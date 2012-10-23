@@ -30,10 +30,13 @@ describe Phrase::Api::Client do
   
   describe "#fetch_locales" do
     context "request was successful" do
-      it "should return a list of locale names" do
+      it "should return a list of locale data" do
         VCR.use_cassette('fetch list of locales') do
           result = subject.fetch_locales
           result.should be_a(Array)
+          result.first[:id].should > 0
+          result.first[:name].should be_a String
+          result.first[:code].should be_a String
         end
       end
     end
