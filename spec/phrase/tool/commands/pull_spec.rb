@@ -35,7 +35,7 @@ describe Phrase::Tool::Commands::Pull do
       let(:args) { ["", "fr"] }
       
       it "should fetch the given locale" do
-        subject.should_receive(:print_message).with(/downloading phrase.fr.yml/i)
+        subject.should_receive(:print_message).with(/downloading fr.../i)
         subject.should_receive(:fetch_translations_for_locale).with("fr", "yml")
         subject.execute!
       end
@@ -45,8 +45,8 @@ describe Phrase::Tool::Commands::Pull do
       let(:args) { [] }
       
       it "should fetch all locales" do
-        subject.should_receive(:print_message).with(/downloading phrase.ru.yml/i)
-        subject.should_receive(:print_message).with(/downloading phrase.pl.yml/i)
+        subject.should_receive(:print_message).with(/downloading ru.../i)
+        subject.should_receive(:print_message).with(/downloading pl.../i)
         subject.should_receive(:fetch_translations_for_locale).with("ru", "yml")
         subject.should_receive(:fetch_translations_for_locale).with("pl", "yml")
         subject.execute!
@@ -70,12 +70,7 @@ describe Phrase::Tool::Commands::Pull do
       subject.send(:fetch_translations_for_locale, "fr", "yml")
     end
     
-    context "translations can be downloaded" do
-      it "should display a success message" do
-        subject.should_receive(:print_message).with("OK")
-        subject.send(:fetch_translations_for_locale, "fr", "yml")
-      end
-      
+    context "translations can be downloaded" do      
       it "should save the content to a file" do
         subject.should_receive(:store_content_in_locale_file).with("fr", "foo:\n  bar: content")
         subject.send(:fetch_translations_for_locale, "fr", "yml")
