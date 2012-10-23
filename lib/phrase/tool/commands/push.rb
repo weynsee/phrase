@@ -77,7 +77,8 @@ private
       begin
         tagged = " (tagged: #{@tags.join(", ")})" if @tags.size > 0
         print_message "Uploading #{file}#{tagged}..."
-        api_client.upload(file, File.read(file), @tags, @locale)
+        locale = @locale || detect_locale_name_from_file_path(file)
+        api_client.upload(file, File.read(file), @tags, locale)
         print_message "OK".green
       rescue Exception => e
         print_error "Failed"
@@ -97,5 +98,9 @@ private
   
   def rails_default_locale_folder_available?
     File.exist?(RAILS_DEFAULT_FOLDER) && File.directory?(RAILS_DEFAULT_FOLDER)
+  end
+  
+  def detect_locale_name_from_file_path(file_path)
+    Phrase::Tool::Formats.detect_locale_name_from_file_path(file_path)
   end
 end

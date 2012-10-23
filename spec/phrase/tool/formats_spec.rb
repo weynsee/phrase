@@ -2,7 +2,73 @@ require 'spec_helper'
 
 describe Phrase::Tool::Formats do
   
-  describe "#self.filename_for_locale_in_format(locale_name, format_name)" do
+  describe "#self.directory_for_locale_in_format(locale, format_name)" do
+    let(:locale) { Phrase::Tool::Locale.new(name: "fooish", code: "foo-ish") }
+    
+    subject { Phrase::Tool::Formats.directory_for_locale_in_format(locale, format_name) }
+    
+    context "format is yaml" do
+      let(:format_name) { "yml" }
+      it { should eql("./") }
+    end
+    
+    context "format is gettext" do
+      let(:format_name) { "po" }
+      it { should eql("./") }
+    end
+    
+    context "format is xml" do
+      let(:format_name) { "xml" }
+      it { should eql("values-foo-rISH") }
+    end
+    
+    context "format is strings" do
+      let(:format_name) { "strings" }
+      it { should eql("foo_ISH.lproj") }
+    end
+    
+    context "format is xlf" do
+      let(:format_name) { "xlf" }
+      it { should eql("./") }
+    end
+    
+    context "format is qph" do
+      let(:format_name) { "qph" }
+      it { should eql("./") }
+    end
+    
+    context "format is ts" do
+      let(:format_name) { "ts" }
+      it { should eql("./") }
+    end
+    
+    context "format is json" do
+      let(:format_name) { "json" }
+      it { should eql("./") }
+    end
+    
+    context "format is resx" do
+      let(:format_name) { "resx" }
+      it { should eql("./") }
+    end
+    
+    context "format is ini" do
+      let(:format_name) { "ini" }
+      it { should eql("./") }
+    end
+    
+    context "format is properties" do
+      let(:format_name) { "properties" }
+      it { should eql("./") }
+    end
+    
+    context "format is plist" do
+      let(:format_name) { "plist" }
+      it { should eql("./") }
+    end
+  end
+  
+  describe "#self.filename_for_locale_in_format(locale, format_name)" do
     let(:locale) { Phrase::Tool::Locale.new(name: "fooish", code: "foo-ish") }
     
     subject { Phrase::Tool::Formats.filename_for_locale_in_format(locale, format_name) }

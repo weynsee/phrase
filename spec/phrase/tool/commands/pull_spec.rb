@@ -144,7 +144,7 @@ describe Phrase::Tool::Commands::Pull do
       subject.stub(:print_error)
       subject.stub(:print_server_error)
       subject.stub(:print_message)
-      subject.stub(:api_client).and_return(api_client)
+      Phrase::Tool::Locale.stub(:api_client).and_return(api_client)
     end
     
     let(:de_locale) { Phrase::Tool::Locale.new(id: 43, name: "de", code: "de-DE", is_default: true) }

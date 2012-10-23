@@ -119,4 +119,14 @@ describe Phrase::Tool::Commands::Push do
   describe "#rails_default_locale_folder_available?" do
     it "is pending"
   end
+  
+  describe "#detect_locale_name_from_file_path(file_path)" do
+    subject { command.send(:detect_locale_name_from_file_path, file_path) }
+    
+    context "extension is unknown" do
+      let(:file_path) { "test.doc" }
+
+      it { should be_nil }
+    end
+  end
 end

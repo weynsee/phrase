@@ -54,13 +54,9 @@ private
   end
   
   def fetch_locales
-    locales = []
     begin
-      api_client.fetch_locales.each do |locale|
-        locales << Phrase::Tool::Locale.new(id: locale[:id], name: locale[:name], code: locale[:code], is_default: locale[:is_default])
-      end
-      locales
-    rescue Exception => e  
+      Phrase::Tool::Locale.all
+    rescue Exception => e
       print_error "Could not fetch locales from server"
       print_server_error e.message
       exit_command

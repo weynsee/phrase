@@ -29,6 +29,22 @@ describe Phrase::Tool::Formats::Strings do
     it { should == "Localizable.strings" }
   end
   
+  describe "#self.extract_locale_name_from_file_path(file_path)" do
+    subject { Phrase::Tool::Formats::Strings.extract_locale_name_from_file_path(file_path) }
+    
+    context "path contains a valid locale" do
+      let(:file_path) { "/foo/fr_FR.lproj/Localizable.strings" }
+      
+      it { should eql("fr_FR") }
+    end
+    
+    context "path does not contain a valid locale" do
+      let(:file_path) { "/foo/bar/Localizable.strings" }
+      
+      it { should be_nil }
+    end
+  end
+  
   describe "#self.formatted" do
     subject { Phrase::Tool::Formats::Strings.send(:formatted, name) }
     

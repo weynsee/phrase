@@ -40,8 +40,19 @@ module Phrase::Tool::Formats
     handler.filename_for_locale(locale)
   end
   
+  def self.detect_locale_name_from_file_path(file_path)
+    format = guess_possible_file_format_from_file_path(file_path)
+    format.nil? ? nil : handler_class_for_format(format).extract_locale_name_from_file_path(file_path)
+  end
+  
   def self.handler_class_for_format(format_name)
     SUPPORTED_FORMATS.fetch(format_name.to_sym)
   end
   private_class_method :handler_class_for_format
+  
+  def self.guess_possible_file_format_from_file_path(file_path)
+    extension = file_path.split('.').last.downcase
+    return SUPPORTED_FORMATS.has_key?(extension.to_sym) ? extension.to_sym : nil
+  end
+  private_class_method :guess_possible_file_format_from_file_path
 end

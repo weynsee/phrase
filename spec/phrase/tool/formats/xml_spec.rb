@@ -40,6 +40,44 @@ describe Phrase::Tool::Formats::Xml do
     it { should eql "strings.xml" }
   end
   
+  describe "#self.extract_locale_name_from_file_path(file_path)" do
+    subject { Phrase::Tool::Formats::Xml.extract_locale_name_from_file_path(file_path) }
+    
+    before(:each) do
+      Phrase::Tool::Formats::Xml.stub(:default_locale_name).and_return("default-locale")
+    end
+    
+    context "path contains /values/ (which represents the default locale)" do
+      let(:file_path) { "/foo/values/strings.xml" }
+      
+      it { should eql("default-locale") }
+    end
+    
+    context "path contains a valid locale" do
+      let(:file_path) { "/foo/values-fr/strings.xml" }
+      
+      it { should eql("fr") }
+    end
+    
+    context "path contains a valid, full locale" do
+      let(:file_path) { "/foo/values-de-DE/strings.xml" }
+      
+      it { should eql("de-DE") }
+    end
+    
+    context "path contains a valid locale with region" do
+      let(:file_path) { "/foo/values-pt-rBR/strings.xml" }
+      
+      it { should eql("pt-BR") }
+    end
+    
+    context "path does not contain a valid locale" do
+      let(:file_path) { "/foo/bar/strings.xml" }
+      
+      it { should be_nil }
+    end
+  end
+  
   describe "#self.formatted(name)" do
     subject { Phrase::Tool::Formats::Xml.send(:formatted, name) }
     

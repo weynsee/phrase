@@ -346,11 +346,15 @@ describe Phrase::Tool do
       end
 
       context "auth token is present" do
-        let(:list_of_locales) { [{name: "de"}, {name: "ru"}] }
+        let(:list_of_locales) { [
+          Phrase::Tool::Locale.new({name: "de"}), 
+          Phrase::Tool::Locale.new({name: "ru"}), 
+          Phrase::Tool::Locale.new({name: "pl"})
+        ] }
         
         before(:each) do
           phrase "init --secret=my_secret"
-          api_client.stub(:fetch_locales).and_return(list_of_locales)
+          Phrase::Tool::Locale.stub(:all).and_return(list_of_locales)
         end
       
         context "locale is invalid" do
@@ -474,15 +478,11 @@ describe Phrase::Tool do
         end
 
         context "no locale is given" do
-          let(:list_of_locales) { [{name: "de"}, {name: "pl"}] }
-
           before(:each) do
             phrase "init --secret=my_secret"
-            api_client.stub(:fetch_locales).and_return(list_of_locales)
           end
 
           it "should download each translation file and store it" do
-            api_client.should_receive(:fetch_locales).and_return([{name: "de"}, {name: "pl"}])
             phrase "pull"
             File.read("phrase/locales/phrase.de.yml").should == "content for de"
             File.read("phrase/locales/phrase.pl.yml").should == "content for pl"
