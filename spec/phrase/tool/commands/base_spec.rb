@@ -33,7 +33,7 @@ describe Phrase::Tool::Commands::Base do
     let(:message) { "Hello Error!" }
     
     it "should print a message to stderr" do
-      $stderr.should_receive(:puts).with(message)
+      $stderr.should_receive(:puts).with(/Hello Error/)
       subject.send(:print_error, message)
     end
   end

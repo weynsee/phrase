@@ -23,7 +23,7 @@ class Phrase::Tool::Commands::Push < Phrase::Tool::Commands::Base
     
     files = choose_files_to_upload
     if files.empty?
-      print_message "Could not find any files to upload"
+      print_message "Could not find any files to upload".light_red
       exit_command
     else
       upload_files(files)
@@ -78,7 +78,7 @@ private
         tagged = " (tagged: #{@tags.join(", ")})" if @tags.size > 0
         print_message "Uploading #{file}#{tagged}..."
         api_client.upload(file, File.read(file), @tags, @locale)
-        print_message "OK"
+        print_message "OK".green
       rescue Exception => e
         print_message "Failed"
         print_server_error(e.message, file)

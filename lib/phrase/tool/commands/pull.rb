@@ -47,7 +47,7 @@ private
       File.open(target, "w") do |file|
         file.write(content)
       end
-      print_message "Saved to #{target}"
+      print_message "Saved to #{target}".green
     rescue
       print_error("Cannot write file to target folder (#{path})")
       exit_command

@@ -24,18 +24,18 @@ private
   def create_locale(name)
     begin
       api_client.create_locale(name)
-      print_message "Created locale \"#{name}\""
+      print_message "Created locale \"#{name}\"".green
     rescue Exception => e
-      print_message "Notice: Locale \"#{name}\" could not be created (maybe it already exists)"
+      print_message "Notice: Locale \"#{name}\" could not be created (maybe it already exists)".light_red
     end
   end
   
   def make_locale_default(name)
     begin
       api_client.make_locale_default(name)
-      print_message "Locale \"#{name}\" is now the default locale"
+      print_message "Locale \"#{name}\" is now the default locale".green
     rescue Exception => e
-      print_message "Notice: Locale \"#{name}\" could not be made the default locale"
+      print_message "Notice: Locale \"#{name}\" could not be made the default locale".light_red
       print_server_error(e.message)
     end
   end

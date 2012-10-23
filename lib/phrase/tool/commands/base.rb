@@ -19,7 +19,7 @@ module Phrase::Tool::Commands
     end
     
     def self.print_error(msg)
-      $stderr.puts msg
+      $stderr.puts msg.red
     end
     
     def self.print_server_error(msg, location=nil)

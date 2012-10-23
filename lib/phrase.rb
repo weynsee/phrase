@@ -1,6 +1,7 @@
 # -*- encoding : utf-8 -*-
 
 require 'active_support/all'
+require 'colorize'
 
 module Phrase
   autoload :Config, 'phrase/config'
