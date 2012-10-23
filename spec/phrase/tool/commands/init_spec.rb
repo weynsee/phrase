@@ -1,11 +1,11 @@
 require "spec_helper"
 
 describe Phrase::Tool::Commands::Init do
-  let(:options) { stub }
+  let(:args) { [] }
+  let(:options) { Phrase::Tool::Options.new(args, "init") }
   let(:api_client) { stub }
-  let(:default_locale) { "fooish" }
 
-  subject { Phrase::Tool::Commands::Init.new(options) }
+  subject { Phrase::Tool::Commands::Init.new(options, args) }
   
   before(:each) do
     Phrase::Tool::Commands::Init.any_instance.stub(:print_error)
@@ -18,15 +18,13 @@ describe Phrase::Tool::Commands::Init do
   
   describe "#execute!" do
     before(:each) do
-      options.stub(:get).with(:secret).and_return(secret)
-      options.stub(:get).with(:default_locale).and_return(default_locale)
       subject.stub(:api_client).and_return(api_client)
       subject.stub(:create_locale)
       subject.stub(:make_locale_default)
     end
     
     context "secret was given" do
-      let(:secret) { "secr3t" }
+      let(:args) { ["--secret=secr3t", "--default-locale=fooish"] }
       
       it "should store the secret in config object" do
         subject.execute!
@@ -49,8 +47,8 @@ describe Phrase::Tool::Commands::Init do
       end
     end
     
-    context "secret was not given" do
-      let(:secret) { nil }
+    context "no secret was given" do
+      let(:args) { [] }
       
       it "should display an error" do
         subject.should_receive(:print_error).with(/No auth token was given/)

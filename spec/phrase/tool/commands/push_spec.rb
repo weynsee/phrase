@@ -1,31 +1,21 @@
 require "spec_helper"
 
 describe Phrase::Tool::Commands::Push do
-  let(:options) { stub }
   let(:args) { [] }
-  let(:locale) { stub }
-  let(:format) { stub }
-  let(:tags) { stub }
-  let(:recursive) { stub }
+  let(:options) { Phrase::Tool::Options.new(args, "push") }
   let(:config) { stub(secret: "secr3t") }
   let(:command) { Phrase::Tool::Commands::Push.new(options, args) }
   
   subject { command }
   
   before(:each) do
-    options.stub(:get).with(:locale).and_return(locale)
-    options.stub(:get).with(:format).and_return(format)
-    options.stub(:get).with(:tags).and_return(tags)
-    options.stub(:get).with(:recursive).and_return(recursive)
     Phrase::Tool::Commands::Push.any_instance.stub(:config).and_return(config)
     Phrase::Tool::Commands::Push.any_instance.stub(:print_message)
     Phrase::Tool::Commands::Push.any_instance.stub(:print_error)
   end
   
   describe "#execute!" do
-    it "is pending" do
-      
-    end
+    it "is pending"
   end
   
   describe "#choose_files_to_upload" do
@@ -47,8 +37,6 @@ describe Phrase::Tool::Commands::Push do
   describe "#upload_file(file)" do
     let(:api_client) { stub(upload: true) }
     let(:file) { "foo.txt" }
-    let(:tags) { ["foo", "bar"] }
-    let(:locale) { "fr" }
     
     before(:each) do
       subject.stub(:api_client).and_return(api_client)
@@ -76,7 +64,7 @@ describe Phrase::Tool::Commands::Push do
       let(:file) { "spec/fixtures/yml/nice.en.yml" }
       
       it "should upload the file" do
-        api_client.should_receive(:upload).with(file, kind_of(String), tags, locale)
+        api_client.should_receive(:upload).with(file, kind_of(String), [], nil)
         subject.send(:upload_file, file)
       end
     end

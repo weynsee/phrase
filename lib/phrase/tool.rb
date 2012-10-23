@@ -21,16 +21,16 @@ class Phrase::Tool
     
     command = case command_name
       when /init/
-        Phrase::Tool::Commands::Init.new(@options)
+        Phrase::Tool::Commands::Init.new(@options, @args)
       when /push/
         Phrase::Tool::Commands::Push.new(@options, @args)
       when /pull/
         Phrase::Tool::Commands::Pull.new(@options, @args)
       else
         if @options.get(:version)
-          Phrase::Tool::Commands::ShowVersion.new(@options)
+          Phrase::Tool::Commands::ShowVersion.new(@options, @args)
         else
-          Phrase::Tool::Commands::ShowHelp.new(@options)
+          Phrase::Tool::Commands::ShowHelp.new(@options, @args)
         end
     end
     command.execute!

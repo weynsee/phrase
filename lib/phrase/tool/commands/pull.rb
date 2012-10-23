@@ -11,6 +11,7 @@ class Phrase::Tool::Commands::Pull < Phrase::Tool::Commands::Base
     require_auth_token!
     
     @locale = @args[1]
+    
     @format = @options.get(:format) || DEFAULT_DOWNLOAD_FORMAT
     @target = @options.get(:target) || DEFAULT_TARGET_FOLDER
   end

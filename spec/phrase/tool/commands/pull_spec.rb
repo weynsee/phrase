@@ -3,14 +3,12 @@ require "spec_helper"
 describe Phrase::Tool::Commands::Pull do
   let(:format) { "yml" }
   let(:target) { "./phrase/locales" }
-  let(:options) { stub }
   let(:args) { [] }
+  let(:options) { Phrase::Tool::Options.new(args, "pull") }
   let(:api_client) { stub }
   let(:config) { stub(secret: "secr3t") }
   
   before(:each) do
-    options.stub(:get).with(:format).and_return(format)
-    options.stub(:get).with(:target).and_return(target)
     Phrase::Tool::Commands::Pull.any_instance.stub(:config).and_return(config)
     Phrase::Tool::Commands::Pull.any_instance.stub(:print_message)
     Phrase::Tool::Commands::Pull.any_instance.stub(:print_error)
@@ -34,7 +32,7 @@ describe Phrase::Tool::Commands::Pull do
     end
     
     context "when a locale was given" do
-      let(:args) { [nil, "fr"] }
+      let(:args) { ["", "fr"] }
       
       it "should fetch the given locale" do
         subject.should_receive(:print_message).with(/downloading phrase.fr.yml/i)

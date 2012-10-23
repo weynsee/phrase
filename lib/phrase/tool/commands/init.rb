@@ -1,8 +1,8 @@
 # -*- encoding : utf-8 -*-
 
 class Phrase::Tool::Commands::Init < Phrase::Tool::Commands::Base
-  def initialize(options)
-    super(options)
+  def initialize(options, args)
+    super(options, args)
   end
   
   def execute!
