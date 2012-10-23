@@ -30,14 +30,14 @@ module Phrase::Tool::Formats
     plist: Phrase::Tool::Formats::Plist
   }
   
-  def self.directory_for_locale_in_format(locale_name, format_name)
+  def self.directory_for_locale_in_format(locale, format_name)
     handler = handler_class_for_format(format_name)
-    handler.directory_for_locale(locale_name)
+    handler.directory_for_locale(locale)
   end
   
-  def self.filename_for_locale_in_format(locale_name, format_name)
+  def self.filename_for_locale_in_format(locale, format_name)
     handler = handler_class_for_format(format_name)
-    handler.filename_for_locale(locale_name)
+    handler.filename_for_locale(locale)
   end
   
   def self.handler_class_for_format(format_name)

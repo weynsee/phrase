@@ -37,8 +37,8 @@ private
   end
   
   def store_content_in_locale_file(locale, content)
-    directory = Phrase::Tool::Formats.directory_for_locale_in_format(locale.name, @format)
-    filename = Phrase::Tool::Formats.filename_for_locale_in_format(locale.name, @format)
+    directory = Phrase::Tool::Formats.directory_for_locale_in_format(locale, @format)
+    filename = Phrase::Tool::Formats.filename_for_locale_in_format(locale, @format)
     path = File.join(base_directory, directory)
     target = File.join(path, filename)
     begin

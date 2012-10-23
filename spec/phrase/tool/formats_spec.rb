@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe Phrase::Tool::Formats do
   
-  describe "#self.file
-  name_for_locale_in_format(locale_name, format_name)" do
-    let(:locale_name) { "fooish" }
-    subject { Phrase::Tool::Formats.filename_for_locale_in_format(locale_name, format_name) }
+  describe "#self.filename_for_locale_in_format(locale_name, format_name)" do
+    let(:locale) { Phrase::Tool::Locale.new(name: "fooish", code: "foo-ish") }
+    
+    subject { Phrase::Tool::Formats.filename_for_locale_in_format(locale, format_name) }
     
     context "format is yaml" do
       let(:format_name) { "yml" }
