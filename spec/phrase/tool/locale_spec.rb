@@ -52,8 +52,15 @@ describe Phrase::Tool::Locale do
   end
   
   describe "#self.api_client" do
+    let(:config) { stub(secret: "foo") }
+    
+    before(:each) do
+      Phrase::Tool::Locale.stub(:config).and_return(config)
+    end
+    
     subject { Phrase::Tool::Locale.send(:api_client) }
     
     it { should be_a Phrase::Api::Client }
+    specify { subject.send(:auth_token).should == "foo" }
   end
 end
