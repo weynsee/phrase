@@ -78,13 +78,27 @@ private
         tagged = " (tagged: #{@tags.join(", ")})" if @tags.size > 0
         print_message "Uploading #{file}#{tagged}..."
         locale = @locale || detect_locale_name_from_file_path(file)
-        api_client.upload(file, File.read(file), @tags, locale)
+        api_client.upload(file, file_content(file), @tags, locale)
         print_message "OK".green
       rescue Exception => e
         print_error "Failed"
         print_server_error(e.message)
       end
     end
+  end
+  
+  def file_content(file)
+    content = File.open(file).read
+    content = utf16_to_utf8(content) if file_seems_to_be_utf16?(file)
+    content
+  end
+  
+  def utf16_to_utf8(string)
+    string.encode("UTF-8", "UTF-16")
+  end
+  
+  def file_seems_to_be_utf16?(file)
+    Phrase::Tool::EncodingDetector.file_seems_to_be_utf16?(file)
   end
   
   def file_valid?(filepath)

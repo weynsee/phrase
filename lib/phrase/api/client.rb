@@ -203,9 +203,9 @@ private
   def set_form_data(request, params, separator='&')
     request.body = params.map do |key, value| 
       if value.instance_of?(Array)
-        value.map {|value_item| "#{CGI::escape(key.to_s)}=#{CGI::escape(value_item.to_s)}"}.join(separator)
+        value.map {|value_item| "#{escaped(key.to_s)}=#{escaped(value_item.to_s)}"}.join(separator)
       else
-        "#{CGI::escape(key.to_s)}=#{CGI::escape(value.to_s)}"
+        "#{escaped(key.to_s)}=#{escaped(value.to_s)}"
       end
     end.join(separator)
     request.content_type = 'application/x-www-form-urlencoded'
@@ -213,5 +213,9 @@ private
   
   def parsed(raw_data)
     JSON.parse(raw_data)
+  end
+  
+  def escaped(value) 
+    CGI::escape(value)
   end
 end
