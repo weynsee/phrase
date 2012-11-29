@@ -453,11 +453,11 @@ describe Phrase::Tool do
 
           context "a target folder is specified" do
             before(:each) do
-              ::FileUtils.rm_rf("inexistant/folder/")
+              ::FileUtils.rm_rf("inexistant")
             end
 
             after(:each) do
-              ::FileUtils.rm_rf("inexistant/folder/")
+              ::FileUtils.rm_rf("inexistant")
             end
 
             it "should fetch translations and store it in the given directory" do
