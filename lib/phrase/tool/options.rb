@@ -36,7 +36,7 @@ class Phrase::Tool::Options
 private
   
   def options
-    OptionFactory.send("#{command_name}_options", @data)
+    OptionFactory.options_for(command_name, @data)
   end
   
   def command_name
