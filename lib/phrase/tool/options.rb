@@ -1,9 +1,8 @@
 # -*- encoding : utf-8 -*-
 
-require 'optparse'
+require File.expand_path('../option_factory', __FILE__)
 
 class Phrase::Tool::Options
-  
   def initialize(args, command="")
     @command = command
     @data = {
@@ -37,52 +36,7 @@ class Phrase::Tool::Options
 private
   
   def options
-    case command_name
-      when :init
-        OptionParser.new do |opts|
-          opts.on("--secret=YOUR_AUTH_TOKEN", String, "Your auth token") do |secret|
-            @data[command_name][:secret] = secret
-          end
-          
-          opts.on("--default-locale=en", String, "The default locale for your application") do |default_locale|
-            @data[command_name][:default_locale] = default_locale
-          end
-        end
-      when :push
-        OptionParser.new do |opts|
-          opts.on("--tags=foo,bar", Array, "List of tags for phrase push (separated by comma)") do |tags|
-            @data[command_name][:tags] = tags
-          end
-          
-          opts.on("-R", "--recursive", "Push files in subfolders as well (recursively)") do |recursive|
-            @data[command_name][:recursive] = true
-          end
-          
-          opts.on("--locale=en", String, "Locale of the translations your file contain (required for formats that do not include the name of the locale in the file content)") do |locale|
-            @data[command_name][:locale] = locale
-          end
-        end
-      when :pull
-        OptionParser.new do |opts|
-          opts.on("--format=yml", String, "See documentation for list of allowed locales") do |format|
-            @data[command_name][:format] = format
-          end
-          
-          opts.on("--target=./phrase/locales", String, "Target folder to store locale files") do |target|
-            @data[command_name][:target] = target
-          end
-        end
-      else
-        OptionParser.new do |opts|
-          opts.on_tail("-v", "--version", "Show version number") do |version|
-            @data[:default][:version] = true
-          end
-          
-          opts.on_tail("-h", "--help", "Show help") do |help|
-            @data[:default][:help] = true
-          end
-        end
-    end
+    OptionFactory.send("#{command_name}_options", @data)
   end
   
   def command_name
