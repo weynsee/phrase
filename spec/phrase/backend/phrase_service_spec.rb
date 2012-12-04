@@ -50,7 +50,7 @@ describe Phrase::Backend::PhraseService do
         let(:args){ [key_name] }
         let(:key_is_blacklisted){ false }
         
-        it { should be_a Phrase::Delegate }
+        it { should be_a Phrase::Delegate::I18n }
         it { should eql '{{__phrase_foo.bar__}}' }
       end
       
