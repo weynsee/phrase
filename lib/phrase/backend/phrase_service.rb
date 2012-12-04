@@ -1,6 +1,6 @@
 # -*- encoding : utf-8 -*-
 
-require 'phrase/delegate'
+require 'phrase/delegate/i18n'
 
 class Phrase::Backend::PhraseService
   

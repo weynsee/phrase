@@ -30,7 +30,7 @@ class Phrase::Delegate::I18n < Phrase::Delegate::Base
       elsif data.respond_to?(args.first)
         data.send(*args, &block)
       else
-        log "You are trying to execute the method ##{args.first} on a translation key which is not supported. Please make sure you treat your translations as strings only."
+        self.class.log "You are trying to execute the method ##{args.first} on a translation key which is not supported. Please make sure you treat your translations as strings only."
         nil
       end
     end
@@ -119,21 +119,12 @@ private
     begin
       api_client.translate(@key)
     rescue Exception => e
-      log "Server Error: #{e.message}"
+      self.class.log "Server Error: #{e.message}"
     end
   end
   
   def api_client
     @api_client ||= Phrase::Api::Client.new(Phrase.auth_token)
-  end
-  
-  def log(message)
-    message = "phrase: #{message}"
-    if defined?(Rails)
-      Rails.logger.warn(message)
-    else
-      $stderr.puts message
-    end
   end
   
   def cache

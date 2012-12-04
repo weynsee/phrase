@@ -4,18 +4,18 @@ require 'phrase/delegate/fast_gettext'
 
 module FastGettext
   module Translation
-    def __with_phrase(key)
-      Phrase::Delegate::FastGettext.new(key)
+    def __with_phrase(*args)
+      Phrase::Delegate::FastGettext.new(:_, *args)
     end
     alias_method_chain :_, :phrase
     
-    def n__with_phrase(*keys)
-      Phrase::Delegate::FastGettext.new(keys)
+    def n__with_phrase(*args)
+      Phrase::Delegate::FastGettext.new(:n_, *args)
     end
     alias_method_chain :n_, :phrase
     
-    def s__with_phrase(key, separator=nil)
-      Phrase::Delegate::FastGettext.new(key)
+    def s__with_phrase(*args)
+      Phrase::Delegate::FastGettext.new(:s_, *args)
     end
     alias_method_chain :s_, :phrase
   end
