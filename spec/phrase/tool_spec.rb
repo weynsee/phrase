@@ -507,12 +507,12 @@ describe Phrase::Tool do
 
             context "target folder does not exist" do
               before(:each) do
-                ::FileUtils.rm_rf("inexistant/folder")
+                ::FileUtils.rm_rf("inexistant")
                 phrase "pull --target=inexistant/folder"
               end
 
               after(:each) do
-                ::FileUtils.rm_rf("inexistant/folder")
+                ::FileUtils.rm_rf("inexistant")
               end
 
               it "should not save the content" do
