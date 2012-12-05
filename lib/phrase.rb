@@ -42,6 +42,10 @@ module Phrase
     end
   end
   
+  def self.configure
+    yield(self.config)
+  end
+  
   autoload :ViewHelpers, 'phrase/view_helpers'
   
   require 'phrase/api'

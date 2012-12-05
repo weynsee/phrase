@@ -24,4 +24,18 @@ describe Phrase do
       Phrase.disabled?.should be_false
     end    
   end
+  
+  describe "self.configure" do
+    before(:each) do
+      Phrase.configure do |config|
+        config.auth_token = "some new auth token"
+        config.prefix = "my prefix"
+        config.suffix = "my suffix"
+      end
+    end
+    
+    specify { Phrase.auth_token.should eql("some new auth token") }
+    specify { Phrase.prefix.should eql("my prefix") }
+    specify { Phrase.suffix.should eql("my suffix") }
+  end
 end
