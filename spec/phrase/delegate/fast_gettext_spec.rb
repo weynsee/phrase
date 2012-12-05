@@ -9,6 +9,10 @@ describe Phrase::Delegate::FastGettext do
   end
   
   describe "#to_s" do
+    before(:each) do
+      Phrase.prefix = "{{__"
+      Phrase.suffix = "__}}"
+    end
     
     subject { Phrase::Delegate::FastGettext.new(method, *args).to_s }
     

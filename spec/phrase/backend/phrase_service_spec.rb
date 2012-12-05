@@ -12,6 +12,8 @@ describe Phrase::Backend::PhraseService do
     let(:key_is_blacklisted){ false }
     
     before do
+      Phrase.prefix = "{{__"
+      Phrase.suffix = "__}}"
       I18n.stub(:translate_without_phrase).with(key_name).and_return(i18n_translation)
       phrase_service.stub(:has_blacklist_entry_for_key?){ key_is_blacklisted }
     end
