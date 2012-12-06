@@ -116,7 +116,7 @@ module RSpec
       args = options.map do |k,v|
         v == true ? " --#{k}" : " --#{k} #{v}" if v
       end.join
-      gemfile = File.expand_path('../../../phrase/bin/phrase', __FILE__)
+      gemfile = File.expand_path('../../bin/phrase', __FILE__)
       cmd = "#{env}#{Gem.ruby} -I#{lib} #{gemfile} #{cmd}#{args}"
 
       if exitstatus

@@ -391,7 +391,7 @@ describe Phrase::Tool do
             context "valid format is specified" do
               it "should store in po format" do
                 phrase "pull ru --format=po"
-                File.read("phrase/locales/phrase.ru.po").should == "content for ru"
+                File.read("locales/ru/phrase.po").should == "content for ru"
               end
 
               it "should store in yml format" do
@@ -401,12 +401,12 @@ describe Phrase::Tool do
 
               it "should store in xml format" do
                 phrase "pull ru --format=xml"
-                File.read("phrase/locales/values-ru/strings.xml").should == "content for ru"
+                File.read("res/values-ru/strings.xml").should == "content for ru"
               end
 
               it "should store in strings format" do
                 phrase "pull ru --format=strings"
-                File.read("phrase/locales/ru.lproj/Localizable.strings").should == "content for ru"
+                File.read("ru.lproj/Localizable.strings").should == "content for ru"
               end
 
               it "should store in xlf format" do

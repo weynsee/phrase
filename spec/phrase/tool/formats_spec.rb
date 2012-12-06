@@ -14,7 +14,7 @@ describe Phrase::Tool::Formats do
     
     context "format is gettext" do
       let(:format_name) { "po" }
-      it { should eql("./") }
+      it { should eql("./fooish/") }
     end
     
     context "format is gettext pot" do
@@ -85,7 +85,7 @@ describe Phrase::Tool::Formats do
     
     context "format is gettext" do
       let(:format_name) { "po" }
-      it { should eql("phrase.fooish.po") }
+      it { should eql("phrase.po") }
     end
 
     context "format is gettext pot" do

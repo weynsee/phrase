@@ -1,10 +1,11 @@
 # -*- encoding : utf-8 -*-
 
-require File.expand_path('../option_factory', __FILE__)
+require File.expand_path('../options_factory', __FILE__)
 
 class Phrase::Tool::Options
   def initialize(args, command="")
     @command = command
+    # specify all possible arguments here
     @data = {
       default: {
         version: false,
@@ -12,7 +13,13 @@ class Phrase::Tool::Options
       },
       init: {
         secret: "",
-        default_locale: "en"
+        default_locale: "en",
+        domain: "phrase",
+        default_target: nil,
+        format: nil,
+        locale_filename: nil,
+        locale_directory: nil,
+        target_directory: nil 
       },
       push: {
         tags: [],
@@ -20,8 +27,8 @@ class Phrase::Tool::Options
         locale: nil
       },
       pull: {
-        format: "yml",
-        target: "./phrase/locales/"
+        format: 'yml',
+        target: nil
       }
     }
     options.parse!(args)
@@ -36,7 +43,7 @@ class Phrase::Tool::Options
 private
   
   def options
-    OptionFactory.options_for(command_name, @data)
+    OptionsFactory.options_for(command_name, @data)
   end
   
   def command_name

@@ -4,7 +4,7 @@ describe Phrase::Tool::Options do
   describe "#get" do
     context "init command" do
       let(:command) { "init" }
-      let(:args) { ["--secret=foobar", "--default-locale=hu"] }
+      let(:args) { ["--secret=foobar", "--default-locale=hu", "--default-target=app/locales/", "--domain=app", "--locale-filename=<locale.name>.<format>", "--locale-directory=./<locale.name>/"] }
       
       describe "the secret" do
         subject { Phrase::Tool::Options.new(args, command).get(:secret) }
@@ -16,6 +16,30 @@ describe Phrase::Tool::Options do
         subject { Phrase::Tool::Options.new(args, command).get(:default_locale) }
         
         it { should eql("hu") }
+      end
+
+      describe "the default target" do
+        subject { Phrase::Tool::Options.new(args, command).get(:target_directory) }
+
+        it { should eql "app/locales/" }
+      end
+
+      describe "the domain" do
+        subject { Phrase::Tool::Options.new(args, command).get(:domain) }
+
+        it { should eql "app" }
+      end
+      
+      describe "the locale directory" do
+        subject { Phrase::Tool::Options.new(args, command).get(:locale_directory) }
+
+        it { should eql "./<locale.name>/" }
+      end
+      
+      describe "the locale filename" do
+        subject { Phrase::Tool::Options.new(args, command).get(:locale_filename) }
+
+        it { should eql "<locale.name>.<format>" }
       end
     end
     

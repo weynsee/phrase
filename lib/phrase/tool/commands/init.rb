@@ -6,13 +6,18 @@ class Phrase::Tool::Commands::Init < Phrase::Tool::Commands::Base
   end
   
   def execute!
-    secret = options.get(:secret)
+    secret = get_option(:secret)
     if secret.present?
       config.secret = secret
       print_message "Wrote secret to config file .phrase"
-      default_locale_name = options.get(:default_locale)    
-      create_locale(default_locale_name)
-      make_locale_default(default_locale_name)
+      config.default_locale = get_option(:default_locale)
+      create_locale(config.default_locale)
+      make_locale_default(config.default_locale)
+      config.format = get_option(:format)
+      config.target_directory = get_option(:target_directory)
+      config.domain = get_option(:domain)
+      config.locale_directory = get_option(:locale_directory)
+      config.locale_filename = get_option(:locale_filename)
     else
       print_auth_token_error
       exit_command
@@ -20,6 +25,9 @@ class Phrase::Tool::Commands::Init < Phrase::Tool::Commands::Base
   end
   
 private
+  def get_option(symbol)
+    options.get symbol
+  end
   
   def create_locale(name)
     begin

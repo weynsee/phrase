@@ -20,3 +20,6 @@ tmp
 .DS_Store
 /phrase
 .rspec
+/locales
+/ru.lproj
+/res

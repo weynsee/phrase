@@ -1,10 +1,8 @@
 # -*- encoding : utf-8 -*-
 
 class Phrase::Tool::Commands::Pull < Phrase::Tool::Commands::Base
-  
   ALLOWED_DOWNLOAD_FORMATS = %w(yml po xml strings json resx ts qph ini plist properties xlf)
   DEFAULT_DOWNLOAD_FORMAT = "yml"
-  DEFAULT_TARGET_FOLDER = "phrase/locales/"
   
   def initialize(options, args)
     super(options, args)
@@ -12,8 +10,10 @@ class Phrase::Tool::Commands::Pull < Phrase::Tool::Commands::Base
     
     @locale = @args[1]
     
-    @format = @options.get(:format) || DEFAULT_DOWNLOAD_FORMAT
-    @target = @options.get(:target) || DEFAULT_TARGET_FOLDER
+    # TODO: remove DEFAULT_DOWNLOAD_FORMAT when phrase app has been updated
+    @format = @options.get(:format) || config.format || DEFAULT_DOWNLOAD_FORMAT
+    @target = @options.get(:target)
+    @target ||= Phrase::Tool::Formats.target_directory(@format) if format_valid?(@format)
   end
   
   def execute!
@@ -25,7 +25,6 @@ class Phrase::Tool::Commands::Pull < Phrase::Tool::Commands::Base
   end
   
 private
-  
   def fetch_translations_for_locale(locale, format)
     begin
       content = api_client.download_translations_for_locale(locale.name, format)
@@ -64,7 +63,7 @@ private
   end
   
   def format_valid?(format)
-    ALLOWED_DOWNLOAD_FORMATS.include?(format)
+    format.nil? or ALLOWED_DOWNLOAD_FORMATS.include?(format)
   end
   
   def base_directory

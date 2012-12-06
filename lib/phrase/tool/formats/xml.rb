@@ -13,6 +13,10 @@ class Phrase::Tool::Formats::Xml < Phrase::Tool::Formats::Base
   def self.filename_for_locale(locale)
     "strings.xml"
   end
+
+  def self.target_directory
+    "res/"
+  end
   
   def self.extract_locale_name_from_file_path(file_path)
     return default_locale_name if file_path.scan(/\/values\/strings.xml/i).first

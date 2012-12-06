@@ -15,8 +15,10 @@ module Phrase::Tool::Formats
   autoload :Ini, 'phrase/tool/formats/ini'
   autoload :Properties, 'phrase/tool/formats/properties'
   autoload :Plist, 'phrase/tool/formats/plist'
+  autoload :Custom, 'phrase/tool/formats/custom'
   
   SUPPORTED_FORMATS = {
+    custom: Phrase::Tool::Formats::Custom,
     yml: Phrase::Tool::Formats::Yaml,
     po: Phrase::Tool::Formats::Gettext,
     pot: Phrase::Tool::Formats::GettextPot,
@@ -29,17 +31,37 @@ module Phrase::Tool::Formats
     resx: Phrase::Tool::Formats::Resx,
     ini: Phrase::Tool::Formats::Ini,
     properties: Phrase::Tool::Formats::Properties,
-    plist: Phrase::Tool::Formats::Plist
+    plist: Phrase::Tool::Formats::Plist,
   }
+
+  def self.config
+    @config ||= get_config
+  end
+
+  def self.get_config
+    config = Phrase::Tool::Config.new
+    config.load
+  end
+
+  def self.custom_handler
+    handler_class_for_format(:custom)
+  end
+
+  def self.target_directory(format_name)
+    handler = handler_class_for_format(format_name)
+    custom_handler.target_directory || handler.target_directory
+  end
   
   def self.directory_for_locale_in_format(locale, format_name)
     handler = handler_class_for_format(format_name)
-    handler.directory_for_locale(locale)
+    custom_directory = custom_handler.directory_for_locale(locale, format_name)
+    custom_directory || handler.directory_for_locale(locale)
   end
   
   def self.filename_for_locale_in_format(locale, format_name)
     handler = handler_class_for_format(format_name)
-    handler.filename_for_locale(locale)
+    custom_filename = custom_handler.filename_for_locale(locale, format_name)
+    custom_filename || handler.filename_for_locale(locale)
   end
   
   def self.file_format_exposes_locale?(file_path)

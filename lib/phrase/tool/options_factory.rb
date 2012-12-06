@@ -1,6 +1,6 @@
 require 'optparse'
 
-class OptionFactory
+class OptionsFactory
   def self.options_for(command, options)
     OptionParser.new do |opts|
       self.send(command, opts, options[command])
@@ -14,6 +14,26 @@ class OptionFactory
     
     opts.on("--default-locale=en", String, "The default locale for your application") do |default_locale|
       set[:default_locale] = default_locale
+    end
+
+    opts.on("--default-format=json", String, "The default format for locale files") do |format|
+      set[:format] = format
+    end
+    
+    opts.on("--domain=phrase", String, "The default domain or app prefix for locale files") do |domain|
+      set[:domain] = domain
+    end
+    
+    opts.on("--locale-directory=./", String, "The directory naming for locale files, e.g ./<locale.name>/ for subfolders with 'en' or 'de'") do |locale_directory|
+      set[:locale_directory] = locale_directory
+    end
+    
+    opts.on("--locale-filename=<domain>.<format>", String, "The filename for locale files") do |locale_filename|
+      set[:locale_filename] = locale_filename
+    end
+    
+    opts.on("--default-target=phrase/locales/", String, "The default target directory for locale files") do |target_directory|
+      set[:target_directory] = target_directory
     end
   end
   private_class_method :init

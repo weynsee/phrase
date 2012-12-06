@@ -20,4 +20,18 @@ class Phrase::Tool::Formats::Base
   def self.locale_aware?
     false
   end
+
+  def self.target_directory
+    "phrase/locales/"
+  end
+  
+  def self.config
+    @config ||= get_config
+  end
+
+  def self.get_config
+    config = Phrase::Tool::Config.new
+    config.load
+  end
+  private_class_method :config
 end
