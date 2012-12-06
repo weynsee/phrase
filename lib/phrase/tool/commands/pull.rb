@@ -45,11 +45,15 @@ private
       File.open(target, "w") do |file|
         file.write(content)
       end
-      print_message "Saved to #{target}".green
+      print_message "Saved to #{clean_path target}".green
     rescue
       print_error("Cannot write file to target folder (#{path})")
       exit_command
     end
+  end
+
+  def clean_path(str)
+    str.gsub("/./", "/")
   end
   
   def fetch_locales
