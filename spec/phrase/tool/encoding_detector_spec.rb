@@ -10,6 +10,12 @@ describe Phrase::Tool::EncodingDetector do
       it { should be_false }
     end
     
+    context "given file is empty" do
+      let(:file) { "./spec/fixtures/edge/empty.strings" }
+      
+      it { should be_false }
+    end
+    
     context "given file is utf16LE" do
       let(:file) { "./spec/fixtures/edge/utf16_le_ios_file.strings" }
       
@@ -32,6 +38,12 @@ describe Phrase::Tool::EncodingDetector do
       it { should be_false }
     end
     
+    context "given file is empty" do
+      let(:file) { "./spec/fixtures/edge/empty.strings" }
+      
+      it { should be_false }
+    end
+    
     context "given file is utf16LE" do
       let(:file) { "./spec/fixtures/edge/utf16_le_ios_file.strings" }
       
@@ -50,6 +62,12 @@ describe Phrase::Tool::EncodingDetector do
      
     context "given file is utf8" do
       let(:file) { "./spec/fixtures/edge/utf8_file.strings" }
+      
+      it { should be_false }
+    end
+    
+    context "given file is empty" do
+      let(:file) { "./spec/fixtures/edge/empty.strings" }
       
       it { should be_false }
     end
