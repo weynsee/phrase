@@ -86,8 +86,6 @@ private
         api_client.upload(file, file_content(file), @tags, locale)
         print_message "OK".green
       rescue Exception => e
-        puts e
-        puts e.class
         print_error "Failed"
         print_server_error(e.message)
       end
