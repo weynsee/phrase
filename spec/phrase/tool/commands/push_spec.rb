@@ -61,12 +61,44 @@ describe Phrase::Tool::Commands::Push do
     end
     
     context "file is valid" do
-      let(:file) { "spec/fixtures/yml/nice.en.yml" }
-      
-      it "should upload the file" do
-        api_client.should_receive(:upload).with(file, kind_of(String), [], nil)
-        subject.send(:upload_file, file)
+      context "file provides a locale information" do
+        let(:file) { "spec/fixtures/yml/nice.en.yml" }
+
+        it "should upload the file" do
+          api_client.should_receive(:upload).with(file, kind_of(String), [], nil)
+          subject.send(:upload_file, file)
+        end
       end
+      
+      context "file does not provide a locale information" do
+        let(:file) { "spec/fixtures/edge/nice.pot" }
+        let(:default_locale) { stub(name: "default-locale") }
+        
+        before(:each) do
+          Phrase::Tool::Locale.stub(:find_default_locale).and_return(default_locale)
+        end
+
+        it "should upload the file with the default locale assigned" do
+          api_client.should_receive(:upload).with(file, kind_of(String), [], "default-locale")
+          subject.send(:upload_file, file)
+        end
+      end
+    end
+  end
+  
+  describe "#force_use_of_default_locale?(file_path)" do
+    subject { command.send(:force_use_of_default_locale?, file_path) }
+    
+    context "is a gettext file" do
+      let(:file_path) { "./fixtures/formats/translations.en.po" }
+      
+      it { should be_false }
+    end
+    
+    context "is a gettext pot file" do
+      let(:file_path) { "./fixtures/formats/translations.pot" }
+      
+      it { should be_true }
     end
   end
 

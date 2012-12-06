@@ -24,10 +24,9 @@ class Phrase::Tool::Formats::Xml < Phrase::Tool::Formats::Base
     end
   end
   
-  def self.default_locale_name
-    Phrase::Tool::Locale.find_default_locale.try(:name)
+  def self.locale_aware?
+    true
   end
-  private_class_method :default_locale_name
   
   def self.formatted(name)
     return name unless name.include?("-")

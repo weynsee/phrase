@@ -12,4 +12,12 @@ class Phrase::Tool::Formats::Base
   def self.extract_locale_name_from_file_path(file_path)
     nil
   end
+  
+  def self.default_locale_name
+    Phrase::Tool::Locale.find_default_locale.try(:name)
+  end
+  
+  def self.locale_aware?
+    false
+  end
 end

@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 
 class Phrase::Tool::Commands::Push < Phrase::Tool::Commands::Base
-  ALLOWED_FILE_TYPES = %w(yml pot po xml strings json resx ts qph ini plist properties xlf)
+  ALLOWED_FILE_TYPES = %w(yml po pot xml strings json resx ts qph ini plist properties xlf)
   FORMATS_CONTAINING_LOCALE = %q(po yml qph ts xlf)
   RAILS_DEFAULT_FOLDER = "./config/locales/"
   
@@ -77,10 +77,17 @@ private
       begin
         tagged = " (tagged: #{@tags.join(", ")})" if @tags.size > 0
         print_message "Uploading #{file}#{tagged}..."
-        locale = @locale || detect_locale_name_from_file_path(file)
+        unless force_use_of_default_locale?(file)
+          locale = detect_locale_name_from_file_path(file)
+        else
+          locale = Phrase::Tool::Locale.find_default_locale.try(:name)
+        end
+        locale = @locale if @locale
         api_client.upload(file, file_content(file), @tags, locale)
         print_message "OK".green
       rescue Exception => e
+        puts e
+        puts e.class
         print_error "Failed"
         print_server_error(e.message)
       end
@@ -91,6 +98,10 @@ private
     content = File.open(file).read
     content = utf16_to_utf8(content) if file_seems_to_be_utf16?(file)
     content
+  end
+  
+  def force_use_of_default_locale?(file_path)
+    not Phrase::Tool::Formats.file_format_exposes_locale?(file_path)
   end
   
   def utf16_to_utf8(string)

@@ -24,4 +24,10 @@ describe Phrase::Tool::Formats::Base do
     
     it { should be_nil }
   end
+  
+  describe "#self.locale_aware?" do
+    subject { Phrase::Tool::Formats::Base.locale_aware? }
+    
+    it { should be_false }
+  end
 end

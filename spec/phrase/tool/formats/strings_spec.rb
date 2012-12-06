@@ -60,4 +60,10 @@ describe Phrase::Tool::Formats::Strings do
       it { should eql "foo" }
     end
   end
+  
+  describe "#self.locale_aware?" do
+    subject { Phrase::Tool::Formats::Strings.locale_aware? }
+    
+    it { should be_true }
+  end
 end

@@ -20,4 +20,10 @@ describe Phrase::Tool::Formats::Yaml do
     it { should include the_locale_name }
     it { should end_with the_extension }
   end
+  
+  describe "#self.locale_aware?" do
+    subject { Phrase::Tool::Formats::Yaml.locale_aware? }
+    
+    it { should be_true }
+  end
 end

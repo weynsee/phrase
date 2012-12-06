@@ -93,4 +93,10 @@ describe Phrase::Tool::Formats::Xml do
       it { should eql "foo-rBAR"}
     end
   end
+  
+  describe "#self.locale_aware?" do
+    subject { Phrase::Tool::Formats::Xml.locale_aware? }
+    
+    it { should be_true }
+  end
 end

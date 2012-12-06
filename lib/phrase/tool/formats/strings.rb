@@ -14,6 +14,10 @@ class Phrase::Tool::Formats::Strings < Phrase::Tool::Formats::Base
     file_path.scan(/\/([a-zA-Z\-_]*).lproj\//i).first.try(:first)
   end
   
+  def self.locale_aware?
+    true
+  end
+  
   def self.formatted(name)
     return name unless name.include?("-")
     parts = name.split("-")

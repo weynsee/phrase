@@ -17,6 +17,11 @@ describe Phrase::Tool::Formats do
       it { should eql("./") }
     end
     
+    context "format is gettext pot" do
+      let(:format_name) { "pot" }
+      it { should eql("./") }
+    end
+    
     context "format is xml" do
       let(:format_name) { "xml" }
       it { should eql("values-foo-rISH") }
@@ -82,6 +87,11 @@ describe Phrase::Tool::Formats do
       let(:format_name) { "po" }
       it { should eql("phrase.fooish.po") }
     end
+
+    context "format is gettext pot" do
+      let(:format_name) { "pot" }
+      it { should eql("phrase.pot") }
+    end
     
     context "format is xml" do
       let(:format_name) { "xml" }
@@ -134,6 +144,22 @@ describe Phrase::Tool::Formats do
     end
   end
   
+  describe "#self.file_format_exposes_locale?(file_path)" do
+    subject { Phrase::Tool::Formats.send(:file_format_exposes_locale?, file_path) }
+    
+    context "format = po" do
+      let(:file_path) { "./fixtures/formats/translations.en.po" }
+      
+      it { should be_true }
+    end
+    
+    context "format = pot" do
+      let(:file_path) { "./fixtures/formats/translations.pot" }
+      
+      it { should be_false }
+    end
+  end
+  
   describe "#self.handler_class_for_format(format_name)" do
     subject { Phrase::Tool::Formats.send(:handler_class_for_format, format_name) }
     
@@ -145,6 +171,11 @@ describe Phrase::Tool::Formats do
     context "format = po" do
       let(:format_name) { "po" }
       it { should == Phrase::Tool::Formats::Gettext }
+    end
+
+    context "format = pot" do
+      let(:format_name) { "pot" }
+      it { should == Phrase::Tool::Formats::GettextPot }
     end
     
     context "format = xml" do
