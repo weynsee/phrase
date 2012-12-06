@@ -27,7 +27,7 @@ class Phrase::Tool::Options
         locale: nil
       },
       pull: {
-        format: 'yml',
+        format: nil,
         target: nil
       }
     }
