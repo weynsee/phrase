@@ -15,7 +15,6 @@ class Phrase::Tool::Options
         secret: "",
         default_locale: "en",
         domain: "phrase",
-        default_target: nil,
         format: nil,
         locale_filename: nil,
         locale_directory: nil,
