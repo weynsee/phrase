@@ -407,4 +407,18 @@ describe Phrase::Api::Client do
       subject.send(:http_client).port.should == "8888"
     end
   end
+
+  describe "#query_for_params(params)" do
+    subject { Phrase::Api::Client.new("foo").send(:query_for_params, params) }
+
+    context "with a simple structure" do
+      let(:params) { {"foo[bar]" => "baz"} }
+      it { should eql("foo[bar]=baz") }
+    end
+    
+    context "with an array" do
+      let(:params) { {"foo[bar]" => ["baz", "fooo"]} }
+      it { should eql("foo[bar][]=baz&foo[bar][]=fooo") }
+    end
+  end
 end

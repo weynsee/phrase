@@ -1,6 +1,5 @@
 # -*- encoding : utf-8 -*-
 
-require 'addressable/uri'
 require 'cgi'
 require 'net/http'
 require 'net/https'
@@ -162,9 +161,7 @@ private
   
   def get_request(endpoint, params={})
     params.merge!('auth_token' => @auth_token)
-    uri = Addressable::URI.new
-    uri.query_values = params
-    request = Net::HTTP::Get.new("#{api_path_for(endpoint)}?#{uri.query}")
+    request = Net::HTTP::Get.new("#{api_path_for(endpoint)}?#{query_for_params(params)}")
     request
   end
   
@@ -217,5 +214,9 @@ private
   
   def escaped(value) 
     CGI::escape(value)
+  end
+
+  def query_for_params(params)
+    Phrase::Api::QueryParams.encode(params)
   end
 end

@@ -3,7 +3,6 @@ PATH
   specs:
     phrase (0.3.3)
       activesupport (~> 3.0)
-      addressable (~> 2.2.8)
       colorize
       json
 
