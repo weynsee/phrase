@@ -43,7 +43,7 @@ private
     begin
       FileUtils.mkpath(path)
       File.open(target, "w") do |file|
-        file.write(content)
+        file.write(content.force_encoding("UTF-8"))
       end
       print_message "Saved to #{clean_path target}".green
     rescue
