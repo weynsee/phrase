@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency('activesupport', '~> 3.0')
   s.add_dependency('colorize')
   s.add_dependency('json')
+  s.add_development_dependency('rake')
   s.add_development_dependency('rspec')
   s.add_development_dependency('i18n')
   s.add_development_dependency('webmock')
