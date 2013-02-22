@@ -191,7 +191,7 @@ private
     client = Net::HTTP.new(Phrase::Api::Config.api_host, Phrase::Api::Config.api_port)
     client.use_ssl = true if Phrase::Api::Config.api_use_ssl?
     client.verify_mode = OpenSSL::SSL::VERIFY_NONE
-    client.ca_file = File.join(File.dirname(__FILE__), "..", "..", "cacert.pem")
+    client.ca_file = File.join(File.dirname(__FILE__), "..", "..", "..", "cacert.pem")
     client
   end
   
