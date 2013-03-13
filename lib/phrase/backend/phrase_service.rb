@@ -68,7 +68,6 @@ protected
     transform_args_based_on_caller(duped_args)
   end
 
-
   def normalized_key(duped_args)
     splitted_args = split_args(duped_args)
     key = I18n::Backend::Flatten.normalize_flat_keys(*splitted_args)

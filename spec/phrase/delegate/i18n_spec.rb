@@ -255,6 +255,15 @@ describe Phrase::Delegate::I18n do
         subject.fallback_keys.should == ["foo", "activerecord.attributes.foo"]
       end
     end
+
+    context "item came from simple_form" do
+      it "should add the activerecord.attributes fallback as well" do
+        subject.key = "simple_form.labels.users.foo"
+        item = :"users.foo"
+        subject.send(:process_fallback_item, item)
+        subject.fallback_keys.should == ["users.foo", "activerecord.attributes.users.foo"]
+      end
+    end
   end
   
   describe "#decorated_key_name" do

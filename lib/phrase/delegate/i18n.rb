@@ -112,6 +112,10 @@ private
       if @key == "helpers.label.#{entry}" # http://apidock.com/rails/v3.1.0/ActionView/Helpers/FormHelper/label
         @fallback_keys << "activerecord.attributes.#{entry}"
       end
+
+      if @key.start_with?("simple_form.") # special treatment for simple form
+        @fallback_keys << "activerecord.attributes.#{item.to_s}"
+      end
     end
   end
   
