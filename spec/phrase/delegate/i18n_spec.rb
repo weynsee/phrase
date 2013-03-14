@@ -269,7 +269,7 @@ describe Phrase::Delegate::I18n do
   describe "#decorated_key_name" do
     it "should include the phrase prefix" do
       Phrase.stub(:prefix).and_return("??")
-      subject.send(:decorated_key_name).starts_with?("??").should be_true
+      subject.send(:decorated_key_name).start_with?("??").should be_true
     end
     
     it "should include the phrase suffix" do

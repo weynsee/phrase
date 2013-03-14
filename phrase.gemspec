@@ -19,8 +19,7 @@ Gem::Specification.new do |s|
   s.files = git_files
   s.test_files = s.files.grep(%r{^(spec)/})
   s.executables = %w(phrase)
-  s.require_paths = ["lib"]  
-  s.add_dependency('activesupport', '~> 3.0')
+  s.require_paths = ["lib"]
   s.add_dependency('colorize')
   s.add_dependency('json')
   s.add_development_dependency('rake')

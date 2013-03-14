@@ -15,7 +15,7 @@ private
       when :_
         {msgid: args.first}
       when :n_
-        {msgid: args.first, msgid_plural: args.second, count: args.last}
+        {msgid: args.first, msgid_plural: args[1], count: args.last}
       when :s_
         {msgid: args.first}
       else

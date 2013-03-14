@@ -1,5 +1,4 @@
 module Phrase::ViewHelpers
-  
   def phrase_javascript(auth_token=nil)
     return "" unless Phrase.enabled?
     
@@ -15,6 +14,6 @@ module Phrase::ViewHelpers
     })();
   //]]>
 </script>}
-    js.html_safe
+    js.respond_to?(:html_safe) ? js.html_safe : js
   end
 end

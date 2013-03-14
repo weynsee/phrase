@@ -4,7 +4,7 @@ require 'phrase/cache'
 describe Phrase::Cache do
   let(:cache) { Phrase::Cache.new }
   let(:now) { Time.parse("2012-01-01 12:00:00") }
-  let(:ten_minutes_ago) { now - 10.minutes }
+  let(:ten_minutes_ago) { Time.parse("2012-01-01 11:50:00") }
   let(:cache_key) { :foo }
   
   before(:each) do
