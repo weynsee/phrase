@@ -1,6 +1,7 @@
 # -*- encoding : utf-8 -*-
 
 require 'cgi'
+require 'json'
 require 'net/http'
 require 'net/https'
 require 'phrase'
