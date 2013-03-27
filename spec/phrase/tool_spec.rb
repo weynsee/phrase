@@ -253,6 +253,18 @@ describe Phrase::Tool do
             end
           end
 
+          context "multiple files are given" do
+            before(:each) do
+              api_client.should_receive(:upload)
+            end
+
+            it "uploads all of them" do
+              phrase "push spec/fixtures/formats/translations.en.yml spec/fixtures/formats/translations.en.ini"
+              out.should include "Uploading spec/fixtures/formats/translations.en.yml"
+              out.should include "Uploading spec/fixtures/formats/translations.en.ini"
+            end
+          end
+
           context "tag(s) given" do
             it "should use the tag in the upload call" do
               api_client.should_receive(:upload).with(kind_of(String), kind_of(String), ["foobar"], nil)

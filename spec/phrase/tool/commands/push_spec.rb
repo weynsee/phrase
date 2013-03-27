@@ -18,18 +18,20 @@ describe Phrase::Tool::Commands::Push do
     it "is pending"
   end
   
-  describe "#choose_files_to_upload" do
+  describe "#choose_files_to_upload(file_names, recursive=false)" do
     it "is pending"
   end
   
   describe "#upload_files(files)" do
     before(:each) do
       subject.stub(:upload_file)
+      subject.stub(:file_exists?).and_return(true)
     end
     
     it "uploads each file" do
       subject.should_receive(:upload_file).with("foo.txt")
       subject.should_receive(:upload_file).with("bar.txt")
+
       subject.send(:upload_files, ["foo.txt", "bar.txt"])
     end
   end
@@ -40,15 +42,6 @@ describe Phrase::Tool::Commands::Push do
     
     before(:each) do
       subject.stub(:api_client).and_return(api_client)
-    end
-    
-    context "file is a directory" do
-      let(:file) { "spec/fixtures" }
-      
-      it "should skip upload" do
-        api_client.should_not_receive(:upload)
-        subject.send(:upload_file, file)
-      end
     end
     
     context "file is invalid" do

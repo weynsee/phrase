@@ -9,7 +9,7 @@ class Phrase::Tool::Commands::Push < Phrase::Tool::Commands::Base
     super(options, args)
     require_auth_token!
     
-    @file_name = @args[1]
+    @file_names = @args[1..-1]
     @locale = @options.get(:locale)
     @tags = @options.get(:tags)
     @recursive = @options.get(:recursive)
@@ -21,7 +21,8 @@ class Phrase::Tool::Commands::Push < Phrase::Tool::Commands::Base
       exit_command
     end
     
-    files = choose_files_to_upload
+    files = choose_files_to_upload(@file_names, @recursive)
+
     if files.empty?
       print_message "Could not find any files to upload".light_red
       exit_command
@@ -31,10 +32,12 @@ class Phrase::Tool::Commands::Push < Phrase::Tool::Commands::Base
   end
   
 private
-  def choose_files_to_upload
-    if @file_name.blank?
+  def choose_files_to_upload(file_names, recursive=false)
+    files = []
+
+    if file_names.empty?
       if rails_default_locale_folder_available?
-        @file_name = RAILS_DEFAULT_FOLDER
+        file_names = [RAILS_DEFAULT_FOLDER]
         print_message "No file or directory specified, using #{RAILS_DEFAULT_FOLDER}"
       else 
         print_error "Need either a file or directory:"
@@ -43,37 +46,31 @@ private
         exit_command
       end
     end
+    
+    file_names.each do |file_name|
+      if File.directory?(file_name)
+        pattern = recursive ? "#{File.expand_path(file_name)}/**/*" : "#{File.expand_path(file_name)}/**"
+        files += Dir.glob(pattern)
+      else
+        files << file_name
+      end
+    end 
 
-    unless File.exist?(@file_name)
-      print_error "The file #{@file_name} could not be found."
-      exit_command
-    end
-
-    if File.directory?(@file_name)
-      pattern = @recursive ? "#{File.expand_path(@file_name)}/**/*" : "#{File.expand_path(@file_name)}/**"
-      files = Dir.glob(pattern)
-    else
-      files = [@file_name]
-    end
+    files
   end
 
   def upload_files(files)
-    files.each { |file| upload_file(file) }
+    files.each do |file| 
+      if file_exists?(file)
+        upload_file(file)
+      else
+        print_error "The file #{file} could not be found."
+      end
+    end
   end
   
   def upload_file(file)
-    valid = true
-    
-    if File.directory?(file)
-      valid = false
-    else
-      unless file_valid?(file)
-        valid = false
-        print_error "Notice: Could not upload #{file} (type not supported)"
-      end  
-    end
-    
-    if valid
+    if file_valid?(file)
       begin
         tagged = " (tagged: #{@tags.join(", ")})" if @tags.size > 0
         print_message "Uploading #{file}#{tagged}..."
@@ -89,6 +86,8 @@ private
         print_error "Failed"
         print_server_error(e.message)
       end
+    else
+      print_error "Notice: Could not upload #{file} (type not supported)"
     end
   end
   
@@ -113,6 +112,10 @@ private
   def file_valid?(filepath)
     extension = filepath.split('.').last
     ALLOWED_FILE_TYPES.include?(extension)
+  end
+
+  def file_exists?(file)
+    File.exist?(file)
   end
   
   def valid_tags_are_given?(tags)
