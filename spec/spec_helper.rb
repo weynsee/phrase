@@ -5,6 +5,9 @@ require 'rspec'
 require 'vcr'
 require 'timecop'
 require 'webmock/rspec'
+require 'genspec'
+require 'rails/engine'
+require 'rails/generators'
 
 require 'phrase'
 require 'phrase/tool'
@@ -12,6 +15,8 @@ require 'phrase/tool'
 RSpec.configure do |config|
   config.filter_run :focus => true
   config.run_all_when_everything_filtered = true
+
+  config.extend VCR::RSpec::Macros
   
   config.before(:each) do
     Timecop.return

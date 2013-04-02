@@ -1,0 +1,103 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://localhost:3000/api/v1/locales
+    body:
+      encoding: UTF-8
+      string: locale%5Bname%5D=en&auth_token=86a1dc43f1087c6339994b5356fe5064
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+      Content-Type:
+      - application/x-www-form-urlencoded
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Origin:
+      - ! '*'
+      Access-Control-Allow-Methods:
+      - POST, GET, OPTIONS
+      Access-Control-Max-Age:
+      - '1728000'
+      Content-Type:
+      - application/json; charset=utf-8
+      X-Ua-Compatible:
+      - IE=Edge
+      Etag:
+      - ! '"b172a12c8e9d1b32cf4186e829216b28"'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Set-Cookie:
+      - _translate_session=BAh7BkkiD3Nlc3Npb25faWQGOgZFRkkiJWNhYTU0MGEwZWJlNjgyNGI3NDY3MjlkM2Q3OGI1YTgwBjsAVA%3D%3D--96f9e7a084564392113b6a460d82f525459c9c68;
+        path=/; HttpOnly
+      - locale=en; path=/; expires=Sun, 03-Apr-2033 10:21:03 GMT
+      - vid=18lo0kf-qs5f-2ip23r6; path=/; expires=Sun, 03-Apr-2033 10:21:03 GMT
+      X-Request-Id:
+      - 1badb3643c9a667ff9ad4bdd34486c91
+      X-Runtime:
+      - '0.064172'
+      Connection:
+      - close
+      Server:
+      - thin 1.5.0 codename Knife
+    body:
+      encoding: US-ASCII
+      string: ! '{"code":"en","id":8,"is_default":false,"name":"en","pluralizations":{"zero":{"example":"0"},"one":{"gettext_mapping":"0","example":"1"},"other":{"gettext_mapping":"1","example":"2"}},"country_code":"gb"}'
+    http_version: 
+  recorded_at: Wed, 03 Apr 2013 10:21:03 GMT
+- request:
+    method: put
+    uri: http://localhost:3000/api/v1/locales/en/make_default
+    body:
+      encoding: UTF-8
+      string: auth_token=86a1dc43f1087c6339994b5356fe5064
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+      Content-Type:
+      - application/x-www-form-urlencoded
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Origin:
+      - ! '*'
+      Access-Control-Allow-Methods:
+      - POST, GET, OPTIONS
+      Access-Control-Max-Age:
+      - '1728000'
+      Content-Type:
+      - application/json; charset=utf-8
+      X-Ua-Compatible:
+      - IE=Edge
+      Etag:
+      - ! '"64f254d81e709b13dce3688b7636236a"'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Set-Cookie:
+      - _translate_session=BAh7BkkiD3Nlc3Npb25faWQGOgZFRkkiJTY2MTk2MDNmYjY5YzFjZDhmZmE5NjUwODNhMTcyMDVjBjsAVA%3D%3D--968aec1f92974ae5a449fb068f2c591919b222a6;
+        path=/; HttpOnly
+      - locale=en; path=/; expires=Sun, 03-Apr-2033 10:21:03 GMT
+      - vid=18lo0kf-st4c-2ip23r6; path=/; expires=Sun, 03-Apr-2033 10:21:03 GMT
+      X-Request-Id:
+      - 87fab25516e8aeb0b74ad26c31ec33f2
+      X-Runtime:
+      - '0.024453'
+      Connection:
+      - close
+      Server:
+      - thin 1.5.0 codename Knife
+    body:
+      encoding: US-ASCII
+      string: ! '{"code":"en","id":8,"is_default":true,"name":"en","pluralizations":{"zero":{"example":"0"},"one":{"gettext_mapping":"0","example":"1"},"other":{"gettext_mapping":"1","example":"2"}},"country_code":"gb"}'
+    http_version: 
+  recorded_at: Wed, 03 Apr 2013 10:21:03 GMT
+recorded_with: VCR 2.2.1
