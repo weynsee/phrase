@@ -20,12 +20,17 @@ class Phrase::Backend::PhraseService
 
 protected
   def to_be_translated_without_phrase?(args)
-    Phrase.disabled? or has_been_given_blacklisted_key?(args) or has_been_forced_to_resolve_with_phrase?(args)
+    Phrase.disabled? or has_been_given_blacklisted_key?(args) or has_been_given_ignored_key?(args) or has_been_forced_to_resolve_with_phrase?(args)
   end
 
   def has_been_given_blacklisted_key?(args)
     key = given_key_from_args(args)
     has_blacklist_entry_for_key?(key)
+  end
+
+  def has_been_given_ignored_key?(args)
+    key = given_key_from_args(args)
+    key_is_ignored?(key)
   end
 
   def has_been_forced_to_resolve_with_phrase?(args)
@@ -39,6 +44,13 @@ protected
   def has_blacklist_entry_for_key?(key)
     blacklisted_keys.each do |blacklisted_key|
       return true if present?(key.to_s[/\A#{blacklisted_key.gsub("*", ".*")}\Z/])
+    end
+    false
+  end
+
+  def key_is_ignored?(key)
+    Phrase.ignored_keys.each do |ignored_key|
+      return true if present?(key.to_s[/\A#{ignored_key.gsub("*", ".*")}\Z/])
     end
     false
   end

@@ -18,7 +18,7 @@ module Phrase
       Thread.current[:phrase_config] = value
     end
     
-    %w(enabled backend prefix suffix auth_token client_version js_host js_use_ssl cache_key_segments_initial cache_lifetime).each do |method|
+    %w(enabled backend prefix suffix auth_token client_version js_host js_use_ssl cache_key_segments_initial cache_lifetime ignored_keys).each do |method|
       module_eval <<-DELEGATORS, __FILE__, __LINE__ + 1
         def #{method}
           config.#{method}

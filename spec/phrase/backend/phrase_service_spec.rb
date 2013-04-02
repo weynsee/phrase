@@ -10,12 +10,14 @@ describe Phrase::Backend::PhraseService do
     let(:key_name) { "foo.bar" }
     let(:i18n_translation) { stub }
     let(:key_is_blacklisted){ false }
+    let(:key_is_ignored) { false }
     
     before do
       Phrase.prefix = "{{__"
       Phrase.suffix = "__}}"
       I18n.stub(:translate_without_phrase).with(key_name).and_return(i18n_translation)
       phrase_service.stub(:has_blacklist_entry_for_key?){ key_is_blacklisted }
+      phrase_service.stub(:key_is_ignored?) { key_is_ignored }
     end
     
     subject { phrase_service.translate(*args) }
@@ -28,6 +30,13 @@ describe Phrase::Backend::PhraseService do
       context "key is blacklisted" do
         let(:args){ [key_name] }
         let(:key_is_blacklisted){ true }
+           
+        it { should eql i18n_translation }
+      end
+
+      context "key is ignored" do
+        let(:args) { [key_name] }
+        let(:key_is_ignored) { true }
            
         it { should eql i18n_translation }
       end
@@ -149,6 +158,34 @@ describe Phrase::Backend::PhraseService do
     
     context "if no blacklisted_keys" do
       let(:blacklisted_keys){ [] }
+      it { should be_false }
+    end
+  end
+
+  describe "#key_is_ignored?(key)" do
+    let(:key) { 'foo.ignored' }
+
+    subject { phrase_service.send(:key_is_ignored?, key) }
+
+    before(:each) do
+      Phrase.ignored_keys = ignored_keys
+    end
+
+    context "blacklisted_keys contain key" do
+      let(:ignored_keys) { ["foo.ignored"] }
+
+      it { should be_true }
+    end
+    
+    context "key is ignores (using wildcards)" do
+      let(:ignored_keys) { ["foo.*"] }
+
+      it { should be_true }
+    end
+    
+    context "if no keys are ignored" do
+      let(:ignored_keys) { [] }
+
       it { should be_false }
     end
   end

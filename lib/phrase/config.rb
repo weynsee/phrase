@@ -83,4 +83,12 @@ class Phrase::Config
   def cache_lifetime=(cache_lifetime)
     @@cache_lifetime = cache_lifetime
   end
+
+  def ignored_keys
+    @@ignored_keys ||= []
+  end
+
+  def ignored_keys=(ignored_keys)
+    @@ignored_keys = ignored_keys
+  end
 end

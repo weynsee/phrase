@@ -267,4 +267,28 @@ describe Phrase::Config do
       Phrase::Config.class_variable_get(:@@cache_lifetime).should == 77
     end
   end
+
+  describe "#ignored_keys" do
+    before(:each) do
+      Phrase::Config.class_variable_set(:@@ignored_keys, nil)
+    end
+    
+    context "has been set" do
+      it "should return the cache_lifetime" do
+        subject.ignored_keys = ["foo"]
+        subject.ignored_keys.should == ["foo"]
+      end
+    end
+    
+    context "instance variable is not set" do
+      specify { subject.ignored_keys.should eql [] }
+    end
+  end
+  
+  describe "#ignored_keys=" do
+    it "should set the list of ignored_keys" do
+      subject.ignored_keys = ["foo"]
+      Phrase::Config.class_variable_get(:@@ignored_keys).should == ["foo"]
+    end
+  end
 end
