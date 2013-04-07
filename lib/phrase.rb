@@ -55,5 +55,3 @@ module Phrase
   require 'phrase/delegate'
 end
 
-require 'phrase/adapters/i18n'
-require 'phrase/adapters/fast_gettext'
