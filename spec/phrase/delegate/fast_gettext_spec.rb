@@ -2,6 +2,7 @@ require 'spec_helper'
 
 require 'phrase'
 require 'phrase/delegate'
+require 'phrase/adapters/fast_gettext'
 
 describe Phrase::Delegate::FastGettext do  
   before(:each) do

@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'phrase'
+require 'phrase/adapters/i18n'
 require 'phrase/backend/phrase_service'
 
 describe Phrase::Backend::PhraseService do
