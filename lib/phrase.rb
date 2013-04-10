@@ -55,3 +55,8 @@ module Phrase
   require 'phrase/delegate'
 end
 
+# Only load adapters directly if non-rails app, otherwise use engine
+unless defined? Rails
+  require 'phrase/adapters/i18n'
+  require 'phrase/adapters/fast_gettext'
+end
