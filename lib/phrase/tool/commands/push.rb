@@ -1,7 +1,6 @@
 # -*- encoding : utf-8 -*-
 
 class Phrase::Tool::Commands::Push < Phrase::Tool::Commands::Base
-  ALLOWED_FILE_TYPES = %w(yml po pot xml strings json resx ts qph ini plist properties xlf)
   FORMATS_CONTAINING_LOCALE = %q(po yml qph ts xlf)
   RAILS_DEFAULT_FOLDER = "./config/locales/"
   
@@ -11,6 +10,7 @@ class Phrase::Tool::Commands::Push < Phrase::Tool::Commands::Base
     
     @file_names = @args[1..-1]
     @locale = @options.get(:locale)
+    @format = @options.get(:format)
     @tags = @options.get(:tags)
     @recursive = @options.get(:recursive)
   end
@@ -80,7 +80,7 @@ private
           locale = Phrase::Tool::Locale.find_default_locale.try(:name)
         end
         locale = @locale if @locale
-        api_client.upload(file, file_content(file), @tags, locale)
+        api_client.upload(file, file_content(file), @tags, locale, @format)
         print_message "OK".green
       rescue Exception => e
         print_error "Failed"
@@ -111,7 +111,7 @@ private
   
   def file_valid?(filepath)
     extension = filepath.split('.').last
-    ALLOWED_FILE_TYPES.include?(extension)
+    allowed_file_extensions.include?(extension)
   end
 
   def file_exists?(file)
@@ -128,5 +128,13 @@ private
   
   def detect_locale_name_from_file_path(file_path)
     Phrase::Formats.detect_locale_name_from_file_path(file_path)
+  end
+
+  def allowed_file_extensions
+    extensions = []
+    Phrase::Formats::SUPPORTED_FORMATS.each do |format, handler|
+      extensions = extensions | handler.send(:extensions)
+    end
+    extensions.uniq.map(&:to_s)
   end
 end

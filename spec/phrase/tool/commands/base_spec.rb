@@ -38,10 +38,6 @@ describe Phrase::Tool::Commands::Base do
     end
   end
   
-  describe "#print_server_error" do
-    it "is pending"
-  end
-  
   describe "#print_message" do
     let(:message) { "Hello World!" }
     
@@ -49,9 +45,5 @@ describe Phrase::Tool::Commands::Base do
       $stdout.should_receive(:puts).with(message)
       subject.send(:print_message, message)
     end
-  end
-  
-  describe "#exit_command" do
-    it "is pending"
   end
 end

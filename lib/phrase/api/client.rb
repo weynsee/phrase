@@ -84,9 +84,10 @@ class Phrase::Api::Client
     end
   end
   
-  def upload(filename, file_content, tags=[], locale=nil)
+  def upload(filename, file_content, tags=[], locale=nil, format=nil)
     begin
       params = {
+        "format" => format,
         "filename" => filename,
         "file_content" => file_content,
         "tags[]" => tags

@@ -21,6 +21,11 @@ RSpec.configure do |config|
   config.before(:each) do
     Timecop.return
   end
+
+  config.before(:each) do
+    # cleanup
+    File.delete(".phrase") if File.exists?(".phrase")
+  end
 end
 
 VCR.configure do |config|

@@ -5,10 +5,6 @@ describe Phrase::Tool do
   
   let(:argv) { stub }
   
-  before(:each) do
-    File.delete(".phrase") if File.exists?(".phrase")
-  end
-  
   describe "commands" do
     let(:api_client) { stub }
     
@@ -36,13 +32,13 @@ describe Phrase::Tool do
 
         context "a secret is given" do
           it "displays a success message" do
-            phrase_cmd "init --secret=foo"
+            phrase_cmd "init --secret=secret123"
             out.should include "Wrote secret to config file .phrase"
           end  
 
           it "should write the secret to the config file" do
-            phrase_cmd "init --secret=my_secret_key"
-            File.read('.phrase').should include "my_secret_key"
+            phrase_cmd "init --secret=secret123"
+            File.read('.phrase').should include "secret123"
           end
         end      
       end
@@ -56,12 +52,12 @@ describe Phrase::Tool do
             end
 
             it "creates the locale" do
-              phrase "init --secret=my_secret --default-locale=hu"
+              phrase "init --secret=secret123 --default-locale=hu"
               out.should include "Created locale \"hu\""
             end
 
             it "makes the locale default" do
-              phrase "init --secret=my_secret --default-locale=hu"
+              phrase "init --secret=secret123 --default-locale=hu"
               out.should include "Locale \"hu\" is now the default locale"
             end
           end
@@ -73,12 +69,12 @@ describe Phrase::Tool do
             end
 
             it "tells the user that it could not create the locale" do
-              phrase "init --secret=my_secret --default-locale=hu"
+              phrase "init --secret=secret123 --default-locale=hu"
               out.should_not include "Created locale \"hu\""            
             end
 
             it "makes the locale default" do
-              phrase "init --secret=my_secret --default-locale=hu"
+              phrase "init --secret=secret123 --default-locale=hu"
               out.should include "Locale \"hu\" is now the default locale"        
             end        
           end
@@ -92,12 +88,12 @@ describe Phrase::Tool do
             end
 
             it "creates the locale" do
-              phrase "init --secret=my_secret"
+              phrase "init --secret=secret123"
               out.should include "Created locale \"en\""
             end        
 
             it "makes en the default locale" do
-              phrase "init --secret=my_secret"
+              phrase "init --secret=secret123"
               out.should include "Locale \"en\" is now the default locale"
             end
           end
@@ -109,12 +105,12 @@ describe Phrase::Tool do
             end
 
             it "cannot create the locale" do
-              phrase "init --secret=my_secret"
+              phrase "init --secret=secret123"
               out.should_not include "Created locale \"en\""
             end
 
             it "marks en as default" do
-              phrase "init --secret=my_secret"
+              phrase "init --secret=secret123"
               out.should include "Locale \"en\" is now the default locale"
             end
           end
@@ -145,7 +141,7 @@ describe Phrase::Tool do
         context "rails default directory is not available" do
           it "displays an error message" do
             begin
-              phrase "init --secret=my_secret"
+              phrase "init --secret=secret123"
               phrase "push"
             rescue SystemExit => ex
               err.should include "Need either a file or directory"
@@ -162,7 +158,7 @@ describe Phrase::Tool do
           
           it "uses ./config/locales as default directory" do
             begin
-              phrase "init --secret=my_secret"
+              phrase "init --secret=secret123"
               phrase "push"
             rescue SystemExit
               out.should include "No file or directory specified, using ./config/locales"
@@ -173,7 +169,7 @@ describe Phrase::Tool do
 
       context "file is given" do
         before(:each) do
-          phrase "init --secret=my_secret"
+          phrase "init --secret=secret123"
         end
 
         context "file does not exist" do
@@ -189,7 +185,7 @@ describe Phrase::Tool do
         context "file exists" do
           describe "file formats" do
             before(:each) do          
-              api_client.should_receive(:upload)
+              api_client.stub(:upload).and_return(stub)
             end
 
             it "can upload .yml" do
@@ -272,7 +268,7 @@ describe Phrase::Tool do
 
           context "tag(s) given" do
             it "should use the tag in the upload call" do
-              api_client.should_receive(:upload).with(kind_of(String), kind_of(String), ["foobar"], nil)
+              api_client.should_receive(:upload).with(kind_of(String), kind_of(String), ["foobar"], nil, nil)
               phrase "push spec/fixtures/yml/nice.en.yml --tags=foobar"
             end
 

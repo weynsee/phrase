@@ -50,11 +50,15 @@ class OptionsFactory
     opts.on("--locale=en", String, "Locale of the translations your file contain (required for formats that do not include the name of the locale in the file content)") do |locale|
       set[:locale] = locale
     end
+
+    opts.on("--format=yml", String, "See documentation for list of allowed formats") do |format|
+      set[:format] = format
+    end
   end
   private_class_method :push
 
   def self.pull(opts, set)
-    opts.on("--format=yml", String, "See documentation for list of allowed locales") do |format|
+    opts.on("--format=yml", String, "See documentation for list of allowed formats") do |format|
       set[:format] = format
     end
     

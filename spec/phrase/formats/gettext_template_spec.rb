@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Phrase::Formats::GettextPot do
+describe Phrase::Formats::GettextTemplate do
   let(:the_current_directory) { "./" }
   let(:the_prefix) { "phrase" }
   let(:the_locale_name) { "fooish" }
@@ -9,12 +9,12 @@ describe Phrase::Formats::GettextPot do
   
   describe "#self.directory_for_locale" do
     it "should return the path to the current dir" do
-      Phrase::Formats::GettextPot.directory_for_locale(the_locale).should eql(the_current_directory)
+      Phrase::Formats::GettextTemplate.directory_for_locale(the_locale).should eql(the_current_directory)
     end
   end
   
   describe "#self.filename_for_locale" do
-    subject { Phrase::Formats::GettextPot.filename_for_locale(the_locale) }
+    subject { Phrase::Formats::GettextTemplate.filename_for_locale(the_locale) }
     
     it { should include the_prefix }
     it { should_not include the_locale_name }
@@ -22,7 +22,7 @@ describe Phrase::Formats::GettextPot do
   end
   
   describe "#self.locale_aware?" do
-    subject { Phrase::Formats::GettextPot.locale_aware? }
+    subject { Phrase::Formats::GettextTemplate.locale_aware? }
     
     it { should be_false }
   end

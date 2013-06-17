@@ -1,9 +1,11 @@
 require 'spec_helper'
 
 describe Phrase::Formats do  
+  include RSpec::Helpers
+
   describe "#self.directory_for_locale_in_format(locale, format_name)" do
     let(:locale) { Phrase::Tool::Locale.new(name: "fooish", code: "foo-ish") }
-    
+  
     subject { Phrase::Formats.directory_for_locale_in_format(locale, format_name) }
     
     context "format is yaml" do

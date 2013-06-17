@@ -23,7 +23,8 @@ class Phrase::Tool::Options
       push: {
         tags: [],
         recursive: false,
-        locale: nil
+        locale: nil,
+        format: nil
       },
       pull: {
         format: nil,
