@@ -207,14 +207,14 @@ describe Phrase::Formats do
       it { should == Phrase::Formats::YamlSymfony }
     end
     
-    context "format = po" do
-      let(:format_name) { "po" }
+    context "format = gettext" do
+      let(:format_name) { "gettext" }
       it { should == Phrase::Formats::Gettext }
     end
 
-    context "format = pot" do
-      let(:format_name) { "pot" }
-      it { should == Phrase::Formats::GettextPot }
+    context "format = gettext_template" do
+      let(:format_name) { "gettext_template" }
+      it { should == Phrase::Formats::GettextTemplate }
     end
     
     context "format = xml" do
@@ -285,6 +285,25 @@ describe Phrase::Formats do
     context "format = plist" do
       let(:format_name) { "plist" }
       it { should == Phrase::Formats::Plist }
+    end
+  end
+
+  describe "#self.guess_possible_file_format_from_file_path(file_path)" do
+    subject { Phrase::Formats.send(:guess_possible_file_format_from_file_path, file_path) }
+
+    context "file is .po" do
+      let(:file_path) { "test.po" }
+      it { should eql :gettext }
+    end
+
+    context "file is .pot" do
+      let(:file_path) { "test.pot" }
+      it { should eql :gettext_template }
+    end
+
+    context "file is .yml" do
+      let(:file_path) { "test.yml" }
+      it { should eql :yml }
     end
   end
 end

@@ -2,17 +2,17 @@
 
 module Phrase
   module Formats
-    class Json < Phrase::Formats::Base
+    class GettextTemplate < Phrase::Formats::Base
       def self.filename_for_locale(locale)
-        "phrase.#{locale.name}.json"
+        "phrase.pot"
       end
-      
+
       def self.locale_aware?
         false
       end
 
       def self.extensions
-        [:json]
+        [:pot]
       end
     end
   end

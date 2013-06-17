@@ -6,7 +6,7 @@ module Phrase
     autoload :Json, 'phrase/formats/json'
     autoload :Csv, 'phrase/formats/csv'
     autoload :Gettext, 'phrase/formats/gettext'
-    autoload :GettextPot, 'phrase/formats/gettext_pot'
+    autoload :GettextTemplate, 'phrase/formats/gettext_template'
     autoload :Ini, 'phrase/formats/ini'
     autoload :Properties, 'phrase/formats/properties'
     autoload :PropertiesXml, 'phrase/formats/properties_xml'
@@ -24,6 +24,14 @@ module Phrase
     autoload :YamlSymfony, 'phrase/formats/yaml_symfony'
     
     class Base
+      def self.supports_extension?(extension)
+        self.extensions.map(&:to_s).include?(extension.to_s)
+      end
+
+      def self.extensions
+        []
+      end
+
       def self.directory_for_locale(locale)
         "./"
       end
@@ -64,7 +72,7 @@ module Phrase
       json: Phrase::Formats::Json,
       csv: Phrase::Formats::Csv,
       gettext: Phrase::Formats::Gettext,
-      gettext_template: Phrase::Formats::GettextPot,
+      gettext_template: Phrase::Formats::GettextTemplate,
       ini: Phrase::Formats::Ini,
       properties: Phrase::Formats::Properties,
       properties_xml: Phrase::Formats::PropertiesXml,
@@ -128,9 +136,16 @@ module Phrase
     private_class_method :handler_class_for_format
     
     def self.guess_possible_file_format_from_file_path(file_path)
-      extension = file_path.split('.').last.downcase
-      return SUPPORTED_FORMATS.has_key?(extension.to_sym) ? extension.to_sym : nil
+      extension = extension_from_file_path(file_path)
+      possible_format = SUPPORTED_FORMATS.keys.find do |format|
+        SUPPORTED_FORMATS[format].send(:supports_extension?, extension)
+      end
     end
     private_class_method :guess_possible_file_format_from_file_path
+
+    def self.extension_from_file_path(file_path)
+      file_path.split('.').last.downcase
+    end
+    private_class_method :extension_from_file_path
   end
 end
