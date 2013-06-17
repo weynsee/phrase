@@ -3,8 +3,7 @@ require 'phrase'
 require 'phrase/adapters/i18n'
 require 'phrase/backend/phrase_service'
 
-describe Phrase::Backend::PhraseService do
-  
+describe Phrase::Backend::PhraseService do  
   let(:phrase_service){ Phrase::Backend::PhraseService.new }
   
   describe "#translate" do
@@ -13,7 +12,7 @@ describe Phrase::Backend::PhraseService do
     let(:key_is_blacklisted){ false }
     let(:key_is_ignored) { false }
     
-    before do
+    before(:each) do
       Phrase.prefix = "{{__"
       Phrase.suffix = "__}}"
       I18n.stub(:translate_without_phrase).with(key_name).and_return(i18n_translation)
@@ -24,7 +23,7 @@ describe Phrase::Backend::PhraseService do
     subject { phrase_service.translate(*args) }
     
     context "phrase is enabled" do
-      before do
+      before(:each) do
         Phrase.stub(:disabled?){ false }
       end
       
@@ -44,7 +43,8 @@ describe Phrase::Backend::PhraseService do
       
       context "resolve: false given as argument" do
         let(:args){ [key_name, resolve: false] }
-        before do
+
+        before(:each) do
           I18n.stub(:translate_without_phrase).with(key_name, resolve: false).and_return(i18n_translation)
         end
 
@@ -68,12 +68,16 @@ describe Phrase::Backend::PhraseService do
       
       describe "different arguments given" do
         context "default array given" do
+          let(:fake_api_client) { stub(translate: {}) }
+
+          before(:each) do
+            fake_api_client.stub(:find_keys_by_name).with(["key", "first_fallback", "second_fallback"]).and_return([])
+            Phrase::Delegate::I18n.any_instance.stub(:api_client).and_return(fake_api_client)
+          end
+
           let(:args){ [:key, { :default => [:first_fallback, :second_fallback] }] }
           
-          it { 
-            pending "figure out a sane way to test fallback order" 
-            should eql '{{__phrase_key__}}'
-          }
+          it { should eql '{{__phrase_key__}}' }
         end
 
         context "default string given" do
@@ -88,14 +92,13 @@ describe Phrase::Backend::PhraseService do
 
           it { should eql '{{__phrase_context.key__}}' }
         end
-
       end
     end
     
     context "phrase is disabled" do
-      let(:args){ [key_name] }
+      let(:args) { [key_name] }
       
-      before do
+      before(:each) do
         Phrase.stub(:disabled?){ true }
       end
       
@@ -105,7 +108,7 @@ describe Phrase::Backend::PhraseService do
         let(:args){ [key_name, locale: :ru] }
         let(:ru_translation){ stub }
         
-        before do
+        before(:each) do
           I18n.stub(:translate_without_phrase).with(key_name, locale: :ru){ ru_translation }
         end
         
@@ -113,27 +116,27 @@ describe Phrase::Backend::PhraseService do
       end
 
       describe "different arguments given" do 
-        before do
+        before(:each) do
           I18n.unstub(:translate_without_phrase)
         end
 
         context "default array given" do
-          let(:args){ [:key, { :default => [:first_fallback, :second_fallback] }] }
+          let(:args) { [:key, { :default => [:first_fallback, :second_fallback] }] }
           
-          it { subject.should eql "translation missing: en.key" }
+          specify { subject.should eql "translation missing: en.key" }
         end
 
         context "default string given" do
-          let(:args){ [:key, { :default => 'first fallback' }] }
+          let(:args) { [:key, { :default => 'first fallback' }] }
           
           it { should eql 'first fallback' }
         end
 
         context "scope array given" do
-          let(:context_key_translation){ stub }
-          let(:args){ [:key, { :scope => [:context] }] }
+          let(:context_key_translation) { stub }
+          let(:args) { [:key, { :scope => [:context] }] }
 
-          it { subject.should eql "translation missing: en.context.key" }
+          specify { subject.should eql "translation missing: en.context.key" }
         end
       end
     end
@@ -143,7 +146,7 @@ describe Phrase::Backend::PhraseService do
     let(:key){ 'foo.blacklisted' }
     subject { phrase_service.send(:has_blacklist_entry_for_key?, key) }
 
-    before do
+    before(:each) do
       phrase_service.stub(:blacklisted_keys){ blacklisted_keys }
     end
 
@@ -194,14 +197,14 @@ describe Phrase::Backend::PhraseService do
   describe "#blacklisted_keys" do
     subject { phrase_service.send(:blacklisted_keys) }
 
-    before do
+    before(:each) do
       phrase_service.stub(:api_client){ stub(fetch_blacklisted_keys: ["lorem"]) }
     end
     
     it { should eql ["lorem"] }
      
     describe "memoizing the blacklisted_keys" do
-      it { 
+      specify { 
         old_id = phrase_service.send(:blacklisted_keys).object_id
         phrase_service.stub(:api_client){ stub(fetch_blacklisted_keys: ["ipsum"]) }
         old_id.should eql subject.object_id
@@ -210,10 +213,11 @@ describe Phrase::Backend::PhraseService do
   end
   
   describe "#api_client" do
-    let(:api_client_method_call){ phrase_service.send(:api_client) }
+    let(:api_client_method_call) { phrase_service.send(:api_client) }
+
     subject { api_client_method_call }
 
-    before do
+    before(:each) do
       Phrase.auth_token = "secret999"
     end
     

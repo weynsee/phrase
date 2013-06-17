@@ -349,8 +349,4 @@ describe Phrase::Delegate::I18n do
       it { should include("foo.bar.def") }
     end
   end
-  
-  describe "#key_names_from_nested(segment, data)" do
-    it "returns flattened keys"
-  end
 end
