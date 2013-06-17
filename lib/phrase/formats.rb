@@ -22,6 +22,7 @@ module Phrase
     autoload :Xliff, 'phrase/formats/xliff'
     autoload :Yaml, 'phrase/formats/yaml'
     autoload :YamlSymfony, 'phrase/formats/yaml_symfony'
+    autoload :PhpArray, 'phrase/formats/php_array'
     
     class Base
       def self.supports_extension?(extension)
@@ -88,6 +89,7 @@ module Phrase
       xlf: Phrase::Formats::Xliff,
       yml: Phrase::Formats::Yaml,
       yml_symfony: Phrase::Formats::YamlSymfony,
+      php_array: Phrase::Formats::PhpArray,
     }
 
     def self.config

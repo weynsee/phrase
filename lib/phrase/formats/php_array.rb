@@ -2,9 +2,9 @@
 
 module Phrase
   module Formats
-    class Ini < Phrase::Formats::Base
+    class PhpArray < Phrase::Formats::Base
       def self.filename_for_locale(locale)
-        "phrase.#{locale.name}.ini"
+        "phrase.#{locale.name}.php"
       end
       
       def self.locale_aware?
@@ -12,7 +12,7 @@ module Phrase
       end
 
       def self.extensions
-        [:ini]
+        [:php]
       end
     end
   end

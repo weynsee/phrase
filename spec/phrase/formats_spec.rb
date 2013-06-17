@@ -87,6 +87,11 @@ describe Phrase::Formats do
       let(:format_name) { "plist" }
       it { should eql("./") }
     end
+
+    context "format is php array" do
+      let(:format_name) { "php_array" }
+      it { should eql("./") }
+    end
   end
   
   describe "#self.filename_for_locale_in_format(locale, format_name)" do
@@ -177,6 +182,11 @@ describe Phrase::Formats do
     context "format is plist" do
       let(:format_name) { "plist" }
       it { should eql("phrase.fooish.plist") }
+    end
+    
+    context "format is php_array" do
+      let(:format_name) { "php_array" }
+      it { should eql("phrase.fooish.php") }
     end
   end
   
@@ -288,6 +298,11 @@ describe Phrase::Formats do
       let(:format_name) { "plist" }
       it { should == Phrase::Formats::Plist }
     end
+        
+    context "format = php_array" do
+      let(:format_name) { "php_array" }
+      it { should == Phrase::Formats::PhpArray }
+    end
   end
 
   describe "#self.guess_possible_file_format_from_file_path(file_path)" do
@@ -306,6 +321,11 @@ describe Phrase::Formats do
     context "file is .yml" do
       let(:file_path) { "test.yml" }
       it { should eql :yml }
+    end
+
+    context "file is .php" do
+      let(:file_path) { "test.php" }
+      it { should eql :php_array }
     end
   end
 end
