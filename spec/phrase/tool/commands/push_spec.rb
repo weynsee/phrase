@@ -14,14 +14,6 @@ describe Phrase::Tool::Commands::Push do
     Phrase::Tool::Commands::Push.any_instance.stub(:print_error)
   end
   
-  describe "#execute!" do
-    it "is pending"
-  end
-  
-  describe "#choose_files_to_upload(file_names, recursive=false)" do
-    it "is pending"
-  end
-  
   describe "#upload_files(files)" do
     before(:each) do
       subject.stub(:upload_file)
@@ -140,11 +132,7 @@ describe Phrase::Tool::Commands::Push do
       it { should be_false }
     end
   end
-  
-  describe "#rails_default_locale_folder_available?" do
-    it "is pending"
-  end
-  
+    
   describe "#detect_locale_name_from_file_path(file_path)" do
     subject { command.send(:detect_locale_name_from_file_path, file_path) }
     

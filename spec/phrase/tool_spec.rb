@@ -341,11 +341,18 @@ describe Phrase::Tool do
       end
       
       before(:each) do
+        ::FileUtils.rm_rf("ru.lproj")
+        ::FileUtils.rm_rf("res")
         ::FileUtils.rm_rf("phrase/locales/")
         api_client.stub(:download_translations_for_locale).with("pl", kind_of(String)).and_return("content for pl")
         api_client.stub(:download_translations_for_locale).with("ru", kind_of(String)).and_return("content for ru")
         api_client.stub(:download_translations_for_locale).with("de", kind_of(String)).and_return("content for de")
         api_client.stub(:download_translations_for_locale).with("cn", kind_of(String)).and_raise("Error")
+      end
+
+      after(:each) do
+        ::FileUtils.rm_rf("ru.lproj")
+        ::FileUtils.rm_rf("res")
       end
 
       context "when no auth token is present" do

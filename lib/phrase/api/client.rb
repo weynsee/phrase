@@ -87,7 +87,7 @@ class Phrase::Api::Client
   def upload(filename, file_content, tags=[], locale=nil, format=nil)
     begin
       params = {
-        "format" => format,
+        "file_format" => format,
         "filename" => filename,
         "file_content" => file_content,
         "tags[]" => tags
@@ -95,7 +95,7 @@ class Phrase::Api::Client
       params["locale_name"] = locale unless locale.nil?
       perform_api_request("/translation_keys/upload", :post, params)
     rescue Phrase::Api::Exceptions::ServerError => e
-      raise "File #{filename} could not be uploaded"
+      raise "File #{filename} could not be uploaded (#{e})"
     end
     true
   end
@@ -122,6 +122,7 @@ private
   def display_api_error(response)
     error_message = api_error_message(response)
     $stderr.puts error_message
+    $stderr.puts error_message
   end
 
   def api_error_message(response)
@@ -130,6 +131,12 @@ private
       error = parsed(response.body)["error"]
       if error.class == String
         message = error
+      elsif error.class == Hash
+        error.each_pair do |field, messages|
+          messages.each do |msg|
+            message << "#{msg}"
+          end
+        end
       else
         message = parsed(response.body)["message"]
       end
@@ -152,6 +159,7 @@ private
     end
     response = http_client.request(request)
     code = response.code.to_i
+
     if (code == 200)
       return response.body
     else

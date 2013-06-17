@@ -240,7 +240,7 @@ describe Phrase::Api::Client do
     
     it "should render an error message to stderr" do
       subject.stub(:api_error_message).and_return(error_message)
-      $stderr.should_receive(:puts).with(error_message)
+      $stderr.should_receive(:puts).exactly(2).times
       subject.send(:display_api_error, response)
     end
   end
