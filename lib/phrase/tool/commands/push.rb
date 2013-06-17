@@ -98,7 +98,7 @@ private
   end
   
   def force_use_of_default_locale?(file_path)
-    not Phrase::Tool::Formats.file_format_exposes_locale?(file_path)
+    not Phrase::Formats.file_format_exposes_locale?(file_path)
   end
   
   def utf16_to_utf8(string)
@@ -127,6 +127,6 @@ private
   end
   
   def detect_locale_name_from_file_path(file_path)
-    Phrase::Tool::Formats.detect_locale_name_from_file_path(file_path)
+    Phrase::Formats.detect_locale_name_from_file_path(file_path)
   end
 end

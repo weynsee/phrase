@@ -7,7 +7,7 @@ require 'phrase'
 class Phrase::Tool
   autoload :Config, 'phrase/tool/config'
   autoload :Options, 'phrase/tool/options'
-  autoload :Formats, 'phrase/tool/formats'
+  autoload :Formats, 'phrase/formats'
   autoload :Commands, 'phrase/tool/commands'
   autoload :TagValidator, 'phrase/tool/tag_validator'
   autoload :EncodingDetector, 'phrase/tool/encoding_detector'

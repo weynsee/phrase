@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 
 class Phrase::Tool::Commands::Pull < Phrase::Tool::Commands::Base
-  ALLOWED_DOWNLOAD_FORMATS = %w(yml po xml strings json resx ts qph ini plist properties xlf)
+  ALLOWED_DOWNLOAD_FORMATS = Phrase::Formats::SUPPORTED_FORMATS.keys.map(&:to_s)
   DEFAULT_DOWNLOAD_FORMAT = "yml"
   
   def initialize(options, args)
@@ -13,7 +13,7 @@ class Phrase::Tool::Commands::Pull < Phrase::Tool::Commands::Base
     # TODO: remove DEFAULT_DOWNLOAD_FORMAT when phrase app has been updated
     @format = @options.get(:format) || config.format || DEFAULT_DOWNLOAD_FORMAT
     @target = @options.get(:target)
-    @target ||= Phrase::Tool::Formats.target_directory(@format) if format_valid?(@format)
+    @target ||= Phrase::Formats.target_directory(@format) if format_valid?(@format)
   end
   
   def execute!
@@ -36,8 +36,8 @@ private
   end
   
   def store_content_in_locale_file(locale, content)
-    directory = Phrase::Tool::Formats.directory_for_locale_in_format(locale, @format)
-    filename = Phrase::Tool::Formats.filename_for_locale_in_format(locale, @format)
+    directory = Phrase::Formats.directory_for_locale_in_format(locale, @format)
+    filename = Phrase::Formats.filename_for_locale_in_format(locale, @format)
     path = File.join(base_directory, directory)
     target = File.join(path, filename)
     begin

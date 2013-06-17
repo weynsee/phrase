@@ -203,7 +203,12 @@ describe Phrase::Tool do
             end     
 
             it "can upload .resx" do
-              phrase "push spec/fixtures/formats/translations.en.resx"
+              phrase "push spec/fixtures/formats/translations.en.resx --format=resx"
+              out.should include "Uploading spec/fixtures/formats/translations.en.resx"
+            end
+
+            it "can upload .resx for windows phone" do
+              phrase "push spec/fixtures/formats/translations.en.resx --format=resx_windowsphone"
               out.should include "Uploading spec/fixtures/formats/translations.en.resx"
             end
 
@@ -402,12 +407,17 @@ describe Phrase::Tool do
 
             context "valid format is specified" do
               it "should store in po format" do
-                phrase "pull ru --format=po"
+                phrase "pull ru --format=gettext"
                 File.read("locales/ru/phrase.po").should == "content for ru"
               end
 
               it "should store in yml format" do
                 phrase "pull ru --format=yml"
+                File.read("phrase/locales/phrase.ru.yml").should == "content for ru"
+              end
+
+              it "should store in yml_symfony format" do
+                phrase "pull ru --format=yml_symfony"
                 File.read("phrase/locales/phrase.ru.yml").should == "content for ru"
               end
 
@@ -454,6 +464,11 @@ describe Phrase::Tool do
               it "should store in properties format" do
                 phrase "pull ru --format=properties"
                 File.read("phrase/locales/phrase.ru.properties").should == "content for ru"
+              end
+
+              it "should store in properties xml format" do
+                phrase "pull ru --format=properties_xml"
+                File.read("phrase/locales/phrase.ru.xml").should == "content for ru"
               end
 
               it "should store in plist format" do
