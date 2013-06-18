@@ -21,7 +21,7 @@ This client let's you setup PhraseApp with your codebase and enables you to acce
 * [Cloudcontrol Add-on](https://phraseapp.com/docs/cloudcontrol/introduction)
 
 ### Testimonials ###
-PhraseApp is helps a lot of software companies. See what [our customers](http://phraseapp.com/testimonials) say. 
+PhraseApp helps a lot of software companies. See what [our customers](http://phraseapp.com/testimonials) say. 
 
 ### Supported Formats ###
 You can manage your locale files with PhraseApp if they match one of the following formats:
