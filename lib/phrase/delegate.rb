@@ -21,7 +21,11 @@ module Phrase::Delegate
     end
 
     def normalized_display_key
-      @display_key.gsub("<", "[[[[[[html_open]]]]]]").gsub(">", "[[[[[[html_close]]]]]]")
+      unless @display_key.nil?
+        @display_key.gsub("<", "[[[[[[html_open]]]]]]").gsub(">", "[[[[[[html_close]]]]]]")
+      else
+        @display_key
+      end
     end
   end
 end
