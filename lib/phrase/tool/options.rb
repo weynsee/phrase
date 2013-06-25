@@ -24,7 +24,8 @@ class Phrase::Tool::Options
         tags: [],
         recursive: false,
         locale: nil,
-        format: nil
+        format: nil,
+        update_translations: false
       },
       pull: {
         format: nil,
@@ -41,7 +42,6 @@ class Phrase::Tool::Options
   end
   
 private
-  
   def options
     OptionsFactory.options_for(command_name, @data)
   end

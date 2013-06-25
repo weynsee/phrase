@@ -64,6 +64,12 @@ describe Phrase::Tool::Options do
         
         it { should be_true }
       end
+
+      describe "update_translations" do
+        subject { Phrase::Tool::Options.new(args, command).get(:update_translations) }
+        
+        it { should be_false }
+      end
     end
     
     context "pull command" do

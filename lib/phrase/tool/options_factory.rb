@@ -54,6 +54,10 @@ class OptionsFactory
     opts.on("--format=yml", String, "See documentation for list of allowed formats") do |format|
       set[:format] = format
     end
+
+    opts.on("--force-update-translations", "Force update of existing translations with the file content") do |update_translations|
+      set[:update_translations] = update_translations
+    end
   end
   private_class_method :push
 
