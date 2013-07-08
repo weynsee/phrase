@@ -15,7 +15,7 @@ private
     print_message <<USAGE
 usage: phrase <command> [<args>]
 
-  phrase init --secret=<YOUR SECRET> --default-locale=<DEFAULT LOCALE, e.g. en> --format=<FORMAT, e.g. yml> --target-directory=<TARGET, default is ./phrase/locales/>
+  phrase init --secret=<YOUR SECRET> --default-locale=<DEFAULT LOCALE, e.g. en> --default-format=<FORMAT, e.g. yml> --default-target=<TARGET, default is ./phrase/locales/>
 
   phrase push FILE [--tags=<tags>] [--locale=<locale>]
   phrase push DIRECTORY [--tags=<tags>] [--locale=<locale>]
