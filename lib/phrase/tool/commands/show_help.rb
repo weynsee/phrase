@@ -22,6 +22,8 @@ usage: phrase <command> [<args>]
 
   phrase pull [LOCALE] [--target=<target-folder>] [--format=<format>]
 
+  phrase tags [-l, --list]
+
   phrase --version
 USAGE
   end

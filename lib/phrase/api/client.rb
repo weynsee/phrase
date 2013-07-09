@@ -100,6 +100,11 @@ class Phrase::Api::Client
     end
     true
   end
+
+  def list_tags
+    result = perform_api_request("/tags", :get)
+    parsed(result)
+  end
   
 private
   def extract_structured_object(translation)

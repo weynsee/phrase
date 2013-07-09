@@ -25,10 +25,6 @@ class Phrase::Tool::Commands::Init < Phrase::Tool::Commands::Base
   end
   
 private
-  def get_option(symbol)
-    options.get symbol
-  end
-  
   def create_locale(name)
     begin
       api_client.create_locale(name)

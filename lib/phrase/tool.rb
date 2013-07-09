@@ -28,6 +28,8 @@ class Phrase::Tool
         Phrase::Tool::Commands::Push.new(@options, @args)
       when /pull/
         Phrase::Tool::Commands::Pull.new(@options, @args)
+      when /tags/
+        Phrase::Tool::Commands::Tags.new(@options, @args)
       else
         if @options.get(:version)
           Phrase::Tool::Commands::ShowVersion.new(@options, @args)

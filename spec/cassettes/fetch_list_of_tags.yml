@@ -1,0 +1,49 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://localhost:3000/api/v1/tags?auth_token=secret123
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Origin:
+      - ! '*'
+      Access-Control-Allow-Methods:
+      - POST, GET, OPTIONS
+      Access-Control-Max-Age:
+      - '1728000'
+      Content-Type:
+      - application/json; charset=utf-8
+      X-Ua-Compatible:
+      - IE=Edge
+      Etag:
+      - ! '"9dfb4719975b7dbdd3d18067006f1b22"'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Set-Cookie:
+      - locale=en; path=/; expires=Sat, 09-Jul-2033 09:38:07 GMT
+      - vid=18tnmfv-jn85-2ip23r6; path=/; expires=Sat, 09-Jul-2033 09:38:07 GMT
+      X-Request-Id:
+      - b6067833aafa96a7c4aec3c081ec7085
+      X-Runtime:
+      - '0.027673'
+      Connection:
+      - close
+      Server:
+      - thin 1.5.0 codename Knife
+    body:
+      encoding: US-ASCII
+      string: ! '[{"id":11864,"name":"upload-20130617_133733"},{"id":11865,"name":"upload-20130617_133804"},{"id":11866,"name":"upload-20130617_133831"},{"id":11867,"name":"upload-20130617_133921"},{"id":11868,"name":"upload-20130617_133934"},{"id":11869,"name":"upload-20130617_134046"},{"id":11870,"name":"upload-20130617_134214"},{"id":11871,"name":"upload-20130617_134226"},{"id":11872,"name":"upload-20130617_134245"},{"id":11873,"name":"upload-20130617_134245"},{"id":11874,"name":"upload-20130617_134245"},{"id":11875,"name":"upload-20130617_134255"},{"id":11876,"name":"upload-20130617_134257"},{"id":11877,"name":"upload-20130617_134300"},{"id":11878,"name":"upload-20130617_135600"},{"id":11879,"name":"upload-20130617_135623"},{"id":11880,"name":"upload-20130617_135640"},{"id":11881,"name":"upload-20130617_135651"}]'
+    http_version: 
+  recorded_at: Tue, 09 Jul 2013 09:38:07 GMT
+recorded_with: VCR 2.2.1

@@ -71,6 +71,13 @@ class OptionsFactory
     end
   end
   private_class_method :pull
+
+  def self.tags(opts, set)
+    opts.on("-l", "--list", "List all tags") do |list|
+      set[:list] = list
+    end
+  end
+  private_class_method :tags
   
   def self.default(opts, set)
     opts.on_tail("-v", "--version", "Show version number") do |version|

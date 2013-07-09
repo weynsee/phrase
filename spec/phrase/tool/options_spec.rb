@@ -88,6 +88,17 @@ describe Phrase::Tool::Options do
         it { should eql "/foo/bar" }
       end
     end
+
+    context "tags command" do
+      let(:command) { "tags" }
+      let(:args) { ["--list"] }
+      
+      describe "list" do
+        subject { Phrase::Tool::Options.new(args, command).get(:list) }
+        
+        it { should be_true }
+      end
+    end
     
     context "no command" do
       let(:command) { nil }

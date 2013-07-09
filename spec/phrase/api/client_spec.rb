@@ -65,6 +65,15 @@ describe Phrase::Api::Client do
       end
     end
   end
+
+  describe "#list_tags" do
+    it "should return a list of all tags" do
+      VCR.use_cassette('fetch list of tags') do
+        result = subject.list_tags
+        result.should be_a(Array)
+      end
+    end
+  end
   
   describe "#find_keys_by_name" do
     it "should return an array" do

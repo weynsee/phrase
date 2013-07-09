@@ -30,6 +30,9 @@ class Phrase::Tool::Options
       pull: {
         format: nil,
         target: nil
+      },
+      tags: {
+        list: true
       }
     }
     options.parse!(args)

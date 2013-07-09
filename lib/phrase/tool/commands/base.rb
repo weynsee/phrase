@@ -37,6 +37,10 @@ module Phrase::Tool::Commands
     end
     
   protected
+    def get_option(name)
+      options.get(name)
+    end
+
     def api_client
       Phrase::Api::Client.new(config.secret)
     end
