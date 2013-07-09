@@ -13,6 +13,7 @@ class Phrase::Tool::Commands::Pull < Phrase::Tool::Commands::Base
     # TODO: remove DEFAULT_DOWNLOAD_FORMAT when phrase app has been updated
     @format = @options.get(:format) || config.format || DEFAULT_DOWNLOAD_FORMAT
     @target = @options.get(:target)
+    @tag = @options.get(:tag)
     @target ||= Phrase::Formats.target_directory(@format) if format_valid?(@format)
   end
   
@@ -20,14 +21,14 @@ class Phrase::Tool::Commands::Pull < Phrase::Tool::Commands::Base
     (print_error("Invalid format: #{@format}") and exit_command) unless format_valid?(@format)
     locales_to_download.compact.each do |locale|
       print_message "Downloading #{locale.name}..."
-      fetch_translations_for_locale(locale, @format)
+      fetch_translations_for_locale(locale, @format, @tag)
     end
   end
   
 private
-  def fetch_translations_for_locale(locale, format)
+  def fetch_translations_for_locale(locale, format, tag=nil)
     begin
-      content = api_client.download_translations_for_locale(locale.name, format)
+      content = api_client.download_translations_for_locale(locale.name, format, tag)
       store_content_in_locale_file(locale, content)
     rescue Exception => e
       print_error "Failed"

@@ -29,7 +29,8 @@ class Phrase::Tool::Options
       },
       pull: {
         format: nil,
-        target: nil
+        target: nil,
+        tag: nil
       },
       tags: {
         list: true

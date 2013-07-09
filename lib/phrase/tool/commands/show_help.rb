@@ -20,7 +20,7 @@ usage: phrase <command> [<args>]
   phrase push FILE [--tags=<tags>] [--locale=<locale>]
   phrase push DIRECTORY [--tags=<tags>] [--locale=<locale>]
 
-  phrase pull [LOCALE] [--target=<target-folder>] [--format=<format>]
+  phrase pull [LOCALE] [--target=<target-folder>] [--format=<format>] [--tag=<tag>]
 
   phrase tags [-l, --list]
 

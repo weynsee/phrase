@@ -69,6 +69,10 @@ class OptionsFactory
     opts.on("--target=./phrase/locales", String, "Target folder to store locale files") do |target|
       set[:target] = target
     end
+
+    opts.on("--tag=foo", String, "Limit results to a given tag instead of all translations") do |tag|
+      set[:tag] = tag
+    end
   end
   private_class_method :pull
 
