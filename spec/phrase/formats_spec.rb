@@ -327,6 +327,16 @@ describe Phrase::Formats do
       let(:file_path) { "test.php" }
       it { should eql :php_array }
     end
+
+    context "file is .xlf" do
+      let(:file_path) { "test.xlf" }
+      it { should eql :xlf }
+    end
+
+    context "file is .xliff" do
+      let(:file_path) { "test.xliff" }
+      it { should eql :xlf }
+    end
   end
 end
 

@@ -12,7 +12,7 @@ module Phrase
       end
       
       def self.extensions
-        [:xlf]
+        [:xlf, :xliff]
       end
     end
   end

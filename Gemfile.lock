@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    phrase (0.4.6)
+    phrase (0.4.7)
       colorize
       json
 
