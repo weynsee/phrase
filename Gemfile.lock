@@ -3,6 +3,7 @@ PATH
   specs:
     phrase (0.4.7)
       colorize
+      i18n
       json
 
 GEM
@@ -114,7 +115,6 @@ PLATFORMS
 
 DEPENDENCIES
   genspec
-  i18n
   phrase!
   rails
   rake
