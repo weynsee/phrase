@@ -25,7 +25,10 @@ describe Phrase::Tool::Commands::Pull do
     it "should exit when no secret key given" do
       lambda {
         Phrase::Tool::Commands::Pull.new(options, args)
-      }.should raise_error SystemExit
+      }.should raise_error {|error| 
+        error.should be_a(SystemExit)
+        error.status.should eq(1)
+      }
     end    
   end
   
@@ -169,7 +172,10 @@ describe Phrase::Tool::Commands::Pull do
       it "should terminate the script" do
         lambda {
           subject.send(:fetch_locales)
-        }.should raise_error SystemExit
+        }.should raise_error {|error|
+         error.should be_a(SystemExit)
+         error.status.should eq(1)
+        }
       end
       
       it "should display an error message" do

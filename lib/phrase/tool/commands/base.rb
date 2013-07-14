@@ -32,8 +32,8 @@ module Phrase::Tool::Commands
       $stdout.puts msg
     end
         
-    def self.exit_command
-      exit()
+    def self.exit_command(status = false)
+      exit(status)
     end
     
   protected
@@ -70,8 +70,8 @@ module Phrase::Tool::Commands
       self.class.print_message(msg)
     end
     
-    def exit_command
-      self.class.exit_command
+    def exit_command(status = false)
+      self.class.exit_command(status)
     end
   end
 end
