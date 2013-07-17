@@ -12,19 +12,15 @@ class Phrase::Tool::Commands::ShowHelp < Phrase::Tool::Commands::Base
 private
 
   def show_help
-    print_message <<USAGE
-usage: phrase <command> [<args>]
+    msg = "usage: phrase <command> [<args>]\n"
+    Phrase::Tool::Commands.possible_commands.each do |command, suffix| 
+      msg << "    #{extract_help(command)}\n"
+    end
 
-  phrase init --secret=<YOUR SECRET> --default-locale=<DEFAULT LOCALE, e.g. en> --default-format=<FORMAT, e.g. yml> --default-target=<TARGET, default is ./phrase/locales/>
+    print_message msg
+  end
 
-  phrase push FILE [--tags=<tags>] [--locale=<locale>]
-  phrase push DIRECTORY [--tags=<tags>] [--locale=<locale>] [--recursive]
-
-  phrase pull [LOCALE] [--target=<target-folder>] [--format=<format>] [--tag=<tag>]
-
-  phrase tags [-l, --list]
-
-  phrase --version
-USAGE
+  def extract_help(command)
+    OptionsFactory.options_for(command, {}).help
   end
 end

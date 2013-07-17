@@ -8,6 +8,8 @@ class OptionsFactory
   end
 
   def self.init(opts, set)
+    opts.banner = "phrase init"
+
     opts.on("--secret=YOUR_AUTH_TOKEN", String, "Your auth token") do |secret|
       set[:secret] = secret
     end
@@ -39,6 +41,8 @@ class OptionsFactory
   private_class_method :init
 
   def self.push(opts, set)
+    opts.banner = "phrase push FILE|DIRECTORY"
+
     opts.on("--tags=foo,bar", Array, "List of tags for phrase push (separated by comma)") do |tags|
       set[:tags] = tags
     end
@@ -62,6 +66,8 @@ class OptionsFactory
   private_class_method :push
 
   def self.pull(opts, set)
+    opts.banner = "phrase pull [LOCALE]"
+
     opts.on("--format=yml", String, "See documentation for list of allowed formats") do |format|
       set[:format] = format
     end
@@ -77,6 +83,8 @@ class OptionsFactory
   private_class_method :pull
 
   def self.tags(opts, set)
+    opts.banner = "phrase tags"
+
     opts.on("-l", "--list", "List all tags") do |list|
       set[:list] = list
     end
@@ -84,6 +92,8 @@ class OptionsFactory
   private_class_method :tags
   
   def self.default(opts, set)
+    opts.banner = ""
+    
     opts.on_tail("-v", "--version", "Show version number") do |version|
      set[:version] = true
     end

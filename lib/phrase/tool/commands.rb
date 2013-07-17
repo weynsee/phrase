@@ -1,6 +1,42 @@
 # -*- encoding : utf-8 -*-
 
 module Phrase::Tool::Commands
+  def self.possible_commands_with_options
+    {
+      default: {
+        version: false,
+        help: false
+      },
+      init: {
+        secret: "",
+        default_locale: "en",
+        domain: "phrase",
+        format: nil,
+        locale_filename: nil,
+        locale_directory: nil,
+        target_directory: nil 
+      },
+      push: {
+        tags: [],
+        recursive: false,
+        locale: nil,
+        format: nil,
+        update_translations: false
+      },
+      pull: {
+        format: nil,
+        target: nil,
+        tag: nil
+      },
+      tags: {
+        list: true
+      }
+    }
+  end
+
+  def self.possible_commands
+    self.possible_commands_with_options.keys
+  end
 end
 
 require "phrase/tool/commands/base"
