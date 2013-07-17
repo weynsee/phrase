@@ -17,6 +17,8 @@ test/version_tmp
 /tmp
 .phrase
 .rvmrc
+.ruby-version
+.ruby-gemset
 .DS_Store
 /phrase
 .rspec
