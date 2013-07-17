@@ -144,17 +144,17 @@ describe Phrase::Tool::Commands::Push do
   end
 
   describe "#choose_files_to_upload(file_names, recursive)" do
-    subject { command.send(:choose_files_to_upload, files, recursive) }
+    subject { command.send(:choose_files_to_upload, files, recursive).sort }
     let(:recursive) { false }
 
     context "one file" do
-      let(:files) { ["spec/fixtures/yml/nice.en.yml"] }
+      let(:files) { ["spec/fixtures/yml/nice.en.yml"].sort }
 
       it { should == files }
     end
 
     context "two files" do
-      let(:files) { ["spec/fixtures/yml/nice.en.yml", "spec/fixtures/yml/nice.de.yml"] }
+      let(:files) { ["spec/fixtures/yml/nice.en.yml", "spec/fixtures/yml/nice.de.yml"].sort }
 
       it { should == files }
     end
@@ -162,14 +162,14 @@ describe Phrase::Tool::Commands::Push do
     context "folder" do
       let(:files) { ["spec/fixtures/mixed"] }
 
-      it { should == [File.expand_path('spec/fixtures/mixed/nice.yml'), File.expand_path('spec/fixtures/mixed/wrong.yml.rb')] }
+      it { should == [File.expand_path('spec/fixtures/mixed/nice.yml'), File.expand_path('spec/fixtures/mixed/wrong.yml.rb')].sort }
     end
 
     context "folder recursive" do
       let(:files) { ["spec/fixtures/mixed"] }
       let(:recursive) { true }
 
-      it { should == [File.expand_path('spec/fixtures/mixed/nice.yml'), File.expand_path('spec/fixtures/mixed/subfolder/subitem.yml'), File.expand_path('spec/fixtures/mixed/wrong.yml.rb')] }
+      it { should == [File.expand_path('spec/fixtures/mixed/nice.yml'), File.expand_path('spec/fixtures/mixed/subfolder/subitem.yml'), File.expand_path('spec/fixtures/mixed/wrong.yml.rb')].sort }
     end
   end
 end
