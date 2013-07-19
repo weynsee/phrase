@@ -22,9 +22,9 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.add_dependency('colorize')
   s.add_dependency('json')
+  s.add_dependency('i18n')
   s.add_development_dependency('rake')
   s.add_development_dependency('rspec')
-  s.add_development_dependency('i18n')
   s.add_development_dependency('webmock')
   s.add_development_dependency('vcr')
   s.add_development_dependency('timecop')
