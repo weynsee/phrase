@@ -91,4 +91,28 @@ describe Phrase::Api::Config do
       Phrase::Api::Config.api_path_prefix.should == "/api/v8"
     end
   end
+
+  describe "#self.api_max_retries" do
+    before(:all) do
+      @existing_api_max_retries = ENV["PHRASE_API_MAX_RETRIES"]
+    end
+
+    after(:all) do
+      ENV["PHRASE_API_MAX_RETRIES"] = @existing_api_max_retries
+    end
+
+    context "max_retries is set via env" do
+      it "should return the env value" do
+        ENV["PHRASE_API_MAX_RETRIES"] = "5"
+        Phrase::Api::Config.api_max_retries.should == 5
+      end
+    end
+
+    context "max_retries is not set explicitely" do
+      it "should return 1 as default" do
+        ENV["PHRASE_API_MAX_RETRIES"] = nil
+        Phrase::Api::Config.api_max_retries.should == 3
+      end
+    end
+  end
 end

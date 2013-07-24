@@ -341,6 +341,50 @@ describe Phrase::Api::Client do
         }.should raise_error "Invalid Request Method: invalid"        
       end
     end
+
+    context 'API_MAX_RETRIES is set' do
+      let(:api_max_retries) { 2 }
+      before(:each) { Phrase::Api::Config.stub(api_max_retries: api_max_retries) }
+
+      it 'retries the set amount when failing and raises the exception at the end' do
+        subject.should_receive(:sleep).exactly(api_max_retries).times
+        http_client.should_receive(:request).exactly(api_max_retries).times.and_return(stub(code: 502).as_null_object)
+        expect {
+          subject.send(:perform_api_request, "/bar", :get)
+        }.to raise_error(Phrase::Api::Exceptions::ServerError)
+      end
+
+      it 'does not retry when status is 401 and raises the exception' do
+        http_client.should_receive(:request).exactly(:once).and_return(stub(code: 401).as_null_object)
+        expect {
+          subject.send(:perform_api_request, "/bar", :get)
+        }.to raise_error(Phrase::Api::Exceptions::Unauthorized)
+      end
+
+      it 'does not retry when status is 200' do
+        http_client.should_receive(:request).exactly :once
+        subject.send(:perform_api_request, "/bar", :get)
+      end
+
+      it 'does not sleep when status is 200' do
+        subject.should_not_receive(:sleep)
+        subject.send(:perform_api_request, "/bar", :get)
+      end
+
+      it 'does not retry when method is post' do
+        http_client.should_receive(:request).exactly(1).times.and_return(stub(code: 502).as_null_object)
+        expect {
+          subject.send(:perform_api_request, "/bar", :post)
+        }.to raise_error(Phrase::Api::Exceptions::ServerError)
+      end
+
+      it 'does not retry when method is put' do
+        http_client.should_receive(:request).exactly(1).times.and_return(stub(code: 502).as_null_object)
+        expect {
+          subject.send(:perform_api_request, "/bar", :put)
+        }.to raise_error(Phrase::Api::Exceptions::ServerError)
+      end
+    end
   end
   
   describe "#get_request" do

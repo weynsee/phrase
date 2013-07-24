@@ -19,4 +19,8 @@ class Phrase::Api::Config
   def self.api_use_ssl?
     (ENV.fetch("PHRASE_API_USE_SSL", "1") == "1")
   end
+
+  def self.api_max_retries
+    ENV.fetch("PHRASE_API_MAX_RETRIES", 3).to_i
+  end
 end

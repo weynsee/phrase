@@ -163,7 +163,7 @@ private
       else
         raise "Invalid Request Method: #{method}"
     end
-    response = http_client.request(request)
+    response = perform_request_with_retry(request, Phrase::Api::Config.api_max_retries)
     code = response.code.to_i
 
     if (code == 200)
@@ -173,6 +173,22 @@ private
       raise Phrase::Api::Exceptions::Unauthorized.new(error_message) if (code == 401)
       raise Phrase::Api::Exceptions::ServerError.new(error_message)
     end
+  end
+
+  def perform_request_with_retry(request, retries)
+    response = nil
+
+    retries.times do |i|
+      response = http_client.request(request)
+      break unless should_retry?(request, response)
+      sleep(1 + i + rand * 5)
+    end
+
+    response
+  end
+
+  def should_retry?(request, response)
+    request.method.to_s.downcase == METHOD_GET.to_s && response.code.to_i == 502
   end
   
   def get_request(endpoint, params={})
