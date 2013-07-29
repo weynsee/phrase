@@ -84,6 +84,7 @@ protected
     splitted_args = split_args(duped_args)
     key = I18n::Backend::Flatten.normalize_flat_keys(*splitted_args)
     key.gsub!("..", ".")
+    key.gsub!(/^\./, '')
     key
   end
   

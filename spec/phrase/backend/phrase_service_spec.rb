@@ -228,4 +228,18 @@ describe Phrase::Backend::PhraseService do
       it { should eql "secret999" }
     end
   end
+
+  describe '#normalized_key' do
+    subject { phrase_service.send(:normalized_key, args) }
+
+    context 'default case' do
+      let(:args) { ['my.key', {}] }
+      it { should == 'my.key'}
+    end
+
+    context 'the leading dot should be removed' do
+      let(:args) { ['.my.key', {}] }
+      it { should == 'my.key'}
+    end
+  end
 end
