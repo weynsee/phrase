@@ -14,6 +14,7 @@ class Phrase::Tool::Commands::Push < Phrase::Tool::Commands::Base
     @tags = @options.get(:tags)
     @recursive = @options.get(:recursive)
     @update_translations = @options.get(:update_translations)
+    @skip_unverification = @options.get(:skip_unverification)
   end
 
   def execute!
@@ -81,7 +82,7 @@ private
           locale = Phrase::Tool::Locale.find_default_locale.try(:name)
         end
         locale = @locale if @locale
-        api_client.upload(file, file_content(file), @tags, locale, @format, @update_translations)
+        api_client.upload(file, file_content(file), @tags, locale, @format, @update_translations, @skip_unverification)
         print_message "OK".green
       rescue Exception => e
         print_error "Failed"

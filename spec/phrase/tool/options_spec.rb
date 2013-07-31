@@ -70,6 +70,12 @@ describe Phrase::Tool::Options do
         
         it { should be_false }
       end
+
+      describe "skip_unverification" do
+        subject { Phrase::Tool::Options.new(args, command).get(:skip_unverification) }
+
+        it { should be_false }
+      end
     end
     
     context "pull command" do

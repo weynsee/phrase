@@ -84,7 +84,7 @@ class Phrase::Api::Client
     end
   end
   
-  def upload(filename, file_content, tags=[], locale=nil, format=nil, update_translations=false)
+  def upload(filename, file_content, tags=[], locale=nil, format=nil, update_translations=false, skip_unverification=false)
     begin
       params = {
         "file_format" => format,
@@ -92,6 +92,7 @@ class Phrase::Api::Client
         "file_content" => file_content,
         "tags[]" => tags,
         "update_translations" => update_translations ? "1" : "0",
+        "skip_unverification" => skip_unverification ? "1" : "0"
       }
       params["locale_name"] = locale unless locale.nil?
       perform_api_request("/translation_keys/upload", :post, params)

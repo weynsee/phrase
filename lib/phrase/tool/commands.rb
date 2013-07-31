@@ -21,7 +21,8 @@ module Phrase::Tool::Commands
         recursive: false,
         locale: nil,
         format: nil,
-        update_translations: false
+        update_translations: false,
+        skip_unverification: false
       },
       pull: {
         format: nil,

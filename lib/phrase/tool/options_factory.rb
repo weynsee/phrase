@@ -62,6 +62,10 @@ class OptionsFactory
     opts.on("--force-update-translations", "Force update of existing translations with the file content") do |update_translations|
       set[:update_translations] = update_translations
     end
+
+    opts.on("--skip-unverification", "When force updating translations, skip unverification of non-main locale translations") do |skip_unverification|
+      set[:skip_unverification] = skip_unverification
+    end
   end
   private_class_method :push
 
