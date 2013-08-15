@@ -4,10 +4,12 @@ require 'phrase/delegate/i18n'
 
 describe Phrase::Delegate::I18n do
   let(:key) { "foo.bar" }
+  let(:options) { {} }
+  let(:original_args) { stub }
+
+  let(:delegate) { Phrase::Delegate::I18n.new(key) }
   
-  subject {
-    Phrase::Delegate::I18n.new(key)
-  }
+  subject { delegate }
   
   describe "#to_s" do
     it "should return the decorated key name" do
@@ -21,30 +23,72 @@ describe Phrase::Delegate::I18n do
   end
   
   describe "missing methods" do
+    let(:i18n_translation) { [] }
+
     before(:each) do
-      subject.stub(:translation_or_subkeys).and_return({foo: "bar"})
+      Phrase::Delegate::Base.stub(:log)
+      I18n.stub(:translate_without_phrase).and_return("i18n_translation")
     end
-    
-    it "should respond to #each |key, value|" do
-      subject.each do |key, value|
-        key.should == :foo
-        value.should == "bar"
+
+    context "translation is a string" do
+      before(:each) do
+        delegate.stub(:translation_or_subkeys).and_return("bar")
+      end
+
+      context "#each |key,value|" do
+        subject { delegate.each { |key,value| } }
+        specify { lambda { subject }.should raise_error NoMethodError }
+      end
+
+      context "#each |key|" do
+        subject { delegate.each { |key| } }
+        specify { lambda { subject }.should raise_error NoMethodError }
+      end
+      
+      context "#keys" do
+        subject { delegate.keys }
+        specify { lambda { subject }.should raise_error NoMethodError }
+      end
+      
+      context "#map" do
+        subject { delegate.map { |i| } }
+        specify { lambda { subject }.should raise_error NoMethodError }
+      end
+
+      context "#to_ary" do
+        subject { delegate.to_ary }
+        specify { lambda { subject }.should raise_error NoMethodError }
       end
     end
-    
-    it "should respond to #each |key|" do
-      subject.each do |n|
-        n.should == [:foo, "bar"]
+
+    context "translation is a subhash" do
+      before(:each) do
+        delegate.stub(:translation_or_subkeys).and_return({foo: "bar"})
       end
-    end
-    
-    it "should respond to #keys" do
-      subject.keys.should == [:foo]
-    end
-    
-    it "should respond to #map" do
-      subject.map do |item|
-        item.should == [:foo, "bar"]
+
+      context "#each |key,value|" do
+        subject { result = nil; delegate.each { |key,value| result = [key, value] }; result }
+        it { should == [:foo, "bar"] }
+      end
+
+      context "#each |key|" do
+        subject { result = nil; delegate.each { |key| result = key }; result }
+        it { should == [:foo, "bar"] }
+      end
+
+      context "#keys" do
+        subject { delegate.keys }
+        it { should == [:foo] }
+      end
+
+      context "#map" do
+        subject { result = nil; delegate.map { |n| result = n }; result }
+        it { should == [:foo, "bar"] }
+      end
+
+      context "#to_ary" do
+        subject { delegate.to_ary }
+        specify { lambda { subject }.should raise_error NoMethodError }
       end
     end
   end

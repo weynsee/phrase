@@ -8,7 +8,7 @@ module Phrase::Delegate
     
     def self.log(message)
       message = "phrase: #{message}"
-      if defined?(Rails)
+      if defined?(Rails) and Rails.respond_to?(:logger)
         Rails.logger.warn(message)
       else
         $stderr.puts message

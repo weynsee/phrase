@@ -7,11 +7,12 @@ require 'phrase/delegate'
 require 'set'
 
 class Phrase::Delegate::I18n < Phrase::Delegate::Base
-  attr_accessor :key, :display_key, :options, :api_client, :fallback_keys
+  attr_accessor :key, :display_key, :options, :api_client, :fallback_keys, :original_args
   
-  def initialize(key, options={})
+  def initialize(key, options={}, original_args=nil)
     @display_key = @key = key
     @options = options
+    @original_args = original_args
     
     @fallback_keys = []
     
@@ -21,17 +22,19 @@ class Phrase::Delegate::I18n < Phrase::Delegate::Base
   end
   
   def method_missing(*args, &block)
-    if @key.respond_to?(args.first) 
+    self.class.log "Trying to execute missing method ##{args.first} on key #{@key}"
+
+    if @key.respond_to?(args.first)
       to_s.send(*args)
     else
       data = translation_or_subkeys
-      if data.is_a?(String)
-        to_s
-      elsif data.respond_to?(args.first)
+
+      if data.respond_to?(args.first)
         data.send(*args, &block)
       else
-        self.class.log "You are trying to execute the method ##{args.first} on a translation key which is not supported. Please make sure you treat your translations as strings only."
-        nil
+        self.class.log "You tried to execute the missing method ##{args.first} on key #{@key} which is not supported. Please make sure you treat your translations as strings only."
+        original_translation = I18n.translate_without_phrase(*@original_args)
+        original_translation.send(*args, &block)
       end
     end
   end

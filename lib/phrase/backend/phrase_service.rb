@@ -67,7 +67,7 @@ protected
     key = given_key_from_args(args)
     return nil unless present?(key)
     options = args[1].nil? ? {} : args[1]
-    Phrase::Delegate::I18n.new(key, options)
+    Phrase::Delegate::I18n.new(key, options, args)
   end
 
   def extract_normalized_key_from_args(args)
