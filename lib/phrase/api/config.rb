@@ -17,10 +17,14 @@ class Phrase::Api::Config
   end
   
   def self.api_use_ssl?
-    (ENV.fetch("PHRASE_API_USE_SSL", "1") == "1")
+    ENV.fetch("PHRASE_API_USE_SSL", "1") == "1"
   end
 
   def self.api_max_retries
     ENV.fetch("PHRASE_API_MAX_RETRIES", 3).to_i
+  end
+
+  def self.skip_ssl_validation?
+    ENV.fetch("PHRASE_API_SKIP_SSL_VALIDATION", "0") == "1"
   end
 end

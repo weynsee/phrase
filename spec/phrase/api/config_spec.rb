@@ -115,4 +115,28 @@ describe Phrase::Api::Config do
       end
     end
   end
+
+  describe "#self.skip_ssl_validation" do
+    before(:all) do
+      @existing_skip_ssl_validation = ENV["PHRASE_API_SKIP_SSL_VALIDATION"]
+    end
+
+    after(:all) do
+      ENV["PHRASE_API_SKIP_SSL_VALIDATION"] = @existing_skip_ssl_validation
+    end
+
+    context "skip_ssl is set via env" do
+      it "should return the env value" do
+        ENV["PHRASE_API_SKIP_SSL_VALIDATION"] = "1"
+        Phrase::Api::Config.skip_ssl_validation?.should be_true
+      end
+    end
+
+    context "skip_ssl is not set" do
+      it "should return false as default" do
+        ENV["PHRASE_API_SKIP_SSL_VALIDATION"] = nil
+        Phrase::Api::Config.skip_ssl_validation?.should be_false
+      end
+    end
+  end
 end
