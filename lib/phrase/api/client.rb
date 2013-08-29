@@ -8,34 +8,39 @@ require 'phrase'
 require 'phrase/api'
 
 class Phrase::Api::Client
-  
+
   METHOD_GET = :get
   METHOD_POST = :post
   METHOD_PUT = :put
-  
+
   attr_reader :auth_token
-  
+
   def initialize(auth_token)
     raise "No auth token specified!" if (auth_token.nil? or auth_token.blank?)
     @auth_token = auth_token
   end
-  
+
   def fetch_locales
     result = perform_api_request("/locales", :get)
-    parsed(result).map do |locale| 
+    parsed(result).map do |locale|
       {id: locale['id'], name: locale['name'], code: locale['code'], is_default: locale['is_default']}
     end
   end
-  
+
+  def fetch_translations(params = {})
+    result = perform_api_request("/translations", :get, params)
+    parsed(result)
+  end
+
   def fetch_blacklisted_keys
     result = perform_api_request("/blacklisted_keys", :get)
     blacklisted_keys = []
-    parsed(result).map do |blacklisted_key| 
+    parsed(result).map do |blacklisted_key|
       blacklisted_keys << blacklisted_key['name']
     end
     blacklisted_keys
   end
-  
+
   def translate(key)
     raise "You must specify a key" if key.nil? or key.blank?
     keys = {}
@@ -43,14 +48,14 @@ class Phrase::Api::Client
     keys = extract_structured_object(result["translate"]) if result["translate"]
     keys
   end
-  
+
   def find_keys_by_name(key_names=[])
     parsed(perform_api_request("/translation_keys", :get, {:key_names => key_names}))
   end
-  
+
   def create_locale(name)
     raise "You must specify a name" if name.nil? or name.blank?
-    
+
     begin
       perform_api_request("/locales", :post, {
         "locale[name]" => name
@@ -60,10 +65,10 @@ class Phrase::Api::Client
     end
     true
   end
-  
+
   def make_locale_default(name)
     raise "You must specify a name" if name.nil? or name.blank?
-    
+
     begin
       perform_api_request("/locales/#{name}/make_default", :put)
     rescue Phrase::Api::Exceptions::ServerError => e
@@ -71,11 +76,11 @@ class Phrase::Api::Client
     end
     true
   end
-  
+
   def download_translations_for_locale(name, format, tag=nil)
     raise "You must specify a name" if name.nil? or name.blank?
     raise "You must specify a format" if format.nil? or format.blank?
-    
+
     begin
       content = perform_api_request("/translations/download.#{format}", :get, {'locale' => name, 'tag' => tag})
       return content
@@ -83,7 +88,7 @@ class Phrase::Api::Client
       raise "Translations #{name} could not be downloaded"
     end
   end
-  
+
   def upload(filename, file_content, tags=[], locale=nil, format=nil, update_translations=false, skip_unverification=false)
     begin
       params = {
@@ -106,7 +111,7 @@ class Phrase::Api::Client
     result = perform_api_request("/tags", :get)
     parsed(result)
   end
-  
+
 private
   def extract_structured_object(translation)
     if translation.is_a?(Hash)
@@ -191,13 +196,13 @@ private
   def should_retry?(request, response)
     request.method.to_s.downcase == METHOD_GET.to_s && response.code.to_i == 502
   end
-  
+
   def get_request(endpoint, params={})
     params.merge!('auth_token' => @auth_token)
     request = Net::HTTP::Get.new("#{api_path_for(endpoint)}?#{query_for_params(params)}")
     request
   end
-  
+
   def post_request(endpoint, params={})
     request = Net::HTTP::Post.new("#{api_path_for(endpoint)}")
     params.merge!({
@@ -206,7 +211,7 @@ private
     set_form_data(request, params)
     request
   end
-  
+
   def put_request(endpoint, params={})
     request = Net::HTTP::Put.new("#{api_path_for(endpoint)}")
     params.merge!({
@@ -215,11 +220,11 @@ private
     set_form_data(request, params)
     request
   end
-  
+
   def api_path_for(endpoint)
     "#{Phrase::Api::Config.api_path_prefix}#{endpoint}"
   end
-  
+
   def http_client
     client = Net::HTTP.new(Phrase::Api::Config.api_host, Phrase::Api::Config.api_port)
     client.use_ssl = true if Phrase::Api::Config.api_use_ssl?
@@ -227,11 +232,11 @@ private
     client.ca_file = File.join(File.dirname(__FILE__), "..", "..", "..", "cacert.pem")
     client
   end
-  
+
   # Support for arrays in POST data
   # http://blog.assimov.net/blog/2010/06/01/postput-arrays-with-ruby-nethttp-set_form_data/
   def set_form_data(request, params, separator='&')
-    request.body = params.map do |key, value| 
+    request.body = params.map do |key, value|
       if value.instance_of?(Array)
         value.map {|value_item| "#{escaped(key.to_s)}=#{escaped(value_item.to_s)}"}.join(separator)
       else
@@ -240,12 +245,12 @@ private
     end.join(separator)
     request.content_type = 'application/x-www-form-urlencoded'
   end
-  
+
   def parsed(raw_data)
     JSON.parse(raw_data)
   end
-  
-  def escaped(value) 
+
+  def escaped(value)
     CGI::escape(value)
   end
 
