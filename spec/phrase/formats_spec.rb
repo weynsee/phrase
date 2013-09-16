@@ -3,6 +3,15 @@ require 'spec_helper'
 describe Phrase::Formats do
   include RSpec::Helpers
 
+  describe "#self.target_directory(format_name)" do
+    subject { Phrase::Formats.target_directory(format_name) }
+
+    context 'format is node_json' do
+      let(:format_name) { 'node_json' }
+      it { should == 'locales/' }
+    end
+  end
+
   describe "#self.directory_for_locale_in_format(locale, format_name)" do
     let(:locale) { Phrase::Tool::Locale.new(name: "fooish", code: "foo-ish") }
 
@@ -55,6 +64,11 @@ describe Phrase::Formats do
 
     context "format is simple_json" do
       let(:format_name) { "simple_json" }
+      it { should eql("./") }
+    end
+
+    context "format is node_json" do
+      let(:format_name) { "node_json" }
       it { should eql("./") }
     end
 
@@ -152,6 +166,11 @@ describe Phrase::Formats do
     context "format is simple json" do
       let(:format_name) { "simple_json" }
       it { should eql("phrase.fooish.json") }
+    end
+
+    context "format is node_json" do
+      let(:format_name) { "node_json" }
+      it { should eql("fooish.js") }
     end
 
     context "format is resx" do
@@ -262,6 +281,11 @@ describe Phrase::Formats do
     context "format = simple_json" do
       let(:format_name) { "simple_json" }
       it { should == Phrase::Formats::SimpleJson }
+    end
+
+    context "format = node_json" do
+      let(:format_name) { "node_json" }
+      it { should == Phrase::Formats::NodeJson }
     end
 
     context "format = resx" do

@@ -16,6 +16,7 @@ module Phrase
     autoload :Resx, 'phrase/formats/resx'
     autoload :ResxWindowsphone, 'phrase/formats/resx_windowsphone'
     autoload :SimpleJson, 'phrase/formats/simple_json'
+    autoload :NodeJson, 'phrase/formats/node_json'
     autoload :Strings, 'phrase/formats/strings'
     autoload :Xml, 'phrase/formats/xml'
     autoload :Tmx, 'phrase/formats/tmx'
@@ -83,6 +84,7 @@ module Phrase
       resx: Phrase::Formats::Resx,
       resx_windowsphone: Phrase::Formats::ResxWindowsphone,
       simple_json: Phrase::Formats::SimpleJson,
+      node_json: Phrase::Formats::NodeJson,
       strings: Phrase::Formats::Strings,
       xml: Phrase::Formats::Xml,
       tmx: Phrase::Formats::Tmx,
