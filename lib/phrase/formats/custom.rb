@@ -9,10 +9,10 @@ class Phrase::Formats::Custom < Phrase::Formats::Base
 
   def self.filename_for_locale(locale, format)
     setting = config.locale_filename
-    return unless setting 
+    return unless setting
     parse(setting, locale, format)
   end
-  
+
   def self.target_directory
     config.target_directory
   end

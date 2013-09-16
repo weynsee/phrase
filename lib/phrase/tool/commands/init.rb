@@ -4,7 +4,7 @@ class Phrase::Tool::Commands::Init < Phrase::Tool::Commands::Base
   def initialize(options, args)
     super(options, args)
   end
-  
+
   def execute!
     secret = get_option(:secret)
     if secret.present?
@@ -23,7 +23,7 @@ class Phrase::Tool::Commands::Init < Phrase::Tool::Commands::Base
       exit_command
     end
   end
-  
+
 private
   def create_locale(name)
     begin
@@ -33,7 +33,7 @@ private
       print_message "Notice: Locale \"#{name}\" could not be created (maybe it already exists)".light_red
     end
   end
-  
+
   def make_locale_default(name)
     begin
       api_client.make_locale_default(name)
@@ -43,7 +43,7 @@ private
       print_server_error(e.message)
     end
   end
-  
+
   def print_auth_token_error
     print_error "No auth token was given"
     print_error "Please provide the --secret=YOUR_SECRET parameter."

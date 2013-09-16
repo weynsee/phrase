@@ -7,11 +7,11 @@ module Phrase
         name = locale.code || locale.name
         "#{formatted(name)}.lproj"
       end
-      
+
       def self.filename_for_locale(locale)
         "Localizable.strings"
       end
-      
+
       def self.target_directory
         "./"
       end
@@ -19,11 +19,11 @@ module Phrase
       def self.extract_locale_name_from_file_path(file_path)
         file_path.scan(/\/([a-zA-Z\-_]*).lproj\//i).first.try(:first)
       end
-      
+
       def self.locale_aware?
         true
       end
-      
+
       def self.formatted(name)
         return name unless name.include?("-")
         parts = name.split("-")

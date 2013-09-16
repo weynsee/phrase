@@ -2,12 +2,12 @@ require 'spec_helper'
 
 describe Phrase::Tool do
   include RSpec::Helpers
-  
+
   let(:argv) { stub }
-  
+
   describe "commands" do
     let(:api_client) { stub }
-    
+
     describe "default command" do
       it "prints usage instructions" do
         phrase ""
@@ -15,8 +15,8 @@ describe Phrase::Tool do
         out.should include "phrase push"
       end
     end
-    
-    describe "init command" do      
+
+    describe "init command" do
       before(:each) do
         Phrase::Tool::Commands::Init.any_instance.stub(:api_client).and_return(api_client)
       end
@@ -27,20 +27,20 @@ describe Phrase::Tool do
             phrase_cmd "init"
             err.should include "No auth token was given"
             err.should include "Please provide the --secret=YOUR_SECRET parameter."
-          end      
+          end
         end
 
         context "a secret is given" do
           it "displays a success message" do
             phrase_cmd "init --secret=secret123"
             out.should include "Wrote secret to config file .phrase"
-          end  
+          end
 
           it "should write the secret to the config file" do
             phrase_cmd "init --secret=secret123"
             File.read('.phrase').should include "secret123"
           end
-        end      
+        end
       end
 
       describe "default locale initialization" do
@@ -70,13 +70,13 @@ describe Phrase::Tool do
 
             it "tells the user that it could not create the locale" do
               phrase "init --secret=secret123 --default-locale=hu"
-              out.should_not include "Created locale \"hu\""            
+              out.should_not include "Created locale \"hu\""
             end
 
             it "makes the locale default" do
               phrase "init --secret=secret123 --default-locale=hu"
-              out.should include "Locale \"hu\" is now the default locale"        
-            end        
+              out.should include "Locale \"hu\" is now the default locale"
+            end
           end
         end
 
@@ -90,7 +90,7 @@ describe Phrase::Tool do
             it "creates the locale" do
               phrase "init --secret=secret123"
               out.should include "Created locale \"en\""
-            end        
+            end
 
             it "makes en the default locale" do
               phrase "init --secret=secret123"
@@ -117,12 +117,12 @@ describe Phrase::Tool do
         end
       end
     end
-    
+
     describe "push command" do
       before(:each) do
         Phrase::Tool::Commands::Push.any_instance.stub(:api_client).and_return(api_client)
       end
-      
+
       before(:each) do
         api_client.stub(:create_locale).and_return(true)
         api_client.stub(:make_locale_default).and_return(true)
@@ -151,11 +151,11 @@ describe Phrase::Tool do
           end
         end
 
-        context "rails default dir is available" do          
+        context "rails default dir is available" do
           before(:each) do
             Phrase::Tool::Commands::Push.any_instance.stub(:rails_default_locale_folder_available?).and_return(true)
           end
-          
+
           it "uses ./config/locales as default directory" do
             begin
               phrase "init --secret=secret123"
@@ -179,12 +179,12 @@ describe Phrase::Tool do
             rescue SystemExit
               err.should include "The file does_not_exist.yml could not be found."
             end
-          end        
+          end
         end
 
         context "file exists" do
           describe "file formats" do
-            before(:each) do          
+            before(:each) do
               api_client.stub(:upload).and_return(stub)
             end
 
@@ -196,7 +196,7 @@ describe Phrase::Tool do
             it "can upload .po" do
               phrase "push spec/fixtures/formats/translations.en.po"
               out.should include "Uploading spec/fixtures/formats/translations.en.po"
-            end     
+            end
 
             it "can upload .resx" do
               phrase "push spec/fixtures/formats/translations.en.resx --format=resx"
@@ -277,7 +277,7 @@ describe Phrase::Tool do
               out.should include "(tagged: foo, bar)"
             end
 
-            context "tag name is invalid" do            
+            context "tag name is invalid" do
               it "should not perform the upload" do
                 begin
                   phrase "push spec/fixtures/yml/nice.en.yml --tags=tes$"
@@ -289,7 +289,7 @@ describe Phrase::Tool do
           end
         end
 
-        context "file extension is not supported" do        
+        context "file extension is not supported" do
           it "does not upload the file" do
             phrase "push spec/fixtures/edge/wrongext.doc"
             api_client.should_not_receive(:upload)
@@ -334,12 +334,12 @@ describe Phrase::Tool do
         end
       end
     end
-    
+
     describe "pull command" do
       before(:each) do
         Phrase::Tool::Commands::Pull.any_instance.stub(:api_client).and_return(api_client)
       end
-      
+
       before(:each) do
         ::FileUtils.rm_rf("ru.lproj")
         ::FileUtils.rm_rf("res")
@@ -362,21 +362,21 @@ describe Phrase::Tool do
           rescue SystemExit
             err.should include "No auth token present"
           end
-        end        
+        end
       end
 
       context "auth token is present" do
         let(:list_of_locales) { [
-          Phrase::Tool::Locale.new({name: "de"}), 
-          Phrase::Tool::Locale.new({name: "ru"}), 
+          Phrase::Tool::Locale.new({name: "de"}),
+          Phrase::Tool::Locale.new({name: "ru"}),
           Phrase::Tool::Locale.new({name: "pl"})
         ] }
-        
+
         before(:each) do
           phrase "init --secret=my_secret"
           Phrase::Tool::Locale.stub(:all).and_return(list_of_locales)
         end
-      
+
         context "locale is invalid" do
           it "should render an error" do
             begin

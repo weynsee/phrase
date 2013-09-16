@@ -23,7 +23,7 @@ module Phrase
     autoload :Yaml, 'phrase/formats/yaml'
     autoload :YamlSymfony, 'phrase/formats/yaml_symfony'
     autoload :PhpArray, 'phrase/formats/php_array'
-    
+
     class Base
       def self.supports_extension?(extension)
         self.extensions.map(&:to_s).include?(extension.to_s)
@@ -36,19 +36,19 @@ module Phrase
       def self.directory_for_locale(locale)
         "./"
       end
-      
+
       def self.filename_for_locale(locale)
         raise "not implemented"
       end
-      
+
       def self.extract_locale_name_from_file_path(file_path)
         nil
       end
-      
+
       def self.default_locale_name
         Phrase::Tool::Locale.find_default_locale.try(:name)
       end
-      
+
       def self.locale_aware?
         false
       end
@@ -56,7 +56,7 @@ module Phrase
       def self.target_directory
         "phrase/locales/"
       end
-      
+
       def self.config
         @config ||= get_config
       end
@@ -67,7 +67,7 @@ module Phrase
       end
       private_class_method :config
     end
-    
+
     SUPPORTED_FORMATS = {
       custom: Phrase::Formats::Custom,
       json: Phrase::Formats::Json,
@@ -109,34 +109,34 @@ module Phrase
       handler = handler_class_for_format(format_name)
       custom_handler.target_directory || handler.target_directory
     end
-    
+
     def self.directory_for_locale_in_format(locale, format_name)
       handler = handler_class_for_format(format_name)
       custom_directory = custom_handler.directory_for_locale(locale, format_name)
       custom_directory || handler.directory_for_locale(locale)
     end
-    
+
     def self.filename_for_locale_in_format(locale, format_name)
       handler = handler_class_for_format(format_name)
       custom_filename = custom_handler.filename_for_locale(locale, format_name)
       custom_filename || handler.filename_for_locale(locale)
     end
-    
+
     def self.file_format_exposes_locale?(file_path)
       format = guess_possible_file_format_from_file_path(file_path)
       format.nil? ? false : handler_class_for_format(format).locale_aware?
     end
-    
+
     def self.detect_locale_name_from_file_path(file_path)
       format = guess_possible_file_format_from_file_path(file_path)
       format.nil? ? nil : handler_class_for_format(format).extract_locale_name_from_file_path(file_path)
     end
-    
+
     def self.handler_class_for_format(format_name)
       SUPPORTED_FORMATS.fetch(format_name.to_sym)
     end
     private_class_method :handler_class_for_format
-    
+
     def self.guess_possible_file_format_from_file_path(file_path)
       extension = extension_from_file_path(file_path)
       possible_format = SUPPORTED_FORMATS.keys.find do |format|

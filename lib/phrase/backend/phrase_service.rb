@@ -3,13 +3,13 @@
 require 'phrase/delegate/i18n'
 
 class Phrase::Backend::PhraseService
-  
+
   attr_accessor :api_client, :blacklisted_keys
-    
+
   def initialize(args = {})
     self
   end
-  
+
   def translate(*args)
     if to_be_translated_without_phrase?(args)
       I18n.translate_without_phrase(*args)
@@ -54,15 +54,15 @@ protected
     end
     false
   end
-  
+
   def blacklisted_keys
     @blacklisted_keys ||= api_client.fetch_blacklisted_keys
   end
-  
+
   def api_client
     @api_client ||= Phrase::Api::Client.new(Phrase.auth_token)
   end
-  
+
   def phrase_delegate_for(args)
     key = given_key_from_args(args)
     return nil unless present?(key)
@@ -87,9 +87,9 @@ protected
     key.gsub!(/^\./, '')
     key
   end
-  
+
   def split_args(args)
-    options = options_from_args(args) 
+    options = options_from_args(args)
     key ||= args.shift
     locale = options.delete(:locale) || I18n.locale
     return [locale, key, options[:scope], nil]
@@ -101,7 +101,7 @@ protected
 
   def transform_args_based_on_caller(args)
     translation_caller = identify_caller
-    
+
     if translation_caller and args.first =~ /^\./
       options = options_from_args(args)
 
@@ -122,7 +122,7 @@ protected
     send(:caller)[0..6].each do |intermediate_caller|
       translation_caller = calling_template(intermediate_caller) unless translation_caller
     end
-    
+
     if present?(translation_caller)
       find_lookup_scope(translation_caller)
     else
@@ -136,7 +136,7 @@ protected
 
   def blank?(str)
     raise "blank?(str) can only be given a String or nil" unless str.is_a?(String) or str.nil?
-    str.nil? or str == '' 
+    str.nil? or str == ''
   end
 
   def present?(str)
@@ -155,7 +155,7 @@ protected
 
   def remove_underscore_form_partial(template_or_partial)
     if template_or_partial.to_s[0,1] == "_"
-      template_or_partial.to_s[1..-1] 
+      template_or_partial.to_s[1..-1]
     else
       template_or_partial.to_s
     end

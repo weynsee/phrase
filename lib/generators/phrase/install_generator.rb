@@ -16,7 +16,7 @@ module Phrase
       end
 
       def init_phrase
-        # It is probably preferred to just invoke phrase init via #run 
+        # It is probably preferred to just invoke phrase init via #run
         # but this version can be mocked so much better via VCR
         tool = Phrase::Tool.new(["init", "--secret=#{options[:auth_token]}", "--default-locale=#{options[:default_locale]}"])
         tool.run

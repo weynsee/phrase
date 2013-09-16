@@ -14,7 +14,7 @@ module Phrase::Tool::Commands
         format: nil,
         locale_filename: nil,
         locale_directory: nil,
-        target_directory: nil 
+        target_directory: nil
       },
       push: {
         tags: [],

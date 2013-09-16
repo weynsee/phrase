@@ -17,7 +17,7 @@ RSpec.configure do |config|
   config.run_all_when_everything_filtered = true
 
   config.extend VCR::RSpec::Macros
-  
+
   config.before(:each) do
     Timecop.return
   end

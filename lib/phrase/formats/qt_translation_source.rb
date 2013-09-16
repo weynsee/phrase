@@ -1,12 +1,12 @@
 # -*- encoding : utf-8 -*-
 
 module Phrase
-  module Formats 
+  module Formats
     class QtTranslationSource < Phrase::Formats::Base
       def self.filename_for_locale(locale)
         "phrase.#{locale.name}.ts"
       end
-      
+
       def self.locale_aware?
         true
       end

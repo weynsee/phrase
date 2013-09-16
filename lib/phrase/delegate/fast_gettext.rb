@@ -8,7 +8,7 @@ class Phrase::Delegate::FastGettext < Phrase::Delegate::Base
     params = params_from_args(args)
     @display_key = params[:msgid]
   end
-  
+
 private
   def params_from_args(args)
     params = case @method

@@ -14,7 +14,7 @@ module Phrase
       def self.target_directory
         "locales/"
       end
-      
+
       def self.locale_aware?
         true
       end

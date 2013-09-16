@@ -1,9 +1,9 @@
 module Phrase::ViewHelpers
   def phrase_javascript(auth_token=nil)
     return "" unless Phrase.enabled?
-    
+
     auth_token ||= Phrase.auth_token
-    js = 
+    js =
 %{<script>
   //<![CDATA[
     var phrase_auth_token = '#{auth_token}';

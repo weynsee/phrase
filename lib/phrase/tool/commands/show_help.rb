@@ -13,7 +13,7 @@ private
 
   def show_help
     msg = "usage: phrase <command> [<args>]\n"
-    Phrase::Tool::Commands.possible_commands.each do |command, suffix| 
+    Phrase::Tool::Commands.possible_commands.each do |command, suffix|
       msg << "    #{extract_help(command)}\n"
     end
 

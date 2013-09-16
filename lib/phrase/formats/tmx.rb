@@ -6,10 +6,10 @@ module Phrase
       def self.filename_for_locale(locale)
         "phrase.#{locale.name}.tmx"
       end
-      
+
       def self.locale_aware?
         false
-      end      
+      end
 
       def self.extensions
         [:tmx]

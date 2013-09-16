@@ -5,18 +5,18 @@ describe Phrase::Formats::Custom do
   before do
     Phrase::Formats::Custom.stub(:config) { config }
   end
-  
+
   describe "#self.directory_for_locale(locale)" do
     subject { Phrase::Formats::Custom.directory_for_locale(locale, :po) }
     it { should be_nil }
-    
+
     context "config given" do
       before do
         config.locale_directory = "<locale.name>/"
       end
       it { should eql "de/" }
     end
-    
+
     context "config given with format" do
       before do
         config.locale_directory = "<format>/<locale.name>/"
@@ -35,7 +35,7 @@ describe Phrase::Formats::Custom do
       end
       it { should eql "de" }
     end
-    
+
     context "config given with format" do
       before do
         config.locale_filename = "<locale.name>.<format>"

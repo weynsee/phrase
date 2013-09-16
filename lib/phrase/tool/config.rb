@@ -14,7 +14,7 @@ class Phrase::Tool::Config
     end
     self
   end
-  
+
   def secret
     config["secret"]
   end
@@ -50,7 +50,7 @@ class Phrase::Tool::Config
     config["format"] = new_domain
     save_config!
   end
-  
+
   def target_directory
     config["target_directory"]
   end
@@ -78,7 +78,7 @@ class Phrase::Tool::Config
     save_config!
   end
 
-private  
+private
   def config
     @config ||= {}
   end

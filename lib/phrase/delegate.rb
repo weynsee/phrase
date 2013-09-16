@@ -5,7 +5,7 @@ module Phrase::Delegate
     def to_s
       "#{decorated_key_name}"
     end
-    
+
     def self.log(message)
       message = "phrase: #{message}"
       if defined?(Rails) and Rails.respond_to?(:logger)
@@ -14,7 +14,7 @@ module Phrase::Delegate
         $stderr.puts message
       end
     end
-    
+
   protected
     def decorated_key_name
       "#{Phrase.prefix}phrase_#{normalized_display_key}#{Phrase.suffix}"

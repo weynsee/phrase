@@ -3,15 +3,15 @@ require 'phrase'
 require 'phrase/adapters/i18n'
 require 'phrase/backend/phrase_service'
 
-describe Phrase::Backend::PhraseService do  
+describe Phrase::Backend::PhraseService do
   let(:phrase_service){ Phrase::Backend::PhraseService.new }
-  
+
   describe "#translate" do
     let(:key_name) { "foo.bar" }
     let(:i18n_translation) { stub }
     let(:key_is_blacklisted){ false }
     let(:key_is_ignored) { false }
-    
+
     before(:each) do
       Phrase.prefix = "{{__"
       Phrase.suffix = "__}}"
@@ -19,28 +19,28 @@ describe Phrase::Backend::PhraseService do
       phrase_service.stub(:has_blacklist_entry_for_key?){ key_is_blacklisted }
       phrase_service.stub(:key_is_ignored?) { key_is_ignored }
     end
-    
+
     subject { phrase_service.translate(*args) }
-    
+
     context "phrase is enabled" do
       before(:each) do
         Phrase.stub(:disabled?){ false }
       end
-      
+
       context "key is blacklisted" do
         let(:args){ [key_name] }
         let(:key_is_blacklisted){ true }
-           
+
         it { should eql i18n_translation }
       end
 
       context "key is ignored" do
         let(:args) { [key_name] }
         let(:key_is_ignored) { true }
-           
+
         it { should eql i18n_translation }
       end
-      
+
       context "resolve: false given as argument" do
         let(:args){ [key_name, resolve: false] }
 
@@ -61,11 +61,11 @@ describe Phrase::Backend::PhraseService do
       context "key is not blacklisted" do
         let(:args){ [key_name] }
         let(:key_is_blacklisted){ false }
-        
+
         it { should be_a Phrase::Delegate::I18n }
         it { should eql '{{__phrase_foo.bar__}}' }
       end
-      
+
       describe "different arguments given" do
         context "default array given" do
           let(:fake_api_client) { stub(translate: {}) }
@@ -76,13 +76,13 @@ describe Phrase::Backend::PhraseService do
           end
 
           let(:args){ [:key, { :default => [:first_fallback, :second_fallback] }] }
-          
+
           it { should eql '{{__phrase_key__}}' }
         end
 
         context "default string given" do
           let(:args){ [:key, { :default => 'first fallback' }] }
-          
+
           it { should eql '{{__phrase_key__}}' }
         end
 
@@ -94,41 +94,41 @@ describe Phrase::Backend::PhraseService do
         end
       end
     end
-    
+
     context "phrase is disabled" do
       let(:args) { [key_name] }
-      
+
       before(:each) do
         Phrase.stub(:disabled?){ true }
       end
-      
+
       it { should eql i18n_translation }
 
       context "given arguments other than key_name" do
         let(:args){ [key_name, locale: :ru] }
         let(:ru_translation){ stub }
-        
+
         before(:each) do
           I18n.stub(:translate_without_phrase).with(key_name, locale: :ru){ ru_translation }
         end
-        
+
         it { should eql ru_translation }
       end
 
-      describe "different arguments given" do 
+      describe "different arguments given" do
         before(:each) do
           I18n.unstub(:translate_without_phrase)
         end
 
         context "default array given" do
           let(:args) { [:key, { :default => [:first_fallback, :second_fallback] }] }
-          
+
           specify { subject.should eql "translation missing: en.key" }
         end
 
         context "default string given" do
           let(:args) { [:key, { :default => 'first fallback' }] }
-          
+
           it { should eql 'first fallback' }
         end
 
@@ -141,7 +141,7 @@ describe Phrase::Backend::PhraseService do
       end
     end
   end
-  
+
   describe "#has_blacklist_entry_for_key?(key)" do
     let(:key){ 'foo.blacklisted' }
     subject { phrase_service.send(:has_blacklist_entry_for_key?, key) }
@@ -154,12 +154,12 @@ describe Phrase::Backend::PhraseService do
       let(:blacklisted_keys){ [key] }
       it { should be_true }
     end
-    
+
     context "key is blacklisted (using wildcards)" do
       let(:blacklisted_keys){ ["foo.black*"] }
       it { should be_true }
     end
-    
+
     context "if no blacklisted_keys" do
       let(:blacklisted_keys){ [] }
       it { should be_false }
@@ -180,38 +180,38 @@ describe Phrase::Backend::PhraseService do
 
       it { should be_true }
     end
-    
+
     context "key is ignores (using wildcards)" do
       let(:ignored_keys) { ["foo.*"] }
 
       it { should be_true }
     end
-    
+
     context "if no keys are ignored" do
       let(:ignored_keys) { [] }
 
       it { should be_false }
     end
   end
-  
+
   describe "#blacklisted_keys" do
     subject { phrase_service.send(:blacklisted_keys) }
 
     before(:each) do
       phrase_service.stub(:api_client){ stub(fetch_blacklisted_keys: ["lorem"]) }
     end
-    
+
     it { should eql ["lorem"] }
-     
+
     describe "memoizing the blacklisted_keys" do
-      specify { 
+      specify {
         old_id = phrase_service.send(:blacklisted_keys).object_id
         phrase_service.stub(:api_client){ stub(fetch_blacklisted_keys: ["ipsum"]) }
         old_id.should eql subject.object_id
       }
     end
   end
-  
+
   describe "#api_client" do
     let(:api_client_method_call) { phrase_service.send(:api_client) }
 
@@ -220,9 +220,9 @@ describe Phrase::Backend::PhraseService do
     before(:each) do
       Phrase.auth_token = "secret999"
     end
-    
+
     it { should be_a Phrase::Api::Client }
-    
+
     describe "returned api client's auth token" do
       subject { api_client_method_call.auth_token }
       it { should eql "secret999" }

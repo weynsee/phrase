@@ -8,19 +8,19 @@ require 'set'
 
 class Phrase::Delegate::I18n < Phrase::Delegate::Base
   attr_accessor :key, :display_key, :options, :api_client, :fallback_keys, :original_args
-  
+
   def initialize(key, options={}, original_args=nil)
     @display_key = @key = key
     @options = options
     @original_args = original_args
-    
+
     @fallback_keys = []
-    
+
     extract_fallback_keys
     identify_key_to_display if @fallback_keys.any?
     super(decorated_key_name)
   end
-  
+
   def method_missing(*args, &block)
     self.class.log "Trying to execute missing method ##{args.first} on key #{@key}"
 
@@ -38,7 +38,7 @@ class Phrase::Delegate::I18n < Phrase::Delegate::Base
       end
     end
   end
-  
+
 private
   def identify_key_to_display
     key_names = [@key] | @fallback_keys
@@ -51,28 +51,28 @@ private
       end
     end
   end
-  
+
   def find_keys_within_phrase(key_names)
     key_names_to_check_against_api = key_names - pre_fetched(key_names)
     pre_cached(key_names) | key_names_returned_from_api_for(key_names_to_check_against_api)
   end
-  
+
   def pre_cached(key_names)
     warm_translation_key_names_cache unless cache.cached?(:translation_key_names)
     pre_cached_key_names = key_names.select { |key_name| key_name_precached?(key_name) }
     pre_cached_key_names
   end
-  
+
   def pre_fetched(key_names)
     key_names.select { |key_name| covered_by_initial_caching?(key_name) }
   end
-  
+
   def key_name_precached?(key_name)
     covered = covered_by_initial_caching?(key_name)
-    in_cache = key_name_is_in_cache?(key_name)    
-    covered && in_cache 
+    in_cache = key_name_is_in_cache?(key_name)
+    covered && in_cache
   end
-  
+
   def key_names_returned_from_api_for(key_names)
     if key_names.size > 0
       api_client.find_keys_by_name(key_names).map { |key| key["name"] }
@@ -80,15 +80,15 @@ private
       []
     end
   end
-  
+
   def key_name_is_in_cache?(key_name)
     cache.get(:translation_key_names).include?(key_name)
   end
-  
+
   def covered_by_initial_caching?(key_name)
     key_name.start_with?(*Phrase.cache_key_segments_initial)
   end
-  
+
   def extract_fallback_keys
     fallback_items = []
     if @options.has_key?(:default)
@@ -98,16 +98,16 @@ private
         fallback_items << @options[:default]
       end
     end
-    
+
     fallback_items.each do |item|
       process_fallback_item(item)
     end
   end
-  
+
   def scoped(item)
     @options.has_key?(:scope) ? "#{@options[:scope]}.#{item}" : item
   end
-  
+
   def process_fallback_item(item)
     if item.kind_of?(Symbol)
       entry = scoped(item.to_s)
@@ -121,7 +121,7 @@ private
       end
     end
   end
-  
+
   def translation_or_subkeys
     begin
       api_client.translate(@key)
@@ -129,33 +129,33 @@ private
       self.class.log "Server Error: #{e.message}"
     end
   end
-  
+
   def api_client
     @api_client ||= Phrase::Api::Client.new(Phrase.auth_token)
   end
-  
+
   def cache
     Thread.current[:phrase_cache] ||= build_cache
   end
-  
+
   def build_cache
     cache = Phrase::Cache.new
   end
-  
+
   def warm_translation_key_names_cache
     cache.set(:translation_key_names, prefetched_key_names)
   end
-  
+
   def prefetched_key_names
     prefetched = Set.new
-    Phrase.cache_key_segments_initial.each do |segment|      
+    Phrase.cache_key_segments_initial.each do |segment|
       result = api_client.translate(segment)
       prefetched.add(segment) if result.is_a?(String)
       prefetched = prefetched.merge(key_names_from_nested(segment, result))
     end
     prefetched
   end
-  
+
   def key_names_from_nested(segment, data)
     key_names = Set.new
     Phrase::HashFlattener.flatten(data, nil) do |key, value|

@@ -7,14 +7,14 @@ class Phrase::Api::QueryParams
       when Hash then value.map { |k,v| encode(v, append_key(key,k)) }.join("&")
       when nil then ""
       else
-        "#{key}=#{CGI.escape(value.to_s)}" 
+        "#{key}=#{CGI.escape(value.to_s)}"
       end
   end
 
   def self.append_key(root_key, key)
     if root_key.nil?
       key
-    else 
+    else
       "#{root_key}[#{key.to_s}]"
     end
   end

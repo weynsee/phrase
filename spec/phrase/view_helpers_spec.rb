@@ -8,15 +8,15 @@ describe Phrase::ViewHelpers do
       include Phrase::ViewHelpers
     end
   end
-  
+
   let(:helpers) { Helpers.new }
-  
+
   describe "#phrase_javascript" do
     context "phrase is enabled" do
       before(:each) do
         Phrase.stub(:enabled?).and_return(true)
       end
-      
+
       it "should return a javascript block" do
         helpers.phrase_javascript.should include("<script>")
         helpers.phrase_javascript.should include("</script>")
@@ -51,14 +51,14 @@ describe Phrase::ViewHelpers do
           helpers.phrase_javascript("explicittoken").should include("explicittoken")
           helpers.phrase_javascript("explicittoken").should_not include("foobar")
         end
-      end      
+      end
     end
 
     context "phrase is disabled" do
       before(:each) do
         Phrase.stub(:enabled?).and_return(false)
       end
-      
+
       it "should not return a thing" do
         helpers.phrase_javascript.should == ""
       end

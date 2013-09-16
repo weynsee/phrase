@@ -5,7 +5,7 @@ class Phrase::Tool::Commands::Tags < Phrase::Tool::Commands::Base
     super(options, args)
     require_auth_token!
   end
-  
+
   def execute!
     if get_option(:list)
       list_tags

@@ -6,7 +6,7 @@ module Phrase
       def self.filename_for_locale(locale)
         "phrase.#{locale.name}.ini"
       end
-      
+
       def self.locale_aware?
         false
       end
