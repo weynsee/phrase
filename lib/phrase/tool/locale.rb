@@ -30,8 +30,7 @@ class Phrase::Tool::Locale
   end
 
   def self.config
-    config = Phrase::Tool::Config.new
-    config.load
+    Phrase::Tool.config
   end
   private_class_method :config
 

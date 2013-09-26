@@ -5,6 +5,10 @@ describe Phrase::Tool do
 
   let(:argv) { stub }
 
+  before(:each) do
+    Phrase::Tool.config.load # reset config
+  end
+
   describe "commands" do
     let(:api_client) { stub }
 
@@ -555,4 +559,12 @@ describe Phrase::Tool do
       end
     end
   end
+
+  describe '.instance' do
+    it 'is always the same' do
+      config = Phrase::Tool.config
+      Phrase::Tool.config.object_id.should == config.object_id
+    end
+  end
+
 end

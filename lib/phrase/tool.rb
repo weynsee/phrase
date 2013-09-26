@@ -39,4 +39,8 @@ class Phrase::Tool
     end
     command.execute!
   end
+
+  def self.config
+    @@config_instance ||= Phrase::Tool::Config.new.load
+  end
 end

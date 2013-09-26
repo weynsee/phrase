@@ -59,12 +59,7 @@ module Phrase
       end
 
       def self.config
-        @config ||= get_config
-      end
-
-      def self.get_config
-        config = Phrase::Tool::Config.new
-        config.load
+        Phrase::Tool.config
       end
       private_class_method :config
     end
@@ -95,12 +90,7 @@ module Phrase
     }
 
     def self.config
-      @config ||= get_config
-    end
-
-    def self.get_config
-      config = Phrase::Tool::Config.new
-      config.load
+      Phrase::Tool.config
     end
 
     def self.custom_handler

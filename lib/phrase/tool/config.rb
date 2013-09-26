@@ -4,6 +4,7 @@ require 'json'
 
 class Phrase::Tool::Config
   def load
+    @config = {}
     if File.exist?(".phrase")
       begin
         contents = File.read(".phrase")
@@ -15,8 +16,18 @@ class Phrase::Tool::Config
     self
   end
 
+  def overwrite!(var, value)
+    @overwrites ||= {}
+    @overwrites[var.to_s] = value
+  end
+
+  def overwrite_for(var)
+    @overwrites ||= {}
+    @overwrites[var.to_s]
+  end
+
   def secret
-    config["secret"]
+    get_setting("secret")
   end
 
   def secret=(new_secret)
@@ -25,7 +36,7 @@ class Phrase::Tool::Config
   end
 
   def default_locale
-    config["default_locale"]
+    get_setting("default_locale")
   end
 
   def default_locale=(new_default_locale)
@@ -34,7 +45,7 @@ class Phrase::Tool::Config
   end
 
   def domain
-    config["domain"] || 'phrase'
+    get_setting("domain") || 'phrase'
   end
 
   def domain=(new_domain)
@@ -43,7 +54,7 @@ class Phrase::Tool::Config
   end
 
   def format
-    config["format"]
+    get_setting("format")
   end
 
   def format=(new_domain)
@@ -52,7 +63,7 @@ class Phrase::Tool::Config
   end
 
   def target_directory
-    config["target_directory"]
+    get_setting("target_directory")
   end
 
   def target_directory=(new_domain)
@@ -61,7 +72,7 @@ class Phrase::Tool::Config
   end
 
   def locale_directory
-    config["locale_directory"]
+    get_setting("locale_directory")
   end
 
   def locale_directory=(new_domain)
@@ -70,7 +81,7 @@ class Phrase::Tool::Config
   end
 
   def locale_filename
-    config["locale_filename"]
+    get_setting("locale_filename")
   end
 
   def locale_filename=(new_domain)
@@ -81,6 +92,10 @@ class Phrase::Tool::Config
 private
   def config
     @config ||= {}
+  end
+
+  def get_setting(var)
+    overwrite_for(var) || config[var]
   end
 
   def save_config!

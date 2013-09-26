@@ -46,12 +46,7 @@ module Phrase::Tool::Commands
     end
 
     def config
-      @config ||= get_config
-    end
-
-    def get_config
-      config = Phrase::Tool::Config.new
-      config.load
+      Phrase::Tool.config
     end
 
     def options
