@@ -66,6 +66,10 @@ class OptionsFactory
     opts.on("--skip-unverification", "When force updating translations, skip unverification of non-main locale translations") do |skip_unverification|
       set[:skip_unverification] = skip_unverification
     end
+
+    opts.on("--secret=YOUR_AUTH_TOKEN", String, "The Auth Token to use for this operation instead of the saved one (optional)") do |secret|
+      set[:secret] = secret
+    end
   end
   private_class_method :push
 
@@ -84,7 +88,7 @@ class OptionsFactory
       set[:tag] = tag
     end
 
-    opts.on("--secret=YOUR_AUTH_TOKEN", String, "The Auth Token to use for this operation (optional)") do |secret|
+    opts.on("--secret=YOUR_AUTH_TOKEN", String, "The Auth Token to use for this operation instead of the saved one (optional)") do |secret|
       set[:secret] = secret
     end
   end

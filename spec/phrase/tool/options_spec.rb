@@ -45,7 +45,7 @@ describe Phrase::Tool::Options do
 
     context "push command" do
       let(:command) { "push" }
-      let(:args) { ["--tags=lorem,ipsum", "--recursive", "--locale=fr"] }
+      let(:args) { ["--tags=lorem,ipsum", "--recursive", "--locale=fr", "--secret=asd"] }
 
       describe "tags" do
         subject { Phrase::Tool::Options.new(args, command).get(:tags) }
@@ -70,6 +70,11 @@ describe Phrase::Tool::Options do
       describe "skip_unverification" do
         subject { Phrase::Tool::Options.new(args, command).get(:skip_unverification) }
         it { should be_false }
+      end
+
+      describe "secret" do
+        subject { Phrase::Tool::Options.new(args, command).get(:secret) }
+        it { should eql "asd" }
       end
     end
 
