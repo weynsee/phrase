@@ -16,6 +16,11 @@ class Phrase::Tool::Config
     self
   end
 
+  def reset!
+    @config = {}
+    @overwrites = {}
+  end
+
   def overwrite!(var, value)
     @overwrites ||= {}
     @overwrites[var.to_s] = value

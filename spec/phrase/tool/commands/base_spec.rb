@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe Phrase::Tool::Commands::Base do
-  let(:options) { stub }
+  let(:options) { stub(set?: false) }
   let(:config) { stub(secret: "secret") }
   subject { Phrase::Tool::Commands::Base.new(options) }
 

@@ -6,7 +6,7 @@ describe Phrase::Tool do
   let(:argv) { stub }
 
   before(:each) do
-    Phrase::Tool.config.load # reset config
+    Phrase::Tool.config.reset!
   end
 
   describe "commands" do

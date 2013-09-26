@@ -83,6 +83,10 @@ class OptionsFactory
     opts.on("--tag=foo", String, "Limit results to a given tag instead of all translations") do |tag|
       set[:tag] = tag
     end
+
+    opts.on("--secret=YOUR_AUTH_TOKEN", String, "The Auth Token to use for this operation (optional)") do |secret|
+      set[:secret] = secret
+    end
   end
   private_class_method :pull
 

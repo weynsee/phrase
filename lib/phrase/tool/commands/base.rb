@@ -5,6 +5,7 @@ module Phrase::Tool::Commands
     def initialize(options, args=[])
       @options = options
       @args = args
+      config.overwrite!('secret', options.get('secret')) if options.set?('secret')
     end
 
     def execute!
