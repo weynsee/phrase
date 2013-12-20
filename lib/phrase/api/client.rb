@@ -27,6 +27,11 @@ class Phrase::Api::Client
     end
   end
 
+  def fetch_translations(params = {})
+    result = perform_api_request("/translations", :get, params)
+    parsed(result)
+  end
+
   def fetch_blacklisted_keys
     result = perform_api_request("/blacklisted_keys", :get)
     blacklisted_keys = []

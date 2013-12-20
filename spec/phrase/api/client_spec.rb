@@ -28,6 +28,12 @@ describe Phrase::Api::Client do
     end
   end
 
+  describe "fetch_translations" do
+    context "request was successful" do
+      it "should return an array of translations"
+    end
+  end
+
   describe "#fetch_locales" do
     context "request was successful" do
       it "should return a list of locale data" do
