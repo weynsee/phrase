@@ -90,6 +90,15 @@ describe Phrase::Api::Client do
     end
   end
 
+  describe "#fetch_translation_keys" do
+    it "should return an array" do
+      VCR.use_cassette('fetch translation keys') do
+        result = subject.fetch_translation_keys
+        result.should be_a(Array)
+      end
+    end
+  end
+
   describe "#translate" do
     it "should raise an exception if the key is blank" do
       lambda {
