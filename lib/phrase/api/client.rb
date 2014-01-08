@@ -130,7 +130,7 @@ class Phrase::Api::Client
   end
 
   def delete_multiple_translation_keys(ids)
-    result = perform_api_request("/translation_keys/destroy_multiple", :delete, :ids => ids)
+    result = perform_api_request("/translation_keys/destroy_multiple", :delete, :'ids[]' => ids)
     parsed(result)['success'] == true
   end
 
