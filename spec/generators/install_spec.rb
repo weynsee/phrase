@@ -14,10 +14,6 @@ describe Phrase::Generators::InstallGenerator do
     end
   end
 
-  describe "without auth token" do
-    it { should output("No value provided for required options '--auth-token'") }
-  end
-
   describe "initializer" do
     with_args "--auth-token=86a1dc43f1087c6339994b5356fe5064" do
       it { should generate("config/initializers/phrase.rb") { |c| c.should =~ /Phrase.configure/ } }
