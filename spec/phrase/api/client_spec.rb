@@ -5,9 +5,7 @@ require 'phrase/api'
 describe Phrase::Api::Client do
   let(:auth_token) { "secret123" }
 
-  subject {
-    Phrase::Api::Client.new(auth_token)
-  }
+  subject { Phrase::Api::Client.new(auth_token) }
 
   describe "#initialize" do
     it "should set an auth token" do
@@ -25,12 +23,6 @@ describe Phrase::Api::Client do
       lambda {
         Phrase::Api::Client.new("")
       }.should raise_error "No auth token specified!"
-    end
-  end
-
-  describe "fetch_translations" do
-    context "request was successful" do
-      it "should return an array of translations"
     end
   end
 
