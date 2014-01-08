@@ -12,6 +12,7 @@ class Phrase::Api::Client
   METHOD_GET = :get
   METHOD_POST = :post
   METHOD_PUT = :put
+  METHOD_DELETE = :delete
 
   attr_reader :auth_token
 
@@ -123,6 +124,16 @@ class Phrase::Api::Client
     parsed(result)
   end
 
+  def delete_translation_key(id)
+    result = perform_api_request("/translation_keys/#{id}", :delete)
+    parsed(result)['success'] == true
+  end
+
+  def delete_multiple_translation_keys(ids)
+    result = perform_api_request("/translation_keys/destroy_multiple", :delete, :ids => ids)
+    parsed(result)['success'] == true
+  end
+
 private
   def extract_structured_object(translation)
     if translation.is_a?(Hash)
@@ -177,6 +188,8 @@ private
         post_request(endpoint, params)
       when METHOD_PUT
         put_request(endpoint, params)
+      when METHOD_DELETE
+        delete_request(endpoint, params)
       else
         raise "Invalid Request Method: #{method}"
     end
@@ -225,6 +238,15 @@ private
 
   def put_request(endpoint, params={})
     request = Net::HTTP::Put.new("#{api_path_for(endpoint)}")
+    params.merge!({
+      'auth_token' => @auth_token
+    })
+    set_form_data(request, params)
+    request
+  end
+
+  def delete_request(endpoint, params={})
+    request = Net::HTTP::Delete.new("#{api_path_for(endpoint)}")
     params.merge!({
       'auth_token' => @auth_token
     })

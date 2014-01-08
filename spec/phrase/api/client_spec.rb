@@ -246,6 +246,22 @@ describe Phrase::Api::Client do
     end
   end
 
+  describe '#delete_translation_key' do
+    it "should return true" do
+      VCR.use_cassette('delete translation key') do
+        subject.delete_translation_key(42).should be_true
+      end
+    end
+  end
+
+  describe '#delete_multiple_translation_keys' do
+    it "should return true" do
+      VCR.use_cassette('delete multiple translation keys') do
+        subject.delete_multiple_translation_keys([13, 37]).should be_true
+      end
+    end
+  end
+
   describe "#display_api_error" do
     let(:response) { stub }
     let(:error_message) { stub }
@@ -435,6 +451,22 @@ describe Phrase::Api::Client do
       params = {:foo => "bar", :lorem => "ipsum"}
       subject.send(:put_request, "/foo", params).body.should include("foo=bar")
       subject.send(:put_request, "/foo", params).body.should include("lorem=ipsum")
+    end
+  end
+
+  describe "#delete_request" do
+    it "returns a net http delete request" do
+      subject.send(:delete_request, "/foo").should be_a(Net::HTTP::Delete)
+    end
+
+    it "should include the auth token" do
+      subject.send(:delete_request, "/foo").body.should include("auth_token=#{auth_token}")
+    end
+
+    it "should add given params" do
+      params = {:foo => "bar", :lorem => "ipsum"}
+      subject.send(:delete_request, "/foo", params).body.should include("foo=bar")
+      subject.send(:delete_request, "/foo", params).body.should include("lorem=ipsum")
     end
   end
 
