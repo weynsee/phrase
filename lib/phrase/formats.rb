@@ -15,6 +15,7 @@ module Phrase
     autoload :QtTranslationSource, 'phrase/formats/qt_translation_source'
     autoload :Resx, 'phrase/formats/resx'
     autoload :ResxWindowsphone, 'phrase/formats/resx_windowsphone'
+    autoload :Windows8Resource, 'phrase/formats/windows8_resource'
     autoload :SimpleJson, 'phrase/formats/simple_json'
     autoload :NodeJson, 'phrase/formats/node_json'
     autoload :Strings, 'phrase/formats/strings'
@@ -78,6 +79,7 @@ module Phrase
       ts: Phrase::Formats::QtTranslationSource,
       resx: Phrase::Formats::Resx,
       resx_windowsphone: Phrase::Formats::ResxWindowsphone,
+      windows8_resource: Phrase::Formats::Windows8Resource,
       simple_json: Phrase::Formats::SimpleJson,
       node_json: Phrase::Formats::NodeJson,
       strings: Phrase::Formats::Strings,
