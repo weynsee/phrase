@@ -22,7 +22,8 @@ module Phrase::Tool::Commands
         locale: nil,
         format: nil,
         update_translations: false,
-        skip_unverification: false
+        skip_unverification: false,
+        skip_upload_tags: false
       },
       pull: {
         format: nil,

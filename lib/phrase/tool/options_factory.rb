@@ -67,6 +67,10 @@ class OptionsFactory
       set[:skip_unverification] = skip_unverification
     end
 
+    opts.on("--skip-upload-tags", "Don't create upload tags automatically") do |skip_upload_tags|
+      set[:skip_upload_tags] = skip_upload_tags
+    end
+
     opts.on("--secret=YOUR_AUTH_TOKEN", String, "The Auth Token to use for this operation instead of the saved one (optional)") do |secret|
       set[:secret] = secret
     end

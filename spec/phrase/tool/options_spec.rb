@@ -72,6 +72,11 @@ describe Phrase::Tool::Options do
         it { should be_false }
       end
 
+      describe "skip_upload_tags" do
+        subject { Phrase::Tool::Options.new(args, command).get(:skip_upload_tags) }
+        it { should be_false }
+      end
+
       describe "secret" do
         subject { Phrase::Tool::Options.new(args, command).get(:secret) }
         it { should eql "asd" }
