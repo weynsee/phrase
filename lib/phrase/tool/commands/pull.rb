@@ -35,6 +35,7 @@ private
     rescue Exception => e
       print_error "Failed"
       print_server_error(e.message)
+      exit_command
     end
   end
 
