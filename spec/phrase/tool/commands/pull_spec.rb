@@ -101,12 +101,21 @@ describe Phrase::Tool::Commands::Pull do
 
       it "should display failure message" do
         subject.should_receive(:print_error).with("Failed")
-        subject.send(:fetch_translations_for_locale, polish_locale, "yml")
+        lambda { subject.send(:fetch_translations_for_locale, polish_locale, "yml") }.should raise_error
       end
 
       it "should render the server error" do
         subject.should_receive(:print_server_error)
-        subject.send(:fetch_translations_for_locale, polish_locale, "yml")
+        lambda { subject.send(:fetch_translations_for_locale, polish_locale, "yml") }.should raise_error
+      end
+
+      it "should exit with status 1" do
+        lambda {
+          subject.send(:fetch_translations_for_locale, polish_locale, "yml")
+        }.should raise_error {|error|
+          error.should be_a(SystemExit)
+          error.status.should eq(1)
+        }
       end
     end
   end
