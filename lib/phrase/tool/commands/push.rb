@@ -30,11 +30,19 @@ class Phrase::Tool::Commands::Push < Phrase::Tool::Commands::Base
       print_message "Could not find any files to upload".light_red
       exit_command
     else
-      upload_files(files)
+       interruptable(files){|f| upload_files f }
     end
   end
 
 private
+  def interruptable(files)
+    begin
+      Thread.new(files){ yield(files) }.join
+    rescue SystemExit, Interrupt, Exception
+      print_error "Failed"
+    end
+  end
+
   def choose_files_to_upload(file_names, recursive=false)
     files = []
 
