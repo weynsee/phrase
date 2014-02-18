@@ -25,6 +25,7 @@ module Phrase
     autoload :Yaml, 'phrase/formats/yaml'
     autoload :YamlSymfony, 'phrase/formats/yaml_symfony'
     autoload :PhpArray, 'phrase/formats/php_array'
+    autoload :Lavarel, 'phrase/formats/lavarel'
 
     class Base
       def self.supports_extension?(extension)
@@ -89,6 +90,7 @@ module Phrase
       yml: Phrase::Formats::Yaml,
       yml_symfony: Phrase::Formats::YamlSymfony,
       php_array: Phrase::Formats::PhpArray,
+      lavarel: Phrase::Formats::Lavarel,
     }
 
     def self.config

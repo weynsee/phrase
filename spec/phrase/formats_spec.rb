@@ -207,6 +207,11 @@ describe Phrase::Formats do
       let(:format_name) { "php_array" }
       it { should eql("phrase.fooish.php") }
     end
+
+    context "format is lavarel" do
+      let(:format_name) { "lavarel" }
+      it { should eql("phrase.fooish.php") }
+    end
   end
 
   describe "#self.file_format_exposes_locale?(file_path)" do
@@ -326,6 +331,11 @@ describe Phrase::Formats do
     context "format = php_array" do
       let(:format_name) { "php_array" }
       it { should == Phrase::Formats::PhpArray }
+    end
+
+    context "format = lavarel" do
+      let(:format_name) { "lavarel" }
+      it { should == Phrase::Formats::Lavarel }
     end
   end
 
