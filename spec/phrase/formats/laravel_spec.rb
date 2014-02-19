@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Phrase::Formats::Lavarel do
+describe Phrase::Formats::Laravel do
   let(:the_current_directory) { "./" }
   let(:the_prefix) { "phrase" }
   let(:the_locale_name) { "fooish" }
@@ -9,12 +9,12 @@ describe Phrase::Formats::Lavarel do
 
   describe "#self.directory_for_locale" do
     it "should return the path to the current dir" do
-      Phrase::Formats::Lavarel.directory_for_locale(the_locale).should eql(the_current_directory)
+      Phrase::Formats::Laravel.directory_for_locale(the_locale).should eql(the_current_directory)
     end
   end
 
   describe "#self.filename_for_locale" do
-    subject { Phrase::Formats::Lavarel.filename_for_locale(the_locale) }
+    subject { Phrase::Formats::Laravel.filename_for_locale(the_locale) }
 
     it { should include the_prefix }
     it { should include the_locale_name }
@@ -22,7 +22,7 @@ describe Phrase::Formats::Lavarel do
   end
 
   describe "#self.locale_aware?" do
-    subject { Phrase::Formats::Lavarel.locale_aware? }
+    subject { Phrase::Formats::Laravel.locale_aware? }
 
     it { should be_false }
   end

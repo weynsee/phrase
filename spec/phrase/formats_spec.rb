@@ -208,8 +208,8 @@ describe Phrase::Formats do
       it { should eql("phrase.fooish.php") }
     end
 
-    context "format is lavarel" do
-      let(:format_name) { "lavarel" }
+    context "format is laravel" do
+      let(:format_name) { "laravel" }
       it { should eql("phrase.fooish.php") }
     end
   end
@@ -333,9 +333,9 @@ describe Phrase::Formats do
       it { should == Phrase::Formats::PhpArray }
     end
 
-    context "format = lavarel" do
-      let(:format_name) { "lavarel" }
-      it { should == Phrase::Formats::Lavarel }
+    context "format = laravel" do
+      let(:format_name) { "laravel" }
+      it { should == Phrase::Formats::Laravel }
     end
   end
 

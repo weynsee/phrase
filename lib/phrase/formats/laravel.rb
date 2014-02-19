@@ -2,7 +2,7 @@
 
 module Phrase
   module Formats
-    class Lavarel < Phrase::Formats::Base
+    class Laravel < Phrase::Formats::Base
       def self.filename_for_locale(locale)
         "phrase.#{locale.name}.php"
       end
