@@ -30,14 +30,14 @@ class Phrase::Tool::Commands::Push < Phrase::Tool::Commands::Base
       print_message "Could not find any files to upload".light_red
       exit_command
     else
-       interruptable(files){|f| upload_files f }
+       interruptable_upload_files(files)
     end
   end
 
 private
-  def interruptable(files)
+  def interruptable_upload_files(files)
     begin
-      Thread.new(files){ yield(files) }.join
+      Thread.new(files){ upload_files(files) }.join
     rescue SystemExit, Interrupt, Exception
       print_error "Failed"
     end
