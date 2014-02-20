@@ -92,7 +92,7 @@ class Phrase::Api::Client
         locale: name,
         tag: tag,
         updated_since: updated_since,
-        include_empty_translations: include_empty_translations ? "1" : "0"
+        include_empty_translations: include_empty_translations ? "1" : nil
       }
       content = perform_api_request("/translations/download", :get, params)
       return content
