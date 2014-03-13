@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    phrase (0.4.20)
+    phrase (0.4.21)
       colorize
       i18n
       json
