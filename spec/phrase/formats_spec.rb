@@ -243,6 +243,11 @@ describe Phrase::Formats do
       it { should == Phrase::Formats::YamlSymfony }
     end
 
+    context "format = yml_symfony2" do
+      let(:format_name) { "yml_symfony2" }
+      it { should == Phrase::Formats::YamlSymfony2 }
+    end
+
     context "format = gettext" do
       let(:format_name) { "gettext" }
       it { should == Phrase::Formats::Gettext }

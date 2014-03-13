@@ -24,6 +24,7 @@ module Phrase
     autoload :Xliff, 'phrase/formats/xliff'
     autoload :Yaml, 'phrase/formats/yaml'
     autoload :YamlSymfony, 'phrase/formats/yaml_symfony'
+    autoload :YamlSymfony2, 'phrase/formats/yaml_symfony2'
     autoload :PhpArray, 'phrase/formats/php_array'
     autoload :Laravel, 'phrase/formats/laravel'
 
@@ -89,6 +90,7 @@ module Phrase
       xlf: Phrase::Formats::Xliff,
       yml: Phrase::Formats::Yaml,
       yml_symfony: Phrase::Formats::YamlSymfony,
+      yml_symfony2: Phrase::Formats::YamlSymfony2,
       php_array: Phrase::Formats::PhpArray,
       laravel: Phrase::Formats::Laravel,
     }
