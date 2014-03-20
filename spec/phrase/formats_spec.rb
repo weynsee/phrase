@@ -212,6 +212,11 @@ describe Phrase::Formats do
       let(:format_name) { "laravel" }
       it { should eql("phrase.fooish.php") }
     end
+
+    context "format is angular_translate" do
+      let(:format_name) { "angular_translate" }
+      it { should eql("phrase.fooish.json") }
+    end
   end
 
   describe "#self.file_format_exposes_locale?(file_path)" do
@@ -341,6 +346,11 @@ describe Phrase::Formats do
     context "format = laravel" do
       let(:format_name) { "laravel" }
       it { should == Phrase::Formats::Laravel }
+    end
+
+    context "format = angular_translate" do
+      let(:format_name) { "angular_translate" }
+      it { should == Phrase::Formats::AngularTranslate }
     end
   end
 

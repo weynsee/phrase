@@ -27,6 +27,7 @@ module Phrase
     autoload :YamlSymfony2, 'phrase/formats/yaml_symfony2'
     autoload :PhpArray, 'phrase/formats/php_array'
     autoload :Laravel, 'phrase/formats/laravel'
+    autoload :AngularTranslate, 'phrase/formats/angular_translate'
 
     class Base
       def self.supports_extension?(extension)
@@ -93,6 +94,7 @@ module Phrase
       yml_symfony2: Phrase::Formats::YamlSymfony2,
       php_array: Phrase::Formats::PhpArray,
       laravel: Phrase::Formats::Laravel,
+      angular_translate: Phrase::Formats::AngularTranslate,
     }
 
     def self.config
