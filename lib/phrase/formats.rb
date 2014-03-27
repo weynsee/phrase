@@ -17,6 +17,7 @@ module Phrase
     autoload :ResxWindowsphone, 'phrase/formats/resx_windowsphone'
     autoload :Windows8Resource, 'phrase/formats/windows8_resource'
     autoload :SimpleJson, 'phrase/formats/simple_json'
+    autoload :NestedJson, 'phrase/formats/nested_json'
     autoload :NodeJson, 'phrase/formats/node_json'
     autoload :Strings, 'phrase/formats/strings'
     autoload :Xml, 'phrase/formats/xml'
@@ -84,6 +85,7 @@ module Phrase
       resx_windowsphone: Phrase::Formats::ResxWindowsphone,
       windows8_resource: Phrase::Formats::Windows8Resource,
       simple_json: Phrase::Formats::SimpleJson,
+      nested_json: Phrase::Formats::NestedJson,
       node_json: Phrase::Formats::NodeJson,
       strings: Phrase::Formats::Strings,
       xml: Phrase::Formats::Xml,

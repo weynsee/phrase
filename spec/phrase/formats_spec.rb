@@ -67,6 +67,11 @@ describe Phrase::Formats do
       it { should eql("./") }
     end
 
+    context "format is nested_json" do
+      let(:format_name) { "nested_json" }
+      it { should eql("./") }
+    end
+
     context "format is node_json" do
       let(:format_name) { "node_json" }
       it { should eql("./") }
@@ -296,6 +301,11 @@ describe Phrase::Formats do
     context "format = simple_json" do
       let(:format_name) { "simple_json" }
       it { should == Phrase::Formats::SimpleJson }
+    end
+
+    context "format = nested_json" do
+      let(:format_name) { "nested_json" }
+      it { should == Phrase::Formats::NestedJson }
     end
 
     context "format = node_json" do

@@ -37,6 +37,7 @@ You can manage your locale files with PhraseApp if they match one of the followi
 * Qt Translation Source
 * ChromeJSON i18n
 * Simple JSON
+* Nested JSON
 * .NET ResX
 * Windows Phone ResX
 * INI
@@ -47,7 +48,7 @@ You can manage your locale files with PhraseApp if they match one of the followi
 * TMX Translation Memory eXchange
 * CSV
 * PHP Array
-
+* Laravel PHP Array
 
 ### Supported platforms ###
 
