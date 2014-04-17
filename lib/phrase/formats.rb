@@ -29,6 +29,7 @@ module Phrase
     autoload :PhpArray, 'phrase/formats/php_array'
     autoload :Laravel, 'phrase/formats/laravel'
     autoload :AngularTranslate, 'phrase/formats/angular_translate'
+    autoload :MozillaProperties, 'phrase/formats/mozilla_properties'
 
     class Base
       def self.supports_extension?(extension)
@@ -97,6 +98,7 @@ module Phrase
       php_array: Phrase::Formats::PhpArray,
       laravel: Phrase::Formats::Laravel,
       angular_translate: Phrase::Formats::AngularTranslate,
+      mozilla_properties: Phrase::Formats::MozillaProperties,
     }
 
     def self.config

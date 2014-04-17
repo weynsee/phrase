@@ -49,6 +49,7 @@ You can manage your locale files with PhraseApp if they match one of the followi
 * CSV
 * PHP Array
 * Laravel PHP Array
+* Mozilla Properties
 
 ### Supported platforms ###
 

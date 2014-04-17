@@ -97,6 +97,11 @@ describe Phrase::Formats do
       it { should eql("./") }
     end
 
+    context "format is mozilla_properties" do
+      let(:format_name) { "mozilla_properties" }
+      it { should eql("./") }
+    end
+
     context "format is properties_xml" do
       let(:format_name) { "properties_xml" }
       it { should eql("./") }
@@ -195,6 +200,11 @@ describe Phrase::Formats do
 
     context "format is properties" do
       let(:format_name) { "properties" }
+      it { should eql("phrase.fooish.properties") }
+    end
+
+    context "format is mozilla_properties" do
+      let(:format_name) { "mozilla_properties" }
       it { should eql("phrase.fooish.properties") }
     end
 
@@ -336,6 +346,11 @@ describe Phrase::Formats do
     context "format = properties" do
       let(:format_name) { "properties" }
       it { should == Phrase::Formats::Properties }
+    end
+
+    context "format = mozilla_properties" do
+      let(:format_name) { "mozilla_properties" }
+      it { should == Phrase::Formats::MozillaProperties }
     end
 
     context "format = properties_xml" do
