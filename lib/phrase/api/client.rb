@@ -1,4 +1,4 @@
-# -*- encoding : utf-8 -*-
+  # -*- encoding : utf-8 -*-
 
 require 'cgi'
 require 'json'
@@ -83,7 +83,7 @@ class Phrase::Api::Client
     true
   end
 
-  def download_translations_for_locale(name, format, tag=nil, updated_since=nil, include_empty_translations=nil)
+  def download_translations_for_locale(name, format, tag=nil, updated_since=nil, include_empty_translations=nil, emoji=nil)
     raise "You must specify a name" if name.nil? || name.blank?
     raise "You must specify a format" if format.nil? || format.blank?
 
@@ -93,8 +93,10 @@ class Phrase::Api::Client
         locale: name,
         tag: tag,
         updated_since: updated_since,
-        include_empty_translations: include_empty_translations ? "1" : nil
+        include_empty_translations: include_empty_translations ? "1" : nil,
+        emoji: emoji ? "1" : nil
       }
+
       content = perform_api_request("/translations/download", :get, params)
       return content
     rescue Phrase::Api::Exceptions::ServerError => e

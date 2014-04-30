@@ -100,6 +100,10 @@ class OptionsFactory
       set[:include_empty_translations] = include_empty_translations
     end
 
+    opts.on("--emoji", "Enable Emoji support") do |emoji|
+      set[:emoji] = emoji
+    end
+
     opts.on("--secret=YOUR_AUTH_TOKEN", String, "The Auth Token to use for this operation instead of the saved one (optional)") do |secret|
       set[:secret] = secret
     end

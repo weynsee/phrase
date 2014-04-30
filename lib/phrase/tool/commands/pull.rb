@@ -16,6 +16,7 @@ class Phrase::Tool::Commands::Pull < Phrase::Tool::Commands::Base
     @tag = @options.get(:tag)
     @updated_since = @options.get(:updated_since)
     @include_empty_translations = @options.get(:include_empty_translations)
+    @emoji = @options.get(:emoji)
     @target ||= Phrase::Formats.target_directory(@format) if format_valid?(@format)
   end
 
@@ -23,14 +24,14 @@ class Phrase::Tool::Commands::Pull < Phrase::Tool::Commands::Base
     (print_error("Invalid format: #{@format}") and exit_command) unless format_valid?(@format)
     locales_to_download.compact.each do |locale|
       print_message "Downloading #{locale.name}..."
-      fetch_translations_for_locale(locale, @format, @tag, @updated_since, @include_empty_translations)
+      fetch_translations_for_locale(locale, @format, @tag, @updated_since, @include_empty_translations, @emoji)
     end
   end
 
 private
-  def fetch_translations_for_locale(locale, format, tag=nil, updated_since=nil, include_empty_translations=nil)
+  def fetch_translations_for_locale(locale, format, tag=nil, updated_since=nil, include_empty_translations=nil, emoji=nil)
     begin
-      content = api_client.download_translations_for_locale(locale.name, format, tag, updated_since, include_empty_translations)
+      content = api_client.download_translations_for_locale(locale.name, format, tag, updated_since, include_empty_translations, emoji)
       store_content_in_locale_file(locale, content)
     rescue Exception => e
       print_error "Failed"
