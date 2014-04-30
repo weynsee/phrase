@@ -31,7 +31,7 @@ module Phrase::Tool::Commands
         tag: nil,
         updated_since: nil,
         include_empty_translations: nil,
-        emoji: nil
+        convert_emoji: nil
       },
       tags: {
         list: true
