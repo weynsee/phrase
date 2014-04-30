@@ -6,6 +6,7 @@ require 'net/http'
 require 'net/https'
 require 'phrase'
 require 'phrase/api'
+require 'rumoji'
 
 class Phrase::Api::Client
 
@@ -106,7 +107,7 @@ class Phrase::Api::Client
       params = {
         "file_format" => format,
         "filename" => filename,
-        "file_content" => file_content,
+        "file_content" => Rumoji.encode(file_content),
         "tags[]" => tags,
         "update_translations" => update_translations ? "1" : "0",
         "skip_unverification" => skip_unverification ? "1" : "0",
