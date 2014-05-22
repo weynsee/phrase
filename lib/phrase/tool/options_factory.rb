@@ -71,6 +71,10 @@ class OptionsFactory
       set[:skip_upload_tags] = skip_upload_tags
     end
 
+    opts.on("--convert_emoji", "Enable Emoji support") do |convert_emoji|
+      set[:convert_emoji] = convert_emoji
+    end
+
     opts.on("--secret=YOUR_AUTH_TOKEN", String, "The Auth Token to use for this operation instead of the saved one (optional)") do |secret|
       set[:secret] = secret
     end

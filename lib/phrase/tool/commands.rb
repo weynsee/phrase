@@ -23,7 +23,8 @@ module Phrase::Tool::Commands
         format: nil,
         update_translations: false,
         skip_unverification: false,
-        skip_upload_tags: false
+        skip_upload_tags: false,
+        convert_emoji: nil
       },
       pull: {
         format: nil,

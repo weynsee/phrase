@@ -1,4 +1,4 @@
-# -*- encoding : utf-8 -*-
+# -*- encoding : utf-8 -*-f
 
 class Phrase::Tool::Commands::Pull < Phrase::Tool::Commands::Base
   ALLOWED_DOWNLOAD_FORMATS = Phrase::Formats::SUPPORTED_FORMATS.keys.map(&:to_s)
@@ -58,8 +58,7 @@ private
   end
 
   def encode content
-    content = content.force_encoding("UTF-8")
-    @convert_emoji ? Rumoji.decode(content) : content
+    content.force_encoding("UTF-8")
   end
 
   def clean_path(str)

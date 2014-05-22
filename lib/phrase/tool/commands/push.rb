@@ -16,6 +16,7 @@ class Phrase::Tool::Commands::Push < Phrase::Tool::Commands::Base
     @update_translations = @options.get(:update_translations)
     @skip_unverification = @options.get(:skip_unverification)
     @skip_upload_tags = @options.get(:skip_upload_tags)
+    @convert_emoji = @options.get(:convert_emoji)
   end
 
   def execute!
@@ -91,7 +92,7 @@ private
           locale = Phrase::Tool::Locale.find_default_locale.try(:name)
         end
         locale = @locale if @locale
-        api_client.upload(file, file_content(file), @tags, locale, @format, @update_translations, @skip_unverification, @skip_upload_tags)
+        api_client.upload(file, file_content(file), @tags, locale, @format, @update_translations, @skip_unverification, @skip_upload_tags, @convert_emoji)
         print_message "OK".green
       rescue Exception => e
         print_error "Failed"

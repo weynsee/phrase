@@ -50,7 +50,7 @@ describe Phrase::Tool::Commands::Push do
         let(:file) { "spec/fixtures/yml/nice.en.yml" }
 
         it "should upload the file" do
-          api_client.should_receive(:upload).with(file, kind_of(String), [], nil, nil, false, false, false)
+          api_client.should_receive(:upload).with(file, kind_of(String), [], nil, nil, false, false, false, nil)
           subject.send(:upload_file, file)
         end
       end
@@ -64,7 +64,7 @@ describe Phrase::Tool::Commands::Push do
         end
 
         it "should upload the file with the default locale assigned" do
-          api_client.should_receive(:upload).with(file, kind_of(String), [], "default-locale", nil, false, false, false)
+          api_client.should_receive(:upload).with(file, kind_of(String), [], "default-locale", nil, false, false, false, nil)
           subject.send(:upload_file, file)
         end
       end

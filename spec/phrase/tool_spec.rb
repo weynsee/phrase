@@ -272,7 +272,7 @@ describe Phrase::Tool do
 
           context "tag(s) given" do
             it "should use the tag in the upload call" do
-              api_client.should_receive(:upload).with(kind_of(String), kind_of(String), ["foobar"], nil, nil, false, false, false)
+              api_client.should_receive(:upload).with(kind_of(String), kind_of(String), ["foobar"], nil, nil, false, false, false, nil)
               phrase "push spec/fixtures/yml/nice.en.yml --tags=foobar"
             end
 
