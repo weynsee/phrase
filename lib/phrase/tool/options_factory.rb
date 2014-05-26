@@ -71,7 +71,7 @@ class OptionsFactory
       set[:skip_upload_tags] = skip_upload_tags
     end
 
-    opts.on("--convert_emoji", "Enable Emoji support") do |convert_emoji|
+    opts.on("--convert-emoji", "Convert Emojis to store and display them correctly in PhraseApp") do |convert_emoji|
       set[:convert_emoji] = convert_emoji
     end
 
@@ -104,7 +104,7 @@ class OptionsFactory
       set[:include_empty_translations] = include_empty_translations
     end
 
-    opts.on("--convert_emoji", "Enable Emoji support") do |convert_emoji|
+    opts.on("--convert-emoji", "Convert Emoji symbols") do |convert_emoji|
       set[:convert_emoji] = convert_emoji
     end
 
