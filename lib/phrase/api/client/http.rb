@@ -12,13 +12,17 @@ module Phrase
           base.send :include, klass
         end
 
+        def handle_ssl_cert(client)
+          client.use_ssl = true if Phrase::Api::Config.api_use_ssl?
+          client.verify_mode = OpenSSL::SSL::VERIFY_NONE if Phrase::Api::Config.skip_ssl_validation?
+          client.ca_file = File.join(File.dirname(__FILE__), "..", "..", "..", "..", "cacert.pem")
+          client
+        end
+
         module Http2X
           def http_client
             client = Net::HTTP.new(Phrase::Api::Config.api_host, Phrase::Api::Config.api_port)
-            client.use_ssl = true if Phrase::Api::Config.api_use_ssl?
-            client.verify_mode = OpenSSL::SSL::VERIFY_NONE if Phrase::Api::Config.skip_ssl_validation?
-            client.ca_file = File.join(File.dirname(__FILE__), "..", "..", "..", "cacert.pem")
-            client
+            handle_ssl_cert(client)
           end
         end
 
@@ -42,10 +46,7 @@ module Phrase
               Phrase::Api::Config.api_host, Phrase::Api::Config.api_port,
               proxy_host, proxy_port, proxy_user, proxy_pass
             )
-            client.use_ssl = true if Phrase::Api::Config.api_use_ssl?
-            client.verify_mode = OpenSSL::SSL::VERIFY_NONE if Phrase::Api::Config.skip_ssl_validation?
-            client.ca_file = File.join(File.dirname(__FILE__), "..", "..", "..", "cacert.pem")
-            client
+            handle_ssl_cert(client)
           end
         end
 
