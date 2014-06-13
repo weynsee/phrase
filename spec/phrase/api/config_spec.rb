@@ -139,4 +139,29 @@ describe Phrase::Api::Config do
       end
     end
   end
+
+  describe "#self.proxy" do
+    before(:all) do
+      @existing_proxy = ENV["http_proxy"]
+    end
+
+    after(:all) do
+      ENV["http_proxy"] = @existing_proxy
+    end
+
+    context "proxy is set via env" do
+      it "should return the env value" do
+        ENV["http_proxy"] = "myproxy"
+        Phrase::Api::Config.proxy.should eq "myproxy"
+      end
+    end
+
+    context "proxy is not set explicitely" do
+      it "should return nil as default" do
+        ENV["http_proxy"] = nil
+        Phrase::Api::Config.proxy.should be_nil
+      end
+    end
+  end
 end
+

@@ -486,6 +486,21 @@ describe Phrase::Api::Client do
       Phrase::Api::Config.stub(:api_port).and_return("8888")
       subject.send(:http_client).port.should == "8888"
     end
+
+    it "should recognize ENV['http_proxy settings']" do
+      begin
+        existing_proxy = ENV["http_proxy"]
+        ENV["http_proxy"] = "http://myuser:mypwd@myhost.tld:8080"
+        client = subject.send(:http_client)
+        client.proxy_user.should eq 'myuser'
+        client.proxy_pass.should eq 'mypwd'
+        client.proxy_port.should eq 8080
+        client.proxy_address.should eq 'myhost.tld'
+      ensure
+        ENV["http_proxy"] = existing_proxy
+      end
+    end
+
   end
 
   describe "#query_for_params(params)" do
