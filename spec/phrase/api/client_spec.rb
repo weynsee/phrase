@@ -487,15 +487,15 @@ describe Phrase::Api::Client do
       subject.send(:http_client).port.should == "8888"
     end
 
-    it "should recognize ENV['http_proxy'] settings" do
-
-      Phrase::Api::Config.stub(:proxy).and_return("http://myuser:mypwd@myhost.tld:8080")
-      client = subject.send(:http_client)
-      client.proxy_user.should eq 'myuser'
-      client.proxy_pass.should eq 'mypwd'
-      client.proxy_port.should eq 8080
-      client.proxy_address.should eq 'myhost.tld'
-
+    if RUBY_VERSION < "2.0"
+      it "should recognize ENV['http_proxy'] settings" do
+        Phrase::Api::Config.stub(:proxy).and_return("http://myuser:mypwd@myhost.tld:8080")
+        client = subject.send(:http_client)
+        client.proxy_user.should eq 'myuser'
+        client.proxy_pass.should eq 'mypwd'
+        client.proxy_port.should eq 8080
+        client.proxy_address.should eq 'myhost.tld'
+      end
     end
 
     it "should load the correct cacert.pem" do
@@ -503,7 +503,6 @@ describe Phrase::Api::Client do
       File.expand_path(subject.send(:http_client).ca_file).should eq expected_file
       File.exists?(expected_file).should be_true # Tests the test, let's see if there really is a file
     end
-
   end
 
   describe "#query_for_params(params)" do
