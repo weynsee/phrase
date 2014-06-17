@@ -27,4 +27,8 @@ class Phrase::Api::Config
   def self.skip_ssl_validation?
     ENV.fetch("PHRASE_API_SKIP_SSL_VALIDATION", "0") == "1"
   end
+
+  def self.proxy
+    ENV.fetch("http_proxy", nil)
+  end
 end

@@ -6,8 +6,12 @@ require 'net/http'
 require 'net/https'
 require 'phrase'
 require 'phrase/api'
+require 'phrase/api/client/http'
 
 class Phrase::Api::Client
+
+  # Mixin Factory in order to recognize http_proxy settings in Ruby 1.9.X
+  include Phrase::Api::Client::Http
 
   METHOD_GET = :get
   METHOD_POST = :post
@@ -260,14 +264,6 @@ private
 
   def api_path_for(endpoint)
     "#{Phrase::Api::Config.api_path_prefix}#{endpoint}"
-  end
-
-  def http_client
-    client = Net::HTTP.new(Phrase::Api::Config.api_host, Phrase::Api::Config.api_port)
-    client.use_ssl = true if Phrase::Api::Config.api_use_ssl?
-    client.verify_mode = OpenSSL::SSL::VERIFY_NONE if Phrase::Api::Config.skip_ssl_validation?
-    client.ca_file = File.join(File.dirname(__FILE__), "..", "..", "..", "cacert.pem")
-    client
   end
 
   # Support for arrays in POST data
