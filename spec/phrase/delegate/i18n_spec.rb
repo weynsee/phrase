@@ -12,14 +12,50 @@ describe Phrase::Delegate::I18n do
   subject { delegate }
 
   describe "#to_s" do
-    it "should return the decorated key name" do
-      subject.stub(:decorated_key_name).and_return("--lorem.ipsum--")
-      subject.to_s.should == "--lorem.ipsum--"
-    end
+    let(:key) { "foo.bar" }
+    subject { delegate.to_s }
 
-    it "should return a string" do
-      subject.to_s.class.should == String
-    end
+    it { should be_a String }
+    it { should eql("{{__phrase_foo.bar__}}") }
+  end
+
+  describe "#camelize" do
+    subject { delegate.camelize }
+
+    it { should be_a String }
+    it { should eql("{{__phrase_foo.bar__}}") }
+  end
+
+  describe "#underscore" do
+    let(:key) { "FooBar" }
+    subject { delegate.underscore }
+
+    it { should be_a String }
+    it { should eql("{{__phrase_FooBar__}}") }
+  end
+
+  describe "#classify" do
+    let(:key) { "foo_bar" }
+    subject { delegate.classify }
+
+    it { should be_a String }
+    it { should eql("{{__phrase_foo_bar__}}") }
+  end
+
+  describe "#dasherize" do
+    let(:key) { "foo_bar" }
+    subject { delegate.dasherize }
+
+    it { should be_a String }
+    it { should eql("{{__phrase_foo_bar__}}") }
+  end
+
+  describe "#tableize" do
+    let(:key) { "foo-bar" }
+    subject { delegate.tableize }
+
+    it { should be_a String }
+    it { should eql("{{__phrase_foo-bar__}}") }
   end
 
   describe "missing methods" do

@@ -5,6 +5,11 @@ module Phrase::Delegate
     def to_s
       "#{decorated_key_name}"
     end
+    alias :camelize :to_s
+    alias :underscore :to_s
+    alias :classify :to_s
+    alias :dasherize :to_s
+    alias :tableize :to_s
 
     def self.log(message)
       message = "phrase: #{message}"
