@@ -24,10 +24,16 @@ module Phrase
         true
       end
 
+      # These strings should conform to the same lproj filenames as XCode autogenerates
+      # See complete list here http://www.ibabbleon.com/iOS-Language-Codes-ISO-639.html
       def self.formatted(name)
         return name unless name.include?("-")
         parts = name.split("-")
-        "#{parts.first}_#{parts.last.upcase}"
+        if parts.first.downcase.include?("zh")
+          "#{parts.first.downcase}-#{parts.last.capitalize}"
+        else
+          "#{parts.first}-#{parts.last.upcase}"
+        end
       end
       private_class_method :formatted
 
