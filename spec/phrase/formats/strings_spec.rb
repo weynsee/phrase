@@ -13,7 +13,7 @@ describe Phrase::Formats::Strings do
     context "locale code is set" do
       let(:the_locale_code) { "fooish-foo" }
 
-      it { should == "fooish_FOO.lproj" }
+      it { should == "fooish-FOO.lproj" }
     end
 
     context "locale code is not set" do
@@ -51,13 +51,19 @@ describe Phrase::Formats::Strings do
     context "name contains -" do
       let(:name) { "foo-bar" }
 
-      it { should eql "foo_BAR"}
+      it { should eql "foo-BAR"}
     end
 
     context "name does not contain -" do
       let(:name) { "foo" }
 
       it { should eql "foo" }
+    end
+
+    context "name is regional Chinese" do
+      let(:name) { "zh-Hans" }
+
+      it { should eql "zh-Hans"}
     end
   end
 

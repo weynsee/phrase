@@ -39,7 +39,7 @@ describe Phrase::Formats do
 
     context "format is strings" do
       let(:format_name) { "strings" }
-      it { should eql("foo_ISH.lproj") }
+      it { should eql("foo-ISH.lproj") }
     end
 
     context "format is xlf" do
