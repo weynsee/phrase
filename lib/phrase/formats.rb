@@ -30,10 +30,15 @@ module Phrase
     autoload :Laravel, 'phrase/formats/laravel'
     autoload :AngularTranslate, 'phrase/formats/angular_translate'
     autoload :MozillaProperties, 'phrase/formats/mozilla_properties'
+    autoload :PlayProperties, 'phrase/formats/play_properties'
 
     class Base
       def self.supports_extension?(extension)
-        self.extensions.map(&:to_s).include?(extension.to_s)
+        self.extensions.map(&:to_s).include?(extension.to_s) or self.renders_locale_as_extension?
+      end
+
+      def self.renders_locale_as_extension?
+        false
       end
 
       def self.extensions
@@ -99,6 +104,7 @@ module Phrase
       laravel: Phrase::Formats::Laravel,
       angular_translate: Phrase::Formats::AngularTranslate,
       mozilla_properties: Phrase::Formats::MozillaProperties,
+      play_properties: Phrase::Formats::PlayProperties,
     }
 
     def self.config
@@ -134,6 +140,14 @@ module Phrase
     def self.detect_locale_name_from_file_path(file_path)
       format = guess_possible_file_format_from_file_path(file_path)
       format.nil? ? nil : handler_class_for_format(format).extract_locale_name_from_file_path(file_path)
+    end
+
+    def self.format_valid?(format)
+      if format.present? then
+        format_handler = handler_class_for_format(format)
+        return format_handler.renders_locale_as_extension? if format_handler.present?
+      end
+      false
     end
 
     def self.handler_class_for_format(format_name)

@@ -116,6 +116,11 @@ describe Phrase::Formats do
       let(:format_name) { "php_array" }
       it { should eql("./") }
     end
+
+    context "format is play_properties" do
+      let(:format_name) { "play_properties" }
+      it { should eql("./") }
+    end
   end
 
   describe "#self.filename_for_locale_in_format(locale, format_name)" do
@@ -231,6 +236,12 @@ describe Phrase::Formats do
     context "format is angular_translate" do
       let(:format_name) { "angular_translate" }
       it { should eql("phrase.fooish.json") }
+    end
+
+    context "format is play_properties" do
+      let(:locale) { Phrase::Tool::Locale.new(name: "fooish", code: "en") }
+      let(:format_name) { "play_properties" }
+      it { should eql("phrase.messages.en") }
     end
   end
 
@@ -377,6 +388,11 @@ describe Phrase::Formats do
       let(:format_name) { "angular_translate" }
       it { should == Phrase::Formats::AngularTranslate }
     end
+
+    context "format = play_properties" do
+      let(:format_name) { "play_properties" }
+      it { should == Phrase::Formats::PlayProperties }
+    end
   end
 
   describe "#self.guess_possible_file_format_from_file_path(file_path)" do
@@ -441,6 +457,12 @@ describe Phrase::Formats::Base do
 
   describe "#self.locale_aware?" do
     subject { Phrase::Formats::Base.locale_aware? }
+
+    it { should be_false }
+  end
+
+  describe "#self.renders_locale_as_extension?" do
+    subject { Phrase::Formats::Base.renders_locale_as_extension? }
 
     it { should be_false }
   end
