@@ -120,6 +120,10 @@ class OptionsFactory
     opts.on("-l", "--list", "List all tags") do |list|
       set[:list] = list
     end
+
+    opts.on("--secret=YOUR_AUTH_TOKEN", String, "The Auth Token to use for this operation instead of the saved one (optional)") do |secret|
+      set[:secret] = secret
+    end
   end
   private_class_method :tags
 
