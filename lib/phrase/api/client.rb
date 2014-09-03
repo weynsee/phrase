@@ -18,11 +18,12 @@ class Phrase::Api::Client
   METHOD_PUT = :put
   METHOD_DELETE = :delete
 
-  attr_reader :auth_token
+  attr_reader :auth_token, :project_auth_token
 
-  def initialize(auth_token)
+  def initialize(auth_token, project_auth_token=nil)
     raise "No auth token specified!" if (auth_token.nil? or auth_token.blank?)
     @auth_token = auth_token
+    @project_auth_token = project_auth_token
   end
 
   def fetch_locales
@@ -132,14 +133,28 @@ class Phrase::Api::Client
     parsed(result)
   end
 
-  def delete_translation_key(id)
+  def delete_translation_key(id, params={})
     result = perform_api_request("/translation_keys/#{id}", :delete)
     parsed(result)['success'] == true
   end
 
-  def delete_multiple_translation_keys(ids)
+  def delete_multiple_translation_keys(ids, params={})
     result = perform_api_request("/translation_keys/destroy_multiple", :delete, :'ids[]' => ids)
     parsed(result)['success'] == true
+  end
+
+  def create_session(email, password)
+    params = {
+      email: email,
+      password: password
+    }
+    result = perform_api_request("/sessions", :post, params)
+    parsed(result)["auth_token"]
+  end
+
+  def destroy_session
+    result = perform_api_request("/sessions", :delete)
+    parsed(result)["success"]
   end
 
 private
@@ -230,34 +245,32 @@ private
   end
 
   def get_request(endpoint, params={})
-    params.merge!('auth_token' => @auth_token)
+    params = params.merge(auth_token: @auth_token)
+    params = params.merge(project_auth_token: @project_auth_token) if @project_auth_token.present?
     request = Net::HTTP::Get.new("#{api_path_for(endpoint)}?#{query_for_params(params)}")
     request
   end
 
   def post_request(endpoint, params={})
     request = Net::HTTP::Post.new("#{api_path_for(endpoint)}")
-    params.merge!({
-      'auth_token' => @auth_token
-    })
+    params = params.merge(auth_token: @auth_token)
+    params = params.merge(project_auth_token: @project_auth_token) if @project_auth_token.present?
     set_form_data(request, params)
     request
   end
 
   def put_request(endpoint, params={})
     request = Net::HTTP::Put.new("#{api_path_for(endpoint)}")
-    params.merge!({
-      'auth_token' => @auth_token
-    })
+    params = params.merge(auth_token: @auth_token)
+    params = params.merge(project_auth_token: @project_auth_token) if @project_auth_token.present?
     set_form_data(request, params)
     request
   end
 
   def delete_request(endpoint, params={})
     request = Net::HTTP::Delete.new("#{api_path_for(endpoint)}")
-    params.merge!({
-      'auth_token' => @auth_token
-    })
+    params = params.merge(auth_token: @auth_token)
+    params = params.merge(project_auth_token: @project_auth_token) if @project_auth_token.present?
     set_form_data(request, params)
     request
   end

@@ -4,6 +4,7 @@ require 'phrase/api'
 
 describe Phrase::Api::Client do
   let(:auth_token) { "secret123" }
+  let(:project_auth_token) { "project_secret123" }
 
   subject { Phrase::Api::Client.new(auth_token) }
 
@@ -11,6 +12,11 @@ describe Phrase::Api::Client do
     it "should set an auth token" do
       client = Phrase::Api::Client.new(auth_token)
       client.auth_token.should == "secret123"
+    end
+
+    it "should set a project auth token" do
+      client = Phrase::Api::Client.new(auth_token, project_auth_token)
+      client.project_auth_token.should == "project_secret123"
     end
 
     it "should raise an error if auth token was set to nil" do
