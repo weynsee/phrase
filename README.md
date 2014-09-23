@@ -108,25 +108,25 @@ This will push all files found in the given directory or push only the file if t
 
     To push all files in a given directory recursively you can use the `--recursive` parameter:
 
-      phrase push </path/to/file.extension> --recursive
+        phrase push </path/to/file.extension> --recursive
 
 * `--tags`
 
     Attach one or multiple tags with your file upload. All keys added by the push will be tagged with the specified tags:
 
-      phrase push --tags=foo,bar
+        phrase push --tags=foo,bar
 
 * `--locale`
 
 	Some formats do not contain information about their content's locale. These formats (e.g. Java Properties) require you to specify the locale (name) with the push command:
 	
-	  phrase push messages.properties --locale=en
+	    phrase push messages.properties --locale=en
 
 * `--format`
 
 	Specify the format of the files you want to push. We usually try to guess it by evaluating the file name but sometimes you need to tell us more:
 	
-	  phrase push messages.json --format=simple_json
+	    phrase push messages.json --format=simple_json
 	
 	For a full list of all supported formats check our [format guide](https://phraseapp.com/docs/format-guide/overview).
 	
@@ -134,7 +134,7 @@ This will push all files found in the given directory or push only the file if t
 
 	When pushing files to PhraseApp, we only add new resources (keys and translations) by default. Use this flag if you want to override existing translations as well. 
 	
-	  phrase push most-recent.yml --force-update-translations
+	    phrase push most-recent.yml --force-update-translations
 	
 	Please note that we do not delete resources from your project even when using this option. Still you have to make sure that your file contains the most recent translations since all translations in your project will be updated with the file content!
 
@@ -142,13 +142,13 @@ This will push all files found in the given directory or push only the file if t
 
 	When using the `--force-update-translations` flag (see above) we will automatically unverify updated translations if configured in your workflow. Use this flag to prevent all translations being unverified. This option is great if you have copy&replaced strings in your file and just want to update all translations:
 	
-	  phrase push most-recent.yml --force-update-translations --skip-unverification
+	    phrase push most-recent.yml --force-update-translations --skip-unverification
 
 * `--skip-upload-tags`
 
 	When you push translations we will automatically attach new keys to an upload tag. To prevent this from happening, you can use this option:
 	
-	  phrase push my-file.yml --skip-upload-tags
+	    phrase push my-file.yml --skip-upload-tags
 	  
 	This can be very useful if you replace your content very often and do not want to create hundreds of upload-tags.
 	
@@ -156,7 +156,7 @@ This will push all files found in the given directory or push only the file if t
 
 	When you use Emoji symbols in your locale files (i.e. in iOS Localizable strings files) you can tell us to convert them to more readable symbols:
 	
-	  phrase push Localizable.strings --convert-emoji
+	    phrase push Localizable.strings --convert-emoji
 	
 	Please note that you should only use this option if your file definitely contains Emoji symbols since it slows down the upload time quite a bit.
 
@@ -176,7 +176,7 @@ This will pull localization files for all of your locales available in the curre
 
 	Specify the format you want to download your files in:
 	
-	  phrase pull en --format=simple_json
+	    phrase pull en --format=simple_json
 	
 	For a full list of all supported formats check our [format guide](https://phraseapp.com/docs/format-guide/overview).
 
@@ -184,7 +184,7 @@ This will pull localization files for all of your locales available in the curre
 
 	Specify where you want to download the files to:
 	
-	  phrase pull fr --target="./config/locales"
+	    phrase pull fr --target="./config/locales"
 		
 	By default, files will be downloaded to `./phrase/locales`.
 	
@@ -192,25 +192,25 @@ This will pull localization files for all of your locales available in the curre
 	
 	Limit results to a given tag instead of downloading all translations:
 	
-	  phrase pull de --tag=feature-messenger-v2
+	    phrase pull de --tag=feature-messenger-v2
 	  
 * `--updated-since`
 
 	Limit results to translations being updated after the given date and time (UTC) in the format `YYYYMMDDHHMMSS`:
 	
-	  phrase pull en --updated-since=20140601123000
+	    phrase pull en --updated-since=20140601123000
 
 * `--include-empty-translations`
 
 	By default we will only return translated keys in the file. Use this flag to include empty translations as well:
 	
-	  phrase pull en --include-empty-translations
+	    phrase pull en --include-empty-translations
 
 * `--convert-emoji`
 
 	When you use Emoji symbols in your translations you can tell us to convert them back to correctly encoded symbols:
 	
-	  phrase pull --convert-emoji
+	    phrase pull --convert-emoji
 	
 	Please note that you should only use this option if your translations definitely contains Emojis since it slows down the download time a bit.
 
@@ -226,7 +226,7 @@ The `phrase init` command allows several advanced configuration options to furth
 
 	You can specify a locale that should be used as the default locale when setting up your PhraseApp project (default is `en`).
 	
-	  phrase init --secret=<YOUR_TOKEN> --default-locale=fr
+	    phrase init --secret=<YOUR_TOKEN> --default-locale=fr
 
 * `--default-format`
 
@@ -238,19 +238,19 @@ The `phrase init` command allows several advanced configuration options to furth
 	
 * `--locale-directory`
 
-	Set the directory that contains your source locales (used by the `phrase push` command). Allows [placeholders](#allowed-placeholders).
+	Set the directory that contains your source locales (used by the `phrase push` command). Allows [placeholders](#allowed-placeholders-for-advanced-configuration).
 	
 * `--locale-filename`
 
-	Set the filename for files you download from PhraseApp via `phrase pull`. Allows [placeholders](#allowed-placeholders).
+	Set the filename for files you download from PhraseApp via `phrase pull`. Allows [placeholders](#allowed-placeholders-for-advanced-configuration).
 	
 * `--default-target`
 
-	Set the target directly to store your localization files retrieved by `phrase pull`. Allows [placeholders](#allowed-placeholders).
+	Set the target directly to store your localization files retrieved by `phrase pull`. Allows [placeholders](#allowed-placeholders-for-advanced-configuration).
 	
 These options will be stored in your `.phrase` config file where you can edit them later on as well.
 
-<h3 id="allowed-placeholders">Allowed placeholders for advanced configuration</h4>
+### Allowed placeholders for advanced configuration
 
 Some advanced configuration options support placeholders. These will be replaced with the actual content. This allows you to create more flexible path and filename settings.
 
