@@ -108,6 +108,10 @@ class OptionsFactory
       set[:convert_emoji] = convert_emoji
     end
 
+    opts.on("--encoding", String, "Convert .strings or .properties with alternate encoding") do |encoding|
+      set[:encoding] = encoding
+    end
+
     opts.on("--secret=YOUR_AUTH_TOKEN", String, "The Auth Token to use for this operation instead of the saved one (optional)") do |secret|
       set[:secret] = secret
     end
