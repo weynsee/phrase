@@ -241,7 +241,7 @@ describe Phrase::Formats do
     context "format is play_properties" do
       let(:locale) { Phrase::Tool::Locale.new(name: "fooish", code: "en") }
       let(:format_name) { "play_properties" }
-      it { should eql("phrase.messages.en") }
+      it { should eql("messages.en") }
     end
   end
 
