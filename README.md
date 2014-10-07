@@ -42,6 +42,7 @@ You can manage your locale files with PhraseApp if you use one of the following 
 * Laravel PHP
 * Angular Translate
 * Mozilla Properties
+* Play Properties
 
 ## Usage
 

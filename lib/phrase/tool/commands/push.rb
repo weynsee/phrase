@@ -39,8 +39,8 @@ private
   def interruptable_upload_files(files)
     begin
       Thread.new(files){ upload_files(files) }.join
-    rescue SystemExit, Interrupt, Exception
-      print_error "Failed"
+    rescue SystemExit, Interrupt, Exception => e
+      print_error "Failed! #{e.to_s}"
     end
   end
 
@@ -82,7 +82,7 @@ private
   end
 
   def upload_file(file)
-    if file_valid?(file)
+    if file_valid?(file) or Phrase::Formats.format_valid?(@format) then
       begin
         tagged = " (tagged: #{@tags.join(", ")})" if @tags.size > 0
         print_message "Uploading #{file}#{tagged}..."
@@ -120,7 +120,7 @@ private
   def file_seems_to_be_utf16?(file)
     Phrase::Tool::EncodingDetector.file_seems_to_be_utf16?(file)
   end
-
+  
   def file_valid?(filepath)
     extension = filepath.split('.').last
     allowed_file_extensions.include?(extension)
