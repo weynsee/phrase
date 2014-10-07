@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe Phrase::Formats::PlayProperties do
   let(:the_current_directory) { "./" }
-  let(:the_prefix) { "phrase" }
   let(:the_locale_name) { "fooish" }
   let(:the_default_name) { "messages" }
   let(:the_locale_code) { "en" }
@@ -24,7 +23,6 @@ describe Phrase::Formats::PlayProperties do
   describe "#self.filename_for_locale" do
     subject { Phrase::Formats::PlayProperties.filename_for_locale(the_locale) }
 
-    it { should include the_prefix }
     it { should include the_default_name }
     it { should end_with the_locale_code }
   end
