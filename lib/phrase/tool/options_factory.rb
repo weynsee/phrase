@@ -108,7 +108,7 @@ class OptionsFactory
       set[:convert_emoji] = convert_emoji
     end
 
-    opts.on("--encoding", String, "Convert .strings or .properties with alternate encoding") do |encoding|
+    opts.on("--encoding=utf-8", String, "Convert .strings or .properties with alternate encoding") do |encoding|
       set[:encoding] = encoding
     end
 
