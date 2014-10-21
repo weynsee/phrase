@@ -248,6 +248,11 @@ The `phrase init` command allows several advanced configuration options to furth
 * `--default-target`
 
 	Set the target directly to store your localization files retrieved by `phrase pull`. Allows [placeholders](#allowed-placeholders-for-advanced-configuration).
+
+* `--encoding`
+	
+	Set the encoding for your localization files to UTF-8, UTF-16 or Latin-1. Note that the encodings only work for a handful of formats like IOS or Java properties. The default will be UTF-8.
+
 	
 These options will be stored in your `.phrase` config file where you can edit them later on as well.
 
