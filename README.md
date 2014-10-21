@@ -219,9 +219,9 @@ This will pull localization files for all of your locales available in the curre
 	
 	Set the encoding for your localization files to UTF-8, UTF-16 or Latin-1. 
 
-			phrase pull --encoding=UTF-8
+	    phrase pull --encoding=UTF-8
 
-	Please note that the encodings only work for a handful of formats like IOS .strings or Java .properties. The default will be UTF-8.If none is provided the default encoding of the formats is used.
+	Please note that the encodings only work for a handful of formats like IOS .strings or Java .properties. The default will be UTF-8. If none is provided the default encoding of the formats is used.
 
 
 * `--secret`
