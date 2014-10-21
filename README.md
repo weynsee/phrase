@@ -215,6 +215,15 @@ This will pull localization files for all of your locales available in the curre
 	
 	Please note that you should only use this option if your translations definitely contains Emojis since it slows down the download time a bit.
 
+* `--encoding`
+	
+	Set the encoding for your localization files to UTF-8, UTF-16 or Latin-1. 
+
+			phrase pull --encoding=UTF-8
+
+	Please note that the encodings only work for a handful of formats like IOS .strings or Java .properties. The default will be UTF-8.If none is provided the default encoding of the formats is used.
+
+
 * `--secret`
 
 	Your project auth token. You can find the auth token in your project overview or project settings form. This will fall back to the token stored in your `.phrase` config file.
@@ -248,10 +257,6 @@ The `phrase init` command allows several advanced configuration options to furth
 * `--default-target`
 
 	Set the target directly to store your localization files retrieved by `phrase pull`. Allows [placeholders](#allowed-placeholders-for-advanced-configuration).
-
-* `--encoding`
-	
-	Set the encoding for your localization files to UTF-8, UTF-16 or Latin-1. Note that the encodings only work for a handful of formats like IOS or Java properties. The default will be UTF-8.
 
 	
 These options will be stored in your `.phrase` config file where you can edit them later on as well.
