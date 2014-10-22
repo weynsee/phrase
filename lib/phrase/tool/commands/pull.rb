@@ -19,20 +19,21 @@ class Phrase::Tool::Commands::Pull < Phrase::Tool::Commands::Base
     @convert_emoji = @options.get(:convert_emoji)
     @encoding = @options.get(:encoding)
     @target ||= Phrase::Formats.target_directory(@format) if format_valid?(@format)
+    @skip_unverified = @options.get(:skip_unverified)
   end
 
   def execute!
     (print_error("Invalid format: #{@format}") and exit_command) unless format_valid?(@format)
     locales_to_download.compact.each do |locale|
       print_message "Downloading #{locale.name}..."
-      fetch_translations_for_locale(locale, @format, @tag, @updated_since, @include_empty_translations, @convert_emoji, @encoding)
+      fetch_translations_for_locale(locale, @format, @tag, @updated_since, @include_empty_translations, @convert_emoji, @encoding, @skip_unverified)
     end
   end
 
 private
-  def fetch_translations_for_locale(locale, format, tag=nil, updated_since=nil, include_empty_translations=nil, convert_emoji=nil, encoding=nil)
+  def fetch_translations_for_locale(locale, format, tag=nil, updated_since=nil, include_empty_translations=nil, convert_emoji=nil, encoding=nil, skip_unverified=nil)
     begin
-      content = api_client.download_translations_for_locale(locale.name, format, tag, updated_since, include_empty_translations, convert_emoji, encoding)
+      content = api_client.download_translations_for_locale(locale.name, format, tag, updated_since, include_empty_translations, convert_emoji, encoding, skip_unverified)
       store_content_in_locale_file(locale, content)
     rescue Exception => e
       print_error "Failed"
