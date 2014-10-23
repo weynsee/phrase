@@ -6,7 +6,7 @@ describe Phrase::Tool::Commands::Pull do
   let(:args) { [] }
   let(:options) { Phrase::Tool::Options.new(args, "pull") }
   let(:api_client) { stub }
-  let(:config) { stub(secret: "secr3t", format: nil) }
+  let(:config) { stub(secret: "secr3t", format: nil, encoding: nil) }
 
   let(:polish_locale) { Phrase::Tool::Locale.new(name: "pl") }
   let(:russian_locale) { Phrase::Tool::Locale.new(name: "ru") }

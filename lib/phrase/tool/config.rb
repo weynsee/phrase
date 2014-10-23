@@ -94,6 +94,15 @@ class Phrase::Tool::Config
     save_config!
   end
 
+  def encoding
+    get_setting("encoding")
+  end
+
+  def encoding=(new_encoding)
+    config["encoding"] = new_encoding
+    save_config!
+  end
+
 private
   def config
     @config ||= {}

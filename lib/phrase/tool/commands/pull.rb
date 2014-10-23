@@ -17,7 +17,7 @@ class Phrase::Tool::Commands::Pull < Phrase::Tool::Commands::Base
     @updated_since = @options.get(:updated_since)
     @include_empty_translations = @options.get(:include_empty_translations)
     @convert_emoji = @options.get(:convert_emoji)
-    @encoding = @options.get(:encoding)
+    @encoding = @options.get(:encoding) || config.encoding
     @target ||= Phrase::Formats.target_directory(@format) if format_valid?(@format)
   end
 
