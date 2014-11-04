@@ -33,7 +33,8 @@ module Phrase::Tool::Commands
         updated_since: nil,
         include_empty_translations: nil,
         convert_emoji: nil,
-        encoding: nil
+        encoding: nil,
+        skip_unverified_translations: nil
       },
       tags: {
         list: true

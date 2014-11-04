@@ -101,6 +101,30 @@ describe Phrase::Tool::Options do
         subject { Phrase::Tool::Options.new(args, command).get(:secret) }
         it { should eql "asd" }
       end
+
+      context "optional pull commands" do
+        let(:args) { ["--include-empty-translations", "--skip-unverified", "--convert-emoji", "--encoding=utf-8"] }
+
+        describe "include-empty-translations" do
+          subject { Phrase::Tool::Options.new(args, command).get(:include_empty_translations) }
+          it { should be_true }
+        end
+
+        describe "skip-unverified-translations" do
+          subject { Phrase::Tool::Options.new(args, command).get(:skip_unverified_translations) }
+          it { should be_true  }
+        end
+
+        describe "convert-emoji" do
+          subject { Phrase::Tool::Options.new(args, command).get(:convert_emoji) }
+          it { should be_true }
+        end
+
+        describe "encoding" do
+          subject { Phrase::Tool::Options.new(args, command).get(:encoding) }
+          it { should eql "utf-8" }
+        end
+      end
     end
 
     context "tags command" do
