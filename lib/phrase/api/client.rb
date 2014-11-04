@@ -104,7 +104,7 @@ class Phrase::Api::Client
       }
 
       content = perform_api_request("/translations/download", :get, params)
-      return content
+      return content.force_encoding("UTF-8")
     rescue Phrase::Api::Exceptions::ServerError => e
       raise "Translations #{name} could not be downloaded"
     end

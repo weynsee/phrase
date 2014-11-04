@@ -50,17 +50,13 @@ private
     begin
       FileUtils.mkpath(path)
       File.open(target, "w") do |file|
-        file.write(encode(content))
+        file.write(content)
       end
       print_message "Saved to #{clean_path target}".green
     rescue
       print_error("Cannot write file to target folder (#{path})")
       exit_command
     end
-  end
-
-  def encode content
-    content.force_encoding("UTF-8")
   end
 
   def clean_path(str)
