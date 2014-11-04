@@ -110,8 +110,8 @@ describe Phrase::Tool::Options do
           it { should be_true }
         end
 
-        describe "skip-unverified" do
-          subject { Phrase::Tool::Options.new(args, command).get(:skip_unverified) }
+        describe "skip-unverified-translations" do
+          subject { Phrase::Tool::Options.new(args, command).get(:skip_unverified_translations) }
           it { should be_true  }
         end
 

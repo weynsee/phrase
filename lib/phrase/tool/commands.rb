@@ -34,7 +34,7 @@ module Phrase::Tool::Commands
         include_empty_translations: nil,
         convert_emoji: nil,
         encoding: nil,
-        skip_unverified: nil
+        skip_unverified_translations: nil
       },
       tags: {
         list: true

@@ -223,11 +223,11 @@ This will pull localization files for all of your locales available in the curre
 
 	Please note that the encodings only work for a handful of formats like IOS .strings or Java .properties. The default will be UTF-8. If none is provided the default encoding of the formats is used.
 
-* `--skip-unverified`
+* `--skip-unverified-translations`
 	
 	By default all translations are downloaded. Use this flag to skip all unverified translations.
 
-	    phrase pull --skip-unverified
+	    phrase pull --skip-unverified-translations
 
 
 * `--secret`

@@ -112,8 +112,8 @@ class OptionsFactory
       set[:encoding] = encoding
     end
 
-    opts.on("--skip-unverified", "Convert .strings or .properties with alternate encoding") do |skip_unverified|
-      set[:skip_unverified] = skip_unverified
+    opts.on("--skip-unverified-translations", "Skip unverified translations in the result") do |skip_unverified_translations|
+      set[:skip_unverified_translations] = skip_unverified_translations
     end
 
     opts.on("--secret=YOUR_AUTH_TOKEN", String, "The Auth Token to use for this operation instead of the saved one (optional)") do |secret|
