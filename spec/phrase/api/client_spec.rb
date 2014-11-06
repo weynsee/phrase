@@ -208,6 +208,12 @@ describe Phrase::Api::Client do
         end
       end
     end
+    
+    it "should return translations in UTF-8 encoding" do
+      VCR.use_cassette('download translations') do
+        subject.download_translations_for_locale("en", "yml").encoding.should eq Encoding::UTF_8
+      end
+    end
   end
 
   describe "#upload" do
