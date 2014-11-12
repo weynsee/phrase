@@ -142,12 +142,13 @@ module Phrase
       format.nil? ? nil : handler_class_for_format(format).extract_locale_name_from_file_path(file_path)
     end
 
-    def self.format_valid?(format)
-      if format.present? then
-        format_handler = handler_class_for_format(format)
-        return format_handler.renders_locale_as_extension? if format_handler.present?
+    def self.format_renders_locale_as_extension?(format)
+      if format.present?
+        format_class = handler_class_for_format(format)
+        format_class.renders_locale_as_extension?
+      else
+        false
       end
-      false
     end
 
     def self.handler_class_for_format(format_name)

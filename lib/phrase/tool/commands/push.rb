@@ -81,11 +81,12 @@ private
   end
 
   def upload_file(file)
-    if file_valid?(file) or Phrase::Formats.format_valid?(@format) then
+    if file_valid?(file) or renders_locale_as_extension?(@format) then
       begin
         tagged = " (tagged: #{@tags.join(", ")})" if @tags.size > 0
         print_message "Uploading #{file}#{tagged}..."
-        locale = correct_locale_for_upload(file, @format)
+        locale = guess_locale_for_upload(file, @format)
+        locale = @locale if @locale
         api_client.upload(file, file_content(file), @tags, locale, @format, @update_translations, @skip_unverification, @skip_upload_tags, @convert_emoji)
         print_message "OK".green
       rescue Exception => e
@@ -111,6 +112,10 @@ private
     Phrase::Tool::EncodingDetector.file_seems_to_be_utf16?(file)
   end
   
+  def renders_locale_as_extension?(format_name)
+    Phrase::Formats.format_renders_locale_as_extension?(format_name)
+  end
+
   def file_valid?(filepath)
     extension = filepath.split('.').last
     allowed_file_extensions.include?(extension)
@@ -120,13 +125,12 @@ private
     File.exist?(file)
   end
 
-  def correct_locale_for_upload(file, format_name=nil)
+  def guess_locale_for_upload(file, format_name=nil)
     if file_format_exposes_locale?(file, format_name)
       locale = detect_locale_name_from_file_path(file, format_name)
     else
       locale = Phrase::Tool::Locale.find_default_locale.try(:name)
     end
-    locale = @locale if @locale
     locale
   end
 
