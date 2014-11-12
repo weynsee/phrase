@@ -7,7 +7,6 @@ class Phrase::Tool::Commands::Push < Phrase::Tool::Commands::Base
   def initialize(options, args)
     super(options, args)
     require_auth_token!
-
     @file_names = @args[1..-1]
     @locale = @options.get(:locale)
     @format = @options.get(:format)
@@ -86,12 +85,7 @@ private
       begin
         tagged = " (tagged: #{@tags.join(", ")})" if @tags.size > 0
         print_message "Uploading #{file}#{tagged}..."
-        unless force_use_of_default_locale?(file)
-          locale = detect_locale_name_from_file_path(file)
-        else
-          locale = Phrase::Tool::Locale.find_default_locale.try(:name)
-        end
-        locale = @locale if @locale
+        locale = correct_locale_for_upload(file, @format)
         api_client.upload(file, file_content(file), @tags, locale, @format, @update_translations, @skip_unverification, @skip_upload_tags, @convert_emoji)
         print_message "OK".green
       rescue Exception => e
@@ -107,10 +101,6 @@ private
     content = File.open(file).read
     content = utf16_to_utf8(content) if file_seems_to_be_utf16?(file)
     content
-  end
-
-  def force_use_of_default_locale?(file_path)
-    not Phrase::Formats.file_format_exposes_locale?(file_path)
   end
 
   def utf16_to_utf8(string)
@@ -130,16 +120,30 @@ private
     File.exist?(file)
   end
 
+  def correct_locale_for_upload(file, format_name=nil)
+    if file_format_exposes_locale?(file, format_name)
+      locale = detect_locale_name_from_file_path(file, format_name)
+    else
+      locale = Phrase::Tool::Locale.find_default_locale.try(:name)
+    end
+    locale = @locale if @locale
+    locale
+  end
+
+  def file_format_exposes_locale?(file, format_name)
+    Phrase::Formats.file_format_exposes_locale?(file, format_name)
+  end
+
+  def detect_locale_name_from_file_path(file, format_name)
+    Phrase::Formats.detect_locale_name_from_file_path(file, format_name)
+  end
+
   def valid_tags_are_given?(tags)
     tags.all? { |tag| Phrase::Tool::TagValidator.valid?(tag) }
   end
 
   def rails_default_locale_folder_available?
     File.exist?(RAILS_DEFAULT_FOLDER) && File.directory?(RAILS_DEFAULT_FOLDER)
-  end
-
-  def detect_locale_name_from_file_path(file_path)
-    Phrase::Formats.detect_locale_name_from_file_path(file_path)
   end
 
   def allowed_file_extensions

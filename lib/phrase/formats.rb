@@ -132,13 +132,13 @@ module Phrase
       custom_filename || handler.filename_for_locale(locale)
     end
 
-    def self.file_format_exposes_locale?(file_path)
-      format = guess_possible_file_format_from_file_path(file_path)
+    def self.file_format_exposes_locale?(file_path, format_name=nil)
+      format = format_name || guess_possible_file_format_from_file_path(file_path)
       format.nil? ? false : handler_class_for_format(format).locale_aware?
     end
 
-    def self.detect_locale_name_from_file_path(file_path)
-      format = guess_possible_file_format_from_file_path(file_path)
+    def self.detect_locale_name_from_file_path(file_path, format_name=nil)
+      format = format_name || guess_possible_file_format_from_file_path(file_path)
       format.nil? ? nil : handler_class_for_format(format).extract_locale_name_from_file_path(file_path)
     end
 

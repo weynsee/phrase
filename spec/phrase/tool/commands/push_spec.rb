@@ -71,19 +71,41 @@ describe Phrase::Tool::Commands::Push do
     end
   end
 
-  describe "#force_use_of_default_locale?(file_path)" do
-    subject { command.send(:force_use_of_default_locale?, file_path) }
+  describe "#file_format_exposes_locale?(file_path, format)" do
+    let(:format){ nil }
+    subject { command.send(:file_format_exposes_locale?, file_path, format) }
 
     context "is a gettext file" do
       let(:file_path) { "./fixtures/formats/translations.en.po" }
 
-      it { should be_false }
+      it { should be_true }
     end
 
     context "is a gettext pot file" do
       let(:file_path) { "./fixtures/formats/translations.pot" }
 
+      it { should be_false }
+    end
+
+    context "format is known (xml) and locale aware" do
+      let(:file_path) { "src/main/res/values-de/strings.xml" }
+      let(:format){ "xml" }
+
       it { should be_true }
+    end
+
+    context "format is known (yml) and locale aware" do
+      let(:file_path) { "config/locales/en.yml" }
+      let(:format){ "yml" }
+
+      it { should be_true }
+    end
+
+    context "format is known (simple_json) and not locale aware" do
+      let(:file_path) { "some/en.json" }
+      let(:format){ "simple_json" }
+
+      it { should be_false }
     end
   end
 
@@ -133,13 +155,35 @@ describe Phrase::Tool::Commands::Push do
     end
   end
 
-  describe "#detect_locale_name_from_file_path(file_path)" do
-    subject { command.send(:detect_locale_name_from_file_path, file_path) }
+  describe "#detect_locale_name_from_file_path(file_path, format)" do
+    let(:format) { nil }
+    subject { command.send(:detect_locale_name_from_file_path, file_path, format) }
 
     context "extension is unknown" do
       let(:file_path) { "test.doc" }
 
       it { should be_nil }
+    end
+
+    context "format is known (xml) and locale aware" do
+      let(:file_path) { "src/main/res/values-de/strings.xml" }
+      let(:format){ "xml" }
+
+      it { should == "de" }
+    end
+
+    context "format is known (strings) and locale aware" do
+      let(:file_path) { "/en.lproj/Localizable.strings" }
+      let(:format){ "strings" }
+
+      it { should == "en" }
+    end
+
+    context "format is known (simple_json) and not locale aware" do
+      let(:file_path) { "some/en.json" }
+      let(:format){ "simple_json" }
+
+      it { should == nil }
     end
   end
 
@@ -173,3 +217,7 @@ describe Phrase::Tool::Commands::Push do
     end
   end
 end
+
+
+
+
