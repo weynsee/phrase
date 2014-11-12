@@ -81,12 +81,15 @@ private
   end
 
   def upload_file(file)
-    if file_valid?(file) or renders_locale_as_extension?(@format) then
+    if file_valid?(file) or renders_locale_as_extension?(@format)
       begin
         tagged = " (tagged: #{@tags.join(", ")})" if @tags.size > 0
         print_message "Uploading #{file}#{tagged}..."
-        locale = guess_locale_for_upload(file, @format)
-        locale = @locale if @locale
+        if @locale.present?
+          locale = @locale
+        else
+          locale = guess_locale_for_upload(file, @format)
+        end
         api_client.upload(file, file_content(file), @tags, locale, @format, @update_translations, @skip_unverification, @skip_upload_tags, @convert_emoji)
         print_message "OK".green
       rescue Exception => e
