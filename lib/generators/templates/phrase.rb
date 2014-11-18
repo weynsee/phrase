@@ -9,7 +9,7 @@ Phrase.configure do |config|
   # Configure an array of key names that should not be handled
   # with PhraseApp. This is useful when a key causes problems
   # (Such as keys that are used by Rails internally)
-  config.ignored_keys = []
+  config.ignored_keys = ["number.*", "breadcrumb.*"]
 
   # PhraseApp uses decorators to generate a unique identification key
   # in context of your document. However, this might result in conflicts
