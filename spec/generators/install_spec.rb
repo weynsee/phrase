@@ -18,7 +18,7 @@ describe Phrase::Generators::InstallGenerator do
     with_args "--auth-token=86a1dc43f1087c6339994b5356fe5064" do
       it { should generate("config/initializers/phrase.rb") { |c| c.should =~ /Phrase.configure/ } }
       it { should generate("config/initializers/phrase.rb") { |c| c.should =~ /config.auth_token = "86a1dc43f1087c6339994b5356fe5064"/ } }
-      it { should generate("config/initializers/phrase.rb") { |c| c.should =~ /config.ignored_keys = \[\]/ } }
+      it { should generate("config/initializers/phrase.rb") { |c| c.should =~ /config.ignored_keys = \["number.*", "breadcrumb.*"\]/ } }
     end
   end
 
