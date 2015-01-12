@@ -27,7 +27,7 @@ class Phrase::Tool::Commands::Push < Phrase::Tool::Commands::Base
     files = choose_files_to_upload(@file_names, @recursive)
 
     if files.empty?
-      print_message "Could not find any files to upload".light_red
+      print_message Rainbow("Could not find any files to upload").bright.red
       exit_command
     else
        interruptable_upload_files(files)
@@ -91,7 +91,7 @@ private
           locale = guess_locale_for_upload(file, @format)
         end
         api_client.upload(file, file_content(file), @tags, locale, @format, @update_translations, @skip_unverification, @skip_upload_tags, @convert_emoji)
-        print_message "OK".green
+        print_message Rainbow("OK").green
       rescue Exception => e
         print_error "Failed"
         print_server_error(e.message)

@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 
 require 'ext/all'
-require 'colorize'
+require 'rainbow'
 
 module Phrase
   autoload :Config, 'phrase/config'
