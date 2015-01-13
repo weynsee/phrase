@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.test_files = s.files.grep(%r{^(spec)/})
   s.executables = %w(phrase)
   s.require_paths = ["lib"]
-  s.add_dependency('colorize')
+  s.add_dependency('rainbow')
   s.add_dependency('json')
   s.add_dependency('i18n')
   s.add_development_dependency('rake')
