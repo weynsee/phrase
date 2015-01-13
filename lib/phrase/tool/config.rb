@@ -1,6 +1,7 @@
 # -*- encoding : utf-8 -*-
 
 require 'json'
+require 'erb'
 
 class Phrase::Tool::Config
   def load
@@ -8,7 +9,8 @@ class Phrase::Tool::Config
     if File.exist?(".phrase")
       begin
         contents = File.read(".phrase")
-        @config = JSON.parse(contents)
+        parsed_content = ERB.new(contents).result
+        @config = JSON.parse(parsed_content)
       rescue JSON::ParserError => err
         $stderr.puts "Could not parse config file: #{err}"
       end
