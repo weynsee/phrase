@@ -2,13 +2,16 @@
 [![Code Climate](https://codeclimate.com/github/phrase/phrase.png)](https://codeclimate.com/github/phrase/phrase)
 [![Build Status](https://secure.travis-ci.org/phrase/phrase.png)](http://travis-ci.org/phrase/phrase)
 
-PhraseApp lets you set up a professional translation process to boost the quality of your translations with the powerful In-Context Editor.
+PhraseApp is a translation management software. Set up a professional translation process to boost the quality of your translations with our powerful In-Context Editor or simply share and edit locale files with your team.
 
-You can order professional translations from within PhraseApp, or just work with your own team. Our platform support various programming languages and frameworks. Such as [Ruby on Rails, Symfony, Zend Framework, iOS, Android and many more](https://phraseapp.com/docs/general/supported-platforms).
+You can order professional translations through PhraseApp or work with your own translators. Our platform supports various programming languages and frameworks. Such as [Ruby on Rails, Symfony, Zend Framework, iOS, Android and many more](https://phraseapp.com/docs/general/supported-platforms).
 
-This client lets you integrate PhraseApp into your project and access your locale files through the PhraseApp [API](https://phraseapp.com/docs/api/overview).
+This ruby gem allows you to integrate PhraseApp into your project and access your locale files through the PhraseApp [API](https://phraseapp.com/docs/api/overview).
 
-[Get your free PhraseApp trial](https://phraseapp.com/signup) and start right away.
+[Try out PhraseApp for free](https://phraseapp.com/features) and start translating your app!
+
+### In-Context Editor ###
+PhraseApp comes with an In-Context editor that allows you to translate directly on your website. See our documentation on how to set it up: [In-Context Editor Setup](http://docs.phraseapp.com/guides/in-context-editor/).
 
 ### Supported Formats ###
 You can manage your locale files with PhraseApp if you use one of the following formats:
@@ -284,15 +287,15 @@ For example you can specify a different file name for files you retrieve via the
     phrase init --secret=<YOUR_TOKEN> --locale-filename="<locale.name>.yml"
 
 ## Further Information
-* [Read the PhraseApp documentation](https://phraseapp.com/docs)
-* [Get your free PhraseApp trial](https://phraseapp.com/signup)
-* [Get in touch with the engineers](https://phraseapp.com/contact)
+* [Read the PhraseApp documentation](http://docs.phraseapp.com/)
+* [Try out PhraseApp for free](https://phraseapp.com/features)
+* [Get in touch with us](https://phraseapp.com/contact)
 
 ## References
-* [PhraseApp In-Context Editor](http://demo.phraseapp.com)
-* [PhraseApp API](https://phraseapp.com/docs/api/overview)
+* [PhraseApp API Docs](https://phraseapp.com/docs/api/overview)
+* [Demo of the In-Context Editor](http://demo.phraseapp.com)
 
 ## Partner-Integrations
-* [PhraseApp and Ruby Motion](https://github.com/phrase/motion-phrase)
-* [Heroku Add-on](https://addons.heroku.com/phrase)
-* [Cloudcontrol Add-on](https://phraseapp.com/docs/cloudcontrol/introduction)
+* [Integrate PhraseApp with Ruby Motion](https://github.com/phrase/motion-phrase)
+* [Integrate PhraseApp as a Heroku Add-on](https://addons.heroku.com/phrase)
+* [Integrate PhraseApp as a Cloudcontrol Add-on](https://phraseapp.com/docs/cloudcontrol/introduction)
