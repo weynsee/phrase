@@ -292,7 +292,7 @@ For example you can specify a different file name for files you retrieve via the
 * [Get in touch with us](https://phraseapp.com/contact)
 
 ## References
-* [PhraseApp API Docs](https://phraseapp.com/docs/api/overview)
+* [PhraseApp API Docs](http://docs.phraseapp.com/api/v1/)
 * [Demo of the In-Context Editor](http://demo.phraseapp.com)
 
 ## Partner-Integrations
