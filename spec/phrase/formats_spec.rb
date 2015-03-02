@@ -121,6 +121,11 @@ describe Phrase::Formats do
       let(:format_name) { "play_properties" }
       it { should eql("./") }
     end
+
+    context "format is go_i18n" do
+      let(:format_name) { "go_i18n" }
+      it { should eql("./") }
+    end
   end
 
   describe "#self.filename_for_locale_in_format(locale, format_name)" do
@@ -242,6 +247,12 @@ describe Phrase::Formats do
       let(:locale) { Phrase::Tool::Locale.new(name: "fooish", code: "en") }
       let(:format_name) { "play_properties" }
       it { should eql("messages.en") }
+    end
+
+    context "format is go_i18n" do
+      let(:locale) { Phrase::Tool::Locale.new(name: "fooish", code: "en") }
+      let(:format_name) { "go_i18n" }
+      it { should eql("fooish.all.json") }
     end
   end
 
@@ -392,6 +403,11 @@ describe Phrase::Formats do
     context "format = play_properties" do
       let(:format_name) { "play_properties" }
       it { should == Phrase::Formats::PlayProperties }
+    end
+
+    context "format = go_i18n" do
+      let(:format_name) { "go_i18n" }
+      it { should == Phrase::Formats::GoI18n }
     end
   end
 
