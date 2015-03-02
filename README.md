@@ -287,13 +287,14 @@ For example you can specify a different file name for files you retrieve via the
     phrase init --secret=<YOUR_TOKEN> --locale-filename="<locale.name>.yml"
 
 ## Further Information
-* [Read the PhraseApp documentation](http://docs.phraseapp.com/)
-* [Try out PhraseApp for free](https://phraseapp.com/features)
-* [Get in touch with us](https://phraseapp.com/contact)
+* [Read the PhraseApp Documentation](http://docs.phraseapp.com/)
+* [Software Translation Managemeny with PhraseApp](https://phraseapp.com/features)
+* [Get in touch with PhraseApp Team](https://phraseapp.com/contact)
 
 ## References
-* [PhraseApp API Docs](http://docs.phraseapp.com/api/v1/)
+* [PhraseApp API Documentation](http://docs.phraseapp.com/api/v1/)
 * [Demo of the In-Context Editor](http://demo.phraseapp.com)
+* [Localization Guides and Software Translation Best Practices](http://localize-software.phraseapp.com/)
 
 ## Partner-Integrations
 * [Integrate PhraseApp with Ruby Motion](https://github.com/phrase/motion-phrase)
