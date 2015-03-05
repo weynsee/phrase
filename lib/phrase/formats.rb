@@ -31,6 +31,7 @@ module Phrase
     autoload :AngularTranslate, 'phrase/formats/angular_translate'
     autoload :MozillaProperties, 'phrase/formats/mozilla_properties'
     autoload :PlayProperties, 'phrase/formats/play_properties'
+    autoload :GoI18n, 'phrase/formats/go_i18n'
 
     class Base
       def self.supports_extension?(extension)
@@ -105,6 +106,7 @@ module Phrase
       angular_translate: Phrase::Formats::AngularTranslate,
       mozilla_properties: Phrase::Formats::MozillaProperties,
       play_properties: Phrase::Formats::PlayProperties,
+      go_i18n: Phrase::Formats::GoI18n,
     }
 
     def self.config

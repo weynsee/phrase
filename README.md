@@ -27,6 +27,7 @@ You can manage your locale files with PhraseApp if you use one of the following 
 * Chrome JSON i18n
 * Simple JSON
 * Nested JSON
+* GoI18n JSON
 * i18n-node-2 JSON
 * .NET ResX
 * Windows Phone ResX
@@ -42,7 +43,7 @@ You can manage your locale files with PhraseApp if you use one of the following 
 * CSV
 * PHP Array
 * Zendesk CSV
-* Laravel PHP
+* Laravel/Flask PHP
 * Angular Translate
 * Mozilla Properties
 * Play Properties
