@@ -20,6 +20,7 @@ module Phrase
     autoload :NestedJson, 'phrase/formats/nested_json'
     autoload :NodeJson, 'phrase/formats/node_json'
     autoload :Strings, 'phrase/formats/strings'
+    autoload :Stringsdict, 'phrase/formats/stringsdict'
     autoload :Xml, 'phrase/formats/xml'
     autoload :Tmx, 'phrase/formats/tmx'
     autoload :Xliff, 'phrase/formats/xliff'
@@ -95,6 +96,7 @@ module Phrase
       nested_json: Phrase::Formats::NestedJson,
       node_json: Phrase::Formats::NodeJson,
       strings: Phrase::Formats::Strings,
+      stringsdict: Phrase::Formats::Stringsdict,
       xml: Phrase::Formats::Xml,
       tmx: Phrase::Formats::Tmx,
       xlf: Phrase::Formats::Xliff,
