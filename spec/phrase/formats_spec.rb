@@ -443,6 +443,11 @@ describe Phrase::Formats do
       let(:file_path) { "test.xliff" }
       it { should eql :xlf }
     end
+
+    context "file format is unsupported" do
+      let(:file_path) { "test.xxx" }
+      it { should be_nil }
+    end
   end
 end
 

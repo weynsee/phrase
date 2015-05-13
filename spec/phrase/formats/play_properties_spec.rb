@@ -14,12 +14,6 @@ describe Phrase::Formats::PlayProperties do
     end
   end
 
-  describe "#self.supports_extension?" do
-    subject { Phrase::Formats::PlayProperties.supports_extension?(the_extension) }
-
-    it { should be_true }
-  end
-
   describe "#self.filename_for_locale" do
     subject { Phrase::Formats::PlayProperties.filename_for_locale(the_locale) }
 

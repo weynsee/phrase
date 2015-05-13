@@ -36,7 +36,7 @@ module Phrase
 
     class Base
       def self.supports_extension?(extension)
-        self.extensions.map(&:to_s).include?(extension.to_s) or self.renders_locale_as_extension?
+        self.extensions.map(&:to_s).include?(extension.to_s)
       end
 
       def self.renders_locale_as_extension?
@@ -162,7 +162,7 @@ module Phrase
 
     def self.guess_possible_file_format_from_file_path(file_path)
       extension = extension_from_file_path(file_path)
-      possible_format = SUPPORTED_FORMATS.keys.find do |format|
+      SUPPORTED_FORMATS.keys.find do |format|
         SUPPORTED_FORMATS[format].send(:supports_extension?, extension)
       end
     end
