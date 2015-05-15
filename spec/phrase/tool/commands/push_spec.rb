@@ -216,8 +216,22 @@ describe Phrase::Tool::Commands::Push do
       it { should == [File.expand_path('spec/fixtures/mixed/nice.yml'), File.expand_path('spec/fixtures/mixed/subfolder/subitem.yml'), File.expand_path('spec/fixtures/mixed/wrong.yml.rb')].sort }
     end
   end
+
+  describe "#execute!" do
+    context "when the locale is passed and multiple files are to be uploaded" do
+      let(:args) { ["--locale=en"]}
+
+      it "should display an error" do
+        subject.should_receive(:print_error).with(/Only a single file can be pushed if locale is specified/i)
+        subject.stub(:choose_files_to_upload).and_return(["a.yml", "b.yml"])
+
+        lambda {
+          subject.execute!
+        }.should raise_error {|error|
+          error.should be_a(SystemExit)
+          error.status.should eq(1)
+        }
+      end
+    end
+  end
 end
-
-
-
-

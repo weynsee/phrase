@@ -29,6 +29,9 @@ class Phrase::Tool::Commands::Push < Phrase::Tool::Commands::Base
     if files.empty?
       print_message Rainbow("Could not find any files to upload").bright.red
       exit_command
+    elsif files.size > 1 && @locale.present?
+      print_error "Only a single file can be pushed if locale is specified"
+      exit_command
     else
        interruptable_upload_files(files)
     end
@@ -114,7 +117,7 @@ private
   def file_seems_to_be_utf16?(file)
     Phrase::Tool::EncodingDetector.file_seems_to_be_utf16?(file)
   end
-  
+
   def renders_locale_as_extension?(format_name)
     Phrase::Formats.format_renders_locale_as_extension?(format_name)
   end
